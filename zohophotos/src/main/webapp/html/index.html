@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoho Photoes | The New Home for Memories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a; --secondary: #7c3aed; --accent: #14b8a6;
+            --text-main: #0f172a; --text-light: #64748b; --white: #ffffff;
+            /* Complex Mesh Gradient Background */
+            --bg-gradient: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                           radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                           radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            --glass-bg: rgba(255, 255, 255, 0.65); 
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-blur: 16px;
+            --radius: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(340,100%,76%,0.1) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(340,100%,76%,0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(22,100%,77%,0.1) 0px, transparent 50%);
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+        
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- Floating Nav --- */
+        .nav-wrapper {
+            position: fixed;
+            top: 20px;
+            left: 0; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            padding: 12px 30px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .nav-logo { font-weight: 700; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 24px; font-size: 0.95rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--secondary); }
+        .nav-cta { background: var(--text-main); color: white; padding: 8px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .nav-cta:hover { transform: scale(1.05); background: var(--primary); }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #14b8a6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            animation: fadeUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            animation: fadeUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .btn-large {
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .btn-fill { background: var(--text-main); color: white; box-shadow: 0 20px 40px -10px rgba(30,58,138,0.3); }
+        .btn-fill:hover { transform: translateY(-3px); background: var(--primary); }
+        
+        .btn-outline { background: white; border: 1px solid rgba(0,0,0,0.1); color: var(--text-main); }
+        .btn-outline:hover { background: #f1f5f9; border-color: var(--text-main); }
+
+        /* --- 3D Photo Wall --- */
+        .photo-wall-container {
+            margin-top: 80px;
+            perspective: 1000px;
+            height: 400px;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+
+        .photo-wall {
+            display: flex;
+            gap: 20px;
+            width: 150%;
+            margin-left: -25%;
+            transform: rotateX(20deg) rotateZ(-5deg) rotateY(10deg);
+            transform-style: preserve-3d;
+        }
+
+        .wall-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 20%;
+        }
+
+        .wall-column.up { animation: scrollUp 40s linear infinite; }
+        .wall-column.down { animation: scrollDown 45s linear infinite; }
+
+        .wall-img {
+            border-radius: 12px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .wall-img:hover { transform: scale(1.05); z-index: 10; }
+
+        @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+        @keyframes scrollDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+
+        /* --- Bento Grid Features --- */
+        .bento-section { padding: 100px 0; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 300px);
+            gap: 20px;
+        }
+
+        .bento-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -5px rgba(0,0,0,0.05);
+        }
+
+        .span-2 { grid-column: span 2; }
+        .span-row-2 { grid-row: span 2; }
+
+        .bento-icon {
+            width: 50px; height: 50px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .bento-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+        .bento-desc { color: var(--text-light); font-size: 0.95rem; }
+
+        /* Decorative blobs for bento */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        /* Specific Card Styles */
+        .card-ai { background: linear-gradient(135deg, #fff 0%, #fefce8 100%); }
+        .card-ai .blob { width: 150px; height: 150px; background: #fbbf24; top: -20px; right: -20px; }
+        
+        .card-secure { background: linear-gradient(135deg, #fff 0%, #eff6ff 100%); }
+        .card-secure .blob { width: 200px; height: 200px; background: #3b82f6; bottom: -50px; left: -50px; }
+
+        .card-img-preview {
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            width: 100%;
+            height: auto;
+        }
+
+        /* --- Footer --- */
+        .footer-cta {
+            background: var(--text-main);
+            color: white;
+            border-radius: 30px;
+            padding: 80px;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-cta h2 { font-size: 3rem; margin-bottom: 20px; z-index: 2; position: relative; }
+        .footer-cta .blob { background: var(--secondary); width: 400px; height: 400px; opacity: 0.4; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 3rem; }
+            .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .span-2, .span-row-2 { grid-column: span 1; grid-row: span 1; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <div class="nav-wrapper">
+        <nav class="glass-nav">
+            <a href="#" class="nav-logo"><i class="ph-fill ph-aperture"></i> Zoho</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About</a>
+                <a href="signin.html">Sign In</a>
+            </div>
+            <a href="signup.html" class="nav-cta">Get Started</a>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero container">
+        <h1>Your Memories.<br>Uncompressed.</h1>
+        <p>The intelligent cloud home for your photos. Powered by AI, protected by banking-grade encryption, and designed for nostalgia.</p>
+        
+        <div class="hero-btns">
+            <a href="signup.html" class="btn-large btn-fill">Start for Free</a>
+            <a href="#how" class="btn-large btn-outline"><i class="ph-fill ph-play-circle" style="vertical-align:middle; margin-right:5px;"></i> See how it works</a>
+        </div>
+
+        <!-- 3D Photo Wall -->
+        <div class="photo-wall-container">
+            <div class="photo-wall">
+                <!-- Column 1 (Up) -->
+                <div class="wall-column up">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                </div>
+                <!-- Column 2 (Down) -->
+                <div class="wall-column down">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                </div>
+                <!-- Column 3 (Up) -->
+                <div class="wall-column up">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                </div>
+                 <!-- Column 4 (Down) -->
+                 <div class="wall-column down">
+                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=400&q=80" class="wall-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Features Section -->
+    <section class="bento-section container" id="features">
+        <div class="bento-grid">
+            
+            <!-- Feature 1: AI Describe Image -->
+            <div class="bento-card span-2 card-ai">
+                <div class="blob"></div>
+                <div style="position:relative; z-index:1;">
+                    <div class="bento-icon"><i class="ph-fill ph-magic-wand"></i></div>
+                    <div class="bento-title">AI Image Describer</div>
+                    <div class="bento-desc">No more manual tagging. Our AI analyzes every pixel to generate detailed descriptions, captions, and searchable tags instantly.</div>
+                </div>
+                <!-- Mockup of Description -->
+                <div style="background: white; border-radius: 12px; padding: 15px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-size: 0.9rem; color: var(--text-light);">
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                        <div style="width:40px; height:40px; border-radius:8px; background:url('https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=100&q=80') center/cover;"></div>
+                        <div><strong>Analyzing...</strong></div>
+                    </div>
+                    <div style="color: var(--primary);">"A playful ginger cat resting on a cozy knit blanket in afternoon sunlight."</div>
+                </div>
+            </div>
+
+            <!-- Feature 2: Photo Diary (Tall) -->
+            <div class="bento-card span-row-2">
+                <div class="bento-icon"><i class="ph-fill ph-notebook"></i></div>
+                <div class="bento-title">Personal Diary</div>
+                <div class="bento-desc">Photos tell half the story. Write the rest. Attach daily journal entries, thoughts, and feelings to your visual timeline.</div>
+                
+                <!-- Diary Entry Mockup -->
+                <div style="background: #f8fafc; border-radius: 16px; padding: 20px; margin-top: 30px; border: 1px solid rgba(0,0,0,0.05);">
+                    <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 5px;">October 12th</div>
+                    <div style="font-weight: 600; margin-bottom: 10px;">The Roadtrip Begins</div>
+                    <div style="height: 4px; width: 40px; background: var(--secondary); border-radius: 2px; margin-bottom: 15px;"></div>
+                    <p style="font-size: 0.85rem; line-height: 1.6; color: var(--text-light);">We started driving at dawn. The coffee was hot, the air was crisp...</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=400&q=80" class="card-img-preview" style="flex:1; object-fit: cover;">
+            </div>
+
+            <!-- Feature 3: Birthday Reminder -->
+            <div class="bento-card span-2 card-secure">
+                <div class="blob"></div>
+                <div style="position:relative; z-index:1;">
+                    <div class="bento-icon"><i class="ph-fill ph-cake"></i></div>
+                    <div class="bento-title">Birthday & Wish Reminders</div>
+                    <div class="bento-desc">Never miss a special day. We identify important dates from your memories and remind you to send wishes.</div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <div style="background: white; padding: 10px 20px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px;">
+                        <i class="ph-fill ph-bell-ringing" style="color: var(--accent);"></i>
+                        <span style="font-size: 0.9rem; font-weight: 600;">Mom's Birthday Tomorrow</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 4: Filler/Secure (to fill grid) -->
+             <div class="bento-card span-2">
+                <div style="display:flex; justify-content:space-between; align-items:start;">
+                    <div>
+                        <div class="bento-icon"><i class="ph-fill ph-shield-check"></i></div>
+                        <div class="bento-title">Private Vault</div>
+                        <div class="bento-desc">Keep your diary and personal moments under lock and key.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <div class="container">
+        <div class="footer-cta">
+            <div class="blob"></div>
+            <h2>Ready to relive it all?</h2>
+            <p style="margin-bottom: 30px; position:relative; z-index:2; opacity:0.9;">Join 2 million users storing their life's work on Zoho Photoes.</p>
+            <a href="signup.html" class="btn-large" style="background: white; color: var(--text-main); position:relative; z-index:2; display:inline-block;">Create Free Account</a>
+        </div>
+        
+        <footer style="text-align: center; color: var(--text-light); padding-bottom: 40px;">
+            <p>&copy; 2023 Zoho Photos. Made with <i class="ph-fill ph-heart" style="color: #ef4444;"></i> for memories.</p>
+        </footer>
+    </div>
+
+</body>
+</html>

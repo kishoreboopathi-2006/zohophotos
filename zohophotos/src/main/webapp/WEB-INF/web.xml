@@ -1,0 +1,53 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	version="4.0">
+
+	<servlet>
+		<servlet-name>getDiaryData</servlet-name>
+		<servlet-class>com.zs.zohophotos.getDiaryData</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>getDiaryData</servlet-name>
+		<url-pattern>/getDiaryData</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>showDiaryData</servlet-name>
+		<servlet-class>com.zs.zohophotos.showDiaryData</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>showDiaryData</servlet-name>
+		<url-pattern>/showDiaryData</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getDiaryTitles</servlet-name>
+		<servlet-class>com.zs.zohophotos.ShowDiaryTitle</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>getDiaryTitles</servlet-name>
+		<url-pattern>/getDiaryTitles</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>signUp</servlet-name>
+		<servlet-class>com.zs.zohophotos.SignUp</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>signUp</servlet-name>
+		<url-pattern>/signUp</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>signIn</servlet-name>
+		<servlet-class>com.zs.zohophotos.SignIn</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>signIn</servlet-name>
+		<url-pattern>/signIn</url-pattern>
+	</servlet-mapping>
+
+</web-app>

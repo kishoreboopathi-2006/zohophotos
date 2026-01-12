@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Diary</title>
+<link rel="stylesheet" href="diary.css">
+</head>
+<body>
+
+	<div class="diary-container">
+		<h2>My Diary</h2>
+		<form id="diaryForm" method="post">
+			<label>Date</label> <input type="date" id="date" name="date" required>
+
+			<label>Title</label> <input type="text" id="title" name="title"
+				placeholder="Diary title" required> <label>Content</label>
+			<textarea id="content" name="content"
+				placeholder="Write your diary here..." required></textarea>
+			<label>photo</label> <input type="file" accept="image/*"
+				name="photos" multiple>
+			<button type="submit">Save Entry</button>
+		</form>
+		<p id="message"></p>
+	</div>
+
+	<script src="diary1.js"></script>
+</body>
+</html>
