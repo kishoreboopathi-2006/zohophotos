@@ -1,6 +1,3 @@
-/**
- * 
- */
 const regexForEmail = /^[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$/;
 const regexForPassword = /^[A-Za-z0-9_%+@]{8,}$/;
 let messageForEmail = document.getElementById("msg1");

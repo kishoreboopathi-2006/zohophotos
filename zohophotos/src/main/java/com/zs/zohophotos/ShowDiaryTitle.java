@@ -1,6 +1,7 @@
 package com.zs.zohophotos;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -17,11 +18,17 @@ public class ShowDiaryTitle extends HttpServlet {
 		int userId = 0;
 		HttpSession session = req.getSession();
 		userId = (int) session.getAttribute("userId");
-		DiaryDetailsManagement gdt = new DiaryDetailsManagement();
+		DiaryDetailsManagement gdt;
+		try {
+			gdt = new DiaryDetailsManagement();
+		
 		ArrayList<DiaryHeaderDetails> details = gdt.getDiaryHeaderDetails(userId);
 		Gson gson = new Gson();
 		res.setContentType("application/json");
 		res.getWriter().print(gson.toJson(details));
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -9,11 +9,11 @@ import java.sql.Statement;
 public class UserDetailsManagement {
 	Connection conn;
 
-	UserDetailsManagement() {
+	UserDetailsManagement() throws SQLException {
 		getConnection();
 	}
 
-	public void getConnection() {
+	public void getConnection() throws SQLException {
 		conn = DBConnector.getConnection();
 		System.out.println("Connected successfully");
 	}

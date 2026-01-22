@@ -49,5 +49,29 @@
 		<servlet-name>signIn</servlet-name>
 		<url-pattern>/signIn</url-pattern>
 	</servlet-mapping>
-
+	<servlet>
+		<servlet-name>photo</servlet-name>
+		<servlet-class>com.zs.zohophotos.RetrivePhoto</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>photo</servlet-name>
+		<url-pattern>/photo</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>diaryDetails</servlet-name>
+		<servlet-class>com.zs.zohophotos.RetriveDiaryDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>diaryDetails</servlet-name>
+		<url-pattern>/diaryDetails</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>deletePhotos</servlet-name>
+		<servlet-class>com.zs.zohophotos.DeleteImages</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>deletePhotos</servlet-name>
+		<url-pattern>/deletePhotos</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

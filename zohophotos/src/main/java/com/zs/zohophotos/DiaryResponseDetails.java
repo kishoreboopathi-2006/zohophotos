@@ -25,6 +25,7 @@ public class DiaryResponseDetails {
 		this.diaryId = diaryId;
 		this.date = date;
 		this.time = time;
+		this.title=title;
 		this.content = content;
 	}
 
