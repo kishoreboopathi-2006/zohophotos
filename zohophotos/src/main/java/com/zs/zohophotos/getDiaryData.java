@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +43,6 @@ public class getDiaryData extends HttpServlet {
 				System.out.println(p.getSubmittedFileName());
 				arr.add(pd);
 			}
-			System.out.println();
 		}
 		DiaryDetails dd = new DiaryDetails(userId, 0, date, entry_time, title, content, arr);
 		boolean flag = false;

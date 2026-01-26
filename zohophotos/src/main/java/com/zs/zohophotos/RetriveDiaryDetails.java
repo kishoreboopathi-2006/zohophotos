@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 public class RetriveDiaryDetails extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		HttpSession session = req.getSession();

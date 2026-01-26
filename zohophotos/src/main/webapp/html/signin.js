@@ -67,4 +67,3 @@ document.getElementById("signinForm").addEventListener("submit", function(e) {
 	}
 })
 
-

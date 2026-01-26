@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +32,16 @@ public class SignUp extends HttpServlet {
 				HttpSession session = req.getSession();
 				session.setAttribute("userId", userId);
 				session.setAttribute("userName", ud.getName());
-				res.getWriter().println("success");
+				session.setAttribute("userEmail", ud.getEmail());
+				WorkDriveFolderManager folder = new WorkDriveFolderManager();
+				try {
+					if (folder.createFolder(ud)) {
+						res.getWriter().println("success");
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

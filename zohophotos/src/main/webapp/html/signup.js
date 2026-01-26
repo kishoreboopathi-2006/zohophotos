@@ -1,8 +1,4 @@
-/**
- * 
- */
 localStorage.setItem("forcequit", Date.now());
-
 const regexForEmail = /^[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$/;
 const regexForPassword = /^[A-Za-z0-9_%+@]{8,}$/;
 let messageForEmail = document.getElementById("msg1");
@@ -47,14 +43,14 @@ document.getElementById("signupForm").addEventListener("submit", function(e) {
 			return response.text();
 		}
 		function data(data) {
-			data=data.trim();
-			if(data=="success"){
-			window.location.href='dashboard.html';
-			console.log("if"+data);
+			data = data.trim();
+			if (data .equals( "success")) {
+				window.location.href = 'dashboard.html';
+				console.log("if" + data);
 			}
-			else{
+			else {
 				document.getElementById("information").textContent = "Email already exists";
-				console.log("else"+data);
+				console.log("else" + data);
 			}
 		}
 		function error(err) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +19,6 @@ public class SignIn extends HttpServlet {
 		UserDetailsManagement udm;
 		try {
 			udm = new UserDetailsManagement();
-
 			if (udm.checkUserEmailExists(ud)) {
 				if (udm.getPassword(ud).equals(password)) {
 					int userId = udm.getUserId(ud);
@@ -30,6 +30,7 @@ public class SignIn extends HttpServlet {
 					HttpSession session = req.getSession();
 					session.setAttribute("userId", userId);
 					System.out.println(session.getAttribute("userId"));
+					session.setAttribute("userEmail", ud.getEmail());
 					session.setAttribute("userName", ud.getName());
 					res.getWriter().println("success");
 				}

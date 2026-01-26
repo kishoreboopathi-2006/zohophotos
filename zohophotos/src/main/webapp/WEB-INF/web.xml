@@ -3,7 +3,9 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	version="4.0">
-
+	<session-config>
+		<session-timeout>1440</session-timeout>
+	</session-config>
 	<servlet>
 		<servlet-name>getDiaryData</servlet-name>
 		<servlet-class>com.zs.zohophotos.getDiaryData</servlet-class>
@@ -73,5 +75,5 @@
 		<servlet-name>deletePhotos</servlet-name>
 		<url-pattern>/deletePhotos</url-pattern>
 	</servlet-mapping>
-	
+
 </web-app>

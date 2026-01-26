@@ -126,17 +126,19 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
         HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("username") == null) {
+        if (session == null || session.getAttribute("userName") == null) {
+        	System.out.println("1");
             res.sendRedirect("html/error.html");
             return;
         }
 
-        String username = (String) session.getAttribute("username");
-
-        String folderId = DBUtil.getFolderId(username);
+        String username = (String) session.getAttribute("userName");
+        int userId=(int) session.getAttribute("userId");
+        System.out.println(userId);
+        String folderId = WorkDrivePhotosAndFoldersDetailsManagement.getFolderId(userId);
         if (folderId == null) {
+        	System.out.println("folderis is not exist");
             res.sendRedirect("html/error.html");
             return;
         }
@@ -146,6 +148,7 @@ public class UploadServlet extends HttpServlet {
         Part filePart = req.getPart("photo");
         if (filePart == null || filePart.getSize() == 0) {
             res.sendRedirect("html/error.html");
+        	System.out.println("filepart is not exists");
             return;
         }
 

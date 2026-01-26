@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,15 +32,14 @@ public class DeleteImages extends HttpServlet {
 		DiaryDetailsManagement diaryManagement;
 		try {
 			diaryManagement = new DiaryDetailsManagement();
-		
-		boolean execution=diaryManagement.deletePhotoDetails(photoIds);
-		res.setContentType("text/plain");
-		if(execution) {
-		res.getWriter().println("success");
-		}
-		else {
-			res.getWriter().println("fail");
-		}
+
+			boolean execution = diaryManagement.deletePhotoDetails(photoIds);
+			res.setContentType("text/plain");
+			if (execution) {
+				res.getWriter().println("success");
+			} else {
+				res.getWriter().println("fail");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
