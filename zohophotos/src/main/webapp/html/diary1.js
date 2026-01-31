@@ -4,12 +4,10 @@ const photos = [];
 let entry = false;
 
 window.onload = async function() {
-    // Set initial date display but do NOT use mock data
     let today = new Date().toISOString().split('T')[0];
     document.getElementById("dateInput").textContent = today;
     document.getElementById("date").value = today;
     
-    // Original fetch logic integration (will error in preview but works on your server)
     diaryDetails = await fetchDiaryDetails();
     if(diaryDetails) {
         filldiaryDetails(today);
@@ -59,7 +57,6 @@ function previewimage(e) {
         img.style.height = "100px";
         img.style.margin = "3px";
         img.style.cursor = "pointer";
-        // Added styling for polaroid look
         img.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.3)";
         img.style.border = "3px solid white";
 
@@ -107,7 +104,6 @@ function toggleBigImage(src) {
 }
 
 async function clearImage() {
-    // --- YOUR ORIGINAL BACKEND LOGIC ---
     let message = await deleteImages();
     const imgs = document.querySelectorAll("#preview .images");
     imgs.forEach(el => {
@@ -115,7 +111,6 @@ async function clearImage() {
         el.remove();
     });
     console.log(message);
-    // Fixed: value assignment for file input
     document.getElementById("file-upload").value = ""; 
 }
 
@@ -189,15 +184,12 @@ function renderCalendar() {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     console.log(firstDay + "d:" + daysInMonth);
 
-    // Empty slots before 1st day
     for (let i = 0; i < firstDay; i++) {
         calendarGrid.appendChild(document.createElement("div"));
     }
 
-    // Dates
     for (let day = 1; day <= daysInMonth; day++) {
         let dateObj = new Date(year, month, day);
-        // Ensure date format matches 'en-CA' (YYYY-MM-DD) which is standard for date inputs
         let dateStr = dateObj.getFullYear() + '-' + 
                       String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
                       String(dateObj.getDate()).padStart(2, '0');
@@ -293,9 +285,9 @@ function goToDate(direction) {
     currDate.setDate(currDate.getDate() + direction);
     
     // Format new date YYYY-MM-DD
-    let newDateStr = currDate.getFullYear() + '-' + 
-                     String(currDate.getMonth() + 1).padStart(2, '0') + '-' + 
-                     String(currDate.getDate()).padStart(2, '0');
+    let newDateStr =  String(currDate.getDate()).padStart(2, '0') + '-' + 
+                     String(currDate.getMonth() + 1).padStart(2, '0') + '-' + currDate.getFullYear();
+                
                      
     flipPage(direction, newDateStr);
 }

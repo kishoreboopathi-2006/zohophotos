@@ -38,13 +38,13 @@ document.getElementById("signupForm").addEventListener("submit", function(e) {
 		fetch("../signUp", {
 			method: "post",
 			body: formData
-		}).then(handleResponse).then(data).catch(error);
+		}).then(handleResponse).then(handledata).catch(error);
 		function handleResponse(response) {
 			return response.text();
 		}
-		function data(data) {
+		function handledata(data) {
 			data = data.trim();
-			if (data .equals( "success")) {
+			if (data=== "success") {
 				window.location.href = 'dashboard.html';
 				console.log("if" + data);
 			}

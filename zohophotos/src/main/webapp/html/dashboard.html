@@ -235,15 +235,14 @@ button {
 	animation: slide 30s linear infinite;
 }
 
-.slider-track img {
-	width: 350px;
-	height: 260px;
+#sliderTrack img {
+	width: 300px;
+	height: 270px;
 	object-fit: cover;
-	border-radius: 14px;
+	border-radius: 10px;
 }
 
-@
-keyframes slide {from { transform:translateX(0);
+@keyframes slide {from { transform:translateX(0);
 	
 }
 
@@ -257,8 +256,8 @@ to {
 .gallery-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 40px;
-	margin-top: 20px;
+	gap: 10px;
+	margin-top: -50px;
 }
 
 .photo-card {
@@ -280,9 +279,10 @@ to {
 
 .photo-card img {
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	transition: 0.4s;
+	height: 180px;
+	object-fit: cover; /* VERY IMPORTANT */
+	border-radius: 12px;
+	display: block;
 }
 
 .photo-card:hover img {
@@ -379,8 +379,7 @@ to {
 	margin: 0 auto;
 }
 
-@
-keyframes spin { 100% {
+@keyframes spin { 100% {
 	transform: rotate(360deg);
 }
 
@@ -426,6 +425,41 @@ keyframes spin { 100% {
 	background: #7c3aed;
 	color: #fff;
 }
+/* ======= Favorites ===== */
+.fav-icon {
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #f0ebeb;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	cursor: pointer;
+	opacity: 0;
+	transform: scale(0.8);
+	transition: opacity 0.3s ease, transform 0.3s ease, color 0.25s ease,
+		background 0.25s ease;
+	z-index: 5;
+}
+
+.photo-card:hover .fav-icon {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.fav-icon:hover {
+	color: #0d0c0c;
+	background: #0d0c0c;
+}
+
+.fav-icon.active {
+	color: #ef4444;
+	background: #0d0c0c;
+}
 </style>
 </head>
 <body>
@@ -452,22 +486,34 @@ keyframes spin { 100% {
 	<div class="app-layout">
 		<aside class="sidebar">
 			<div class="sidebar-logo">
-				<i class="ph-fill ph-aperture"></i> ZOHO Photos
+				<img src="icons.png" width="45px" height="55px"> ZOHO Photos
 			</div>
 			<nav>
-				<div class="menu-item active">
+				<div class="menu-item">
 					<i class="ph ph-squares-four"></i> Dashboard
 				</div>
 				<div class="menu-item">
 					<i class="ph ph-folder-notch"></i> Albums
 				</div>
+				<!--   <form id="Favorites"
+               		 action="/WorkdriveUploadZoho/favorites"
+               		 method="get"
+               		 enctype="multipart/form-data"
+               		 style="display:none;">
+               		 <input type="file"
+               		 		id="favoritePhotos"
+               		 		name="favPhoto"
+               		 		accept="image/*"
+               		 		multiple
+               		 		onchange="document.getElementById('favoritePhotos').submit();">
+               		 		</form>-->
+
 				<div class="menu-item">
 					<i class="ph ph-heart"></i> Favorites
 				</div>
 
-				<!--   <div class="menu-item"><i class="ph ph-gear"></i> Settings</div> -->
-				<div  onclick="diaryPage()" class="menu-item">
-					<i class="ph ph-notebook"></i>Diary
+				<div class="menu-item" onclick="diaryPage()">
+					<i class="ph ph-notebook" ></i>Diary
 				</div>
 				<div class="menu-item">
 					<i class="ph ph-hourglass-medium"></i>Reminder
@@ -498,12 +544,12 @@ keyframes spin { 100% {
 						<i class="ph-fill ph-sparkle"></i> AI Story
 					</button>
 					<!-- Hidden Upload Form -->
-					<form id="uploadForm" action="../upload"
-						method="post" enctype="multipart/form-data" style="display: none;">
-						
+					<form id="uploadForm" action="../upload" method="post"
+						enctype="multipart/form-data" style="display: none;">
+
 						<input type="file" id="photoInput" name="photo" accept="image/*"
 							multiple
-								onchange="document.getElementById('uploadForm').submit();">
+							onchange="document.getElementById('uploadForm').submit();">
 
 					</form>
 
@@ -517,7 +563,7 @@ keyframes spin { 100% {
 					<div class="user-profile">
 						<div style="text-align: right; font-size: 0.9rem;">
 							<strong>John</strong>
-							<div style="font-size: 0.75rem; color: var(--text-light);">Pro</div>
+							<div style="font-size: 0.75rem; color: var(--text-light);">User</div>
 						</div>
 						<div class="avatar">JD</div>
 					</div>
@@ -530,68 +576,75 @@ keyframes spin { 100% {
 					<div class="slider-track" id="sliderTrack"></div>
 				</div>
 
-				<h2 style="margin-top: 450px;" class="section-title">Recent
+				<h2 style="margin-top: 450px;" class="secAlreadytion-title">Recent
 					Uploads</h2>
-				<div id="galleryGrid" class="photo-grid"
-					style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+				<!--  <div class="gallery-grid">
+                    <div class="photo-card glass-panel">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Mountain">
+                        <div class="photo-overlay"><div style="font-weight: 600;">Mountains</div></div>
+                        <div class="magic-btn-small" onclick="generateCaption(this, 'Beautiful Mountains')"><i class="ph-fill ph-sparkle"></i></div>
+                    </div>
+                    <div class="photo-card glass-panel">
+                        <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Nature">
+                        <div class="photo-overlay"><div style="font-weight: 600;">Sunrise</div></div>
+                        <div class="magic-btn-small" onclick="generateCaption(this, 'Sunrise over hills')"><i class="ph-fill ph-sparkle"></i></div>
+                    </div>
+                    <div class="photo-card glass-panel">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Forest">
+                        <div class="photo-overlay"><div style="font-weight: 600;">Forest</div></div>
+                        <div class="magic-btn-small" onclick="generateCaption(this, 'Deep green forest')"><i class="ph-fill ph-sparkle"></i></div>
+                    </div>
+                </div>-->
+				<!--   <div class="gallery-grid" id="galleryGrid"></div> -->
+				<div id="galleryGrid" class="gallery-grid"></div>
+
 			</div>
 		</main>
 	</div>
 
 
 	<script>
-document.addEventListener("DOMContentLoaded", () => {
-
+	window.addEventListener("load", () => {
+	let images=[];
     const modalOverlay = document.getElementById("ai-modal-overlay");
+    const grid = document.getElementById("galleryGrid");
+    const sliderTrack = document.getElementById("sliderTrack");
 
     window.closeAiModal = function () {
         modalOverlay.classList.remove("active");
     };
 
-    const grid = document.getElementById("galleryGrid");
-    const sliderTrack = document.getElementById("sliderTrack");
+    if (!grid || !sliderTrack) return;
 
-    if (!grid || !sliderTrack) {
-        console.error("Required elements not found");
-        return;
-    }
-
+    
     fetch("../retrievePhotos")
-        .then(res => {
-            if (!res.ok) throw new Error("Failed to fetch photos");
-            return res.json();
-        })
+        .then(res => res.json())
         .then(result => {
-
-            console.log("ZOHO RESPONSE:", result);
-
-            if (!result.data || result.data.length === 0) {
-                grid.innerHTML = "<p>No photos uploaded yet.</p>";
-                return;
-            }
-
-            const images = result.data.filter(file =>
-                file.attributes && file.attributes.thumbnail_url
-            );
-
-            sliderTrack.innerHTML = "";
-
-            [...images, ...images].forEach(file => {
+        	console.log(result);
+        	previewUrls=result;
+        	images=result;
+            
+            [...images].forEach(file => {
                 const img = document.createElement("img");
-                img.src = file.attributes.thumbnail_url;
+                img.src = file; 
+                img.loading = "lazy";
+                img.alt = file.attributes?.name || "Photo";
                 sliderTrack.appendChild(img);
             });
+            if (images.length > 3) {
+            	  sliderTrack.style.animation = "slide 30s linear infinite";
+            	} else {
+            	  sliderTrack.style.animation = "none";
+            	}
 
             grid.innerHTML = "";
-
-            images.forEach(file => {
+            console.log("Images:"+previewUrls);
+            previewUrls.forEach(file => {
                 const card = document.createElement("div");
                 card.className = "photo-card glass-panel";
-
                 const img = document.createElement("img");
-                img.src = file.attributes.thumbnail_url;
-                img.alt = file.attributes.name || "Photo";
-                img.dataset.fileId = file.id;
+                img.src=file;
+           
 
                 const aiIcon = document.createElement("div");
                 aiIcon.className = "ai-icon";
@@ -601,24 +654,122 @@ document.addEventListener("DOMContentLoaded", () => {
                 const overlay = document.createElement("div");
                 overlay.className = "photo-overlay";
                 overlay.innerHTML =
-                    `<div class="photo-title">${file.attributes.name || "Photo"}</div>`;
+                    `<div class="photo-title">${file.attributes?.name || "Photo"}</div>`;
+                    
+                const favIcon = document.createElement("div");
+                favIcon.className = "fav-icon";
+                favIcon.innerHTML = "❤️";
 
+                favIcon.onclick = (e) => {
+                   e.stopPropagation();
+                   toggleFavorite(favIcon);
+                };
                 card.appendChild(img);
-                card.appendChild(aiIcon);
+                card.appendChild(aiIcon);    
+                card.appendChild(favIcon);  
                 card.appendChild(overlay);
                 grid.appendChild(card);
+
             });
+
         })
         .catch(err => {
             console.error(err);
-            grid.innerHTML =
-                "<p style='color:red'>Unable to load photos</p>";
+            grid.innerHTML = "<p style='color:red'>Unable to load photos</p>";
         });
 });
 function diaryPage(){
-	console.log("diary");
 	window.location.href="diary.html";
-	}
+}
+/*
+function describeFromIcon(iconEl) {
+
+    const card = iconEl.closest(".photo-card");
+    const img = card.querySelector("img");
+    const fileId = img.dataset.fileId;
+
+    if (!fileId) {
+        alert("File ID missing");
+        return;
+    }
+
+    iconEl.innerHTML = "⏳";
+
+    fetch("../describePhoto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ file_id: fileId })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if (data.error) {
+            alert(data.error);
+            iconEl.innerHTML = "✨";
+            return;
+        }
+        
+        function openAiModal(title, content) {
+            document.getElementById("ai-modal-title").innerHTML = title;
+            document.getElementById("ai-modal-content").innerHTML = content;
+            document.getElementById("ai-modal-overlay").classList.add("active");
+        }
+       
+
+        iconEl.innerHTML = "✨";
+    })
+    .catch(err => {
+        console.error("Describe error:", err);
+        alert("Unable to describe photo");
+        iconEl.innerHTML = "✨";
+    });
+}
+
+function loadFavorites() {
+
+    Promise.all([
+        fetch("../retrievePhotos").then(r => r.json()),
+        fetch("../favorites").then(r => r.json())
+    ])
+    .then(([photosRes, favRes]) => {
+
+        const images = photosRes.data || [];
+        const favSet = new Set(favRes.favorites || []);
+
+        const grid = document.getElementById("galleryGrid");
+        grid.innerHTML = "";
+
+        images.forEach(file => {
+            if (!favSet.has(file.id)) return; 
+
+            const card = document.createElement("div");
+            card.className = "photo-card glass-panel";
+
+            const img = document.createElement("img");
+            img.src = `../preview/${file.id}`;
+            img.dataset.fileId = file.id;
+
+            const aiIcon = document.createElement("div");
+            aiIcon.className = "ai-icon";
+            aiIcon.innerHTML = "✨";
+            aiIcon.onclick = () => describeFromIcon(aiIcon);
+
+            const favIcon = document.createElement("div");
+            favIcon.className = "fav-icon active"; 
+            favIcon.innerHTML = "❤️";
+            favIcon.onclick = (e) => {
+                e.stopPropagation();
+                toggleFavorite(favIcon);
+            };
+
+            card.appendChild(img);
+            card.appendChild(aiIcon);
+            card.appendChild(favIcon);
+            grid.appendChild(card);
+        });
+    });
+}
+*/
 </script>
 </body>
 </html>

@@ -6,6 +6,8 @@ let emailInput = document.getElementById("email");
 let password = document.getElementById("password");
 let emailcheck = false;
 let passwordCheck = false;
+document.getElementById("email").value="sulthan@gmail.com";
+document.getElementById("password").value="12345678";
 emailInput.addEventListener("input", function() {
 	if (regexForEmail.test(emailInput.value)) {
 		emailcheck = true;
