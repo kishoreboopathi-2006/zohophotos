@@ -4,18 +4,31 @@ public class WorkdrivePhotoDetails {
 	private String imageName;
 	private String resourceId;
 	private String previewUrl;
-	private int folderId;
+	private String folderId;
 	private String category;
 	private String describtion;
 
-	public WorkdrivePhotoDetails(int folderId, String resourceId,String imageName,String previewUrl,String category ,String describtion) {
+	public WorkdrivePhotoDetails(int photoId,String folderId, String resourceId, String imageName, String previewUrl, String category,
+			String describtion) {
 		this.imageName = imageName;
 		this.resourceId = resourceId;
 		this.folderId = folderId;
-		this.previewUrl=previewUrl;
-		this.describtion=describtion;
+		this.previewUrl = previewUrl;
+		this.describtion = describtion;
+		this.category = category;
 	}
 
+	public WorkdrivePhotoDetails(String folderId, String resourceId, String imageName, String previewUrl) {
+		this.imageName = imageName;
+		this.resourceId = resourceId;
+		this.folderId = folderId;
+		this.previewUrl = previewUrl;
+	}
+	public WorkdrivePhotoDetails(String folderId, String resourceId, String imageName) {
+		this.imageName = imageName;
+		this.resourceId = resourceId;
+		this.folderId = folderId;
+	}
 	public String getCategory() {
 		return category;
 	}
@@ -56,11 +69,11 @@ public class WorkdrivePhotoDetails {
 		this.previewUrl = previewUrl;
 	}
 
-	public int getFolderId() {
+	public String getFolderId() {
 		return folderId;
 	}
 
-	public void setFolderId(int folderId) {
+	public void setFolderId(String folderId) {
 		this.folderId = folderId;
 	}
 }

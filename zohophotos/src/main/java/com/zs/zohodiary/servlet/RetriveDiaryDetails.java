@@ -27,7 +27,7 @@ public class RetriveDiaryDetails extends HttpServlet {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 			res.setCharacterEncoding("UTF-8");
 			res.setContentType("application/json");
-			System.out.println(gson.toJson(diaryDetails));
+//			System.out.println(gson.toJson(diaryDetails));
 			res.getWriter().println(gson.toJson(diaryDetails));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

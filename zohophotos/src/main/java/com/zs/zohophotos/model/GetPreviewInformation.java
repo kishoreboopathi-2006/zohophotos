@@ -8,22 +8,23 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.zs.zohophotos.model.AccessToken.AccessTokenForWorkdrive;
+import com.zs.zohophotos.records.WorkdrivePhotoDetails;
 
 import okhttp3.*;
 
 public class GetPreviewInformation {
 
-	public static ArrayList<String> getPreviewUrl(ArrayList<String> resourceId) {
-		ArrayList<String> arr = new ArrayList<>();
+	public static ArrayList<WorkdrivePhotoDetails> getPreviewUrl(ArrayList<WorkdrivePhotoDetails> photoDetails) {
 		OkHttpClient client = new OkHttpClient().newBuilder().build();
 		MediaType mediaType = MediaType.parse("application/json");
 		String accessToken = "";
-		for (int i = 0; i < resourceId.size(); i++) {
+		for (int i = 0; i < photoDetails.size(); i++) {
 			try {
 				accessToken = AccessTokenForWorkdrive.getToken();
 				RequestBody body = RequestBody.create(mediaType, "");
 				Request request = new Request.Builder()
-						.url("https://www.zohoapis.in/workdrive/api/v1/files/" + resourceId.get(i) + "/previewinfo")
+						.url("https://www.zohoapis.in/workdrive/api/v1/files/" + photoDetails.get(i).getResourceId()
+								+ "/previewinfo")
 						.get().addHeader("Authorization", "Zoho-oauthtoken " + accessToken)
 						.addHeader("Accept", "application/vnd.api+json").build();
 
@@ -33,14 +34,14 @@ public class GetPreviewInformation {
 				String jsonResponse = response.body().string();
 				JSONObject json = new JSONObject(jsonResponse);
 				String image = json.getJSONObject("data").getJSONObject("attributes").getString("preview_data_url");
-				System.err.println("jsonresponce---------->" + jsonResponse);
-				System.out.println(image);
-				arr.add(image);
+//				System.out.println(image);
+				photoDetails.get(i).setPreviewUrl(image);
 			} catch (Exception e) {
+
 				e.printStackTrace();
 			}
 		}
-		return arr;
+		return photoDetails;
 	}
 }
 //package com.zs.zohophotos;

@@ -1,4 +1,3 @@
-localStorage.setItem("forcequit", Date.now());
 const regexForEmail = /^[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$/;
 const regexForPassword = /^[A-Za-z0-9_%+@]{8,}$/;
 let messageForEmail = document.getElementById("msg1");
@@ -7,6 +6,8 @@ let emailInput = document.getElementById("email");
 let password = document.getElementById("password");
 let emailcheck = false;
 let passwordCheck = false;
+document.getElementById("email").value="sulthan@gmail.com";
+document.getElementById("password").value="12345678";
 emailInput.addEventListener("input", function() {
 	if (regexForEmail.test(emailInput.value)) {
 		emailcheck = true;
@@ -30,27 +31,25 @@ password.addEventListener("input", function() {
 	}
 })
 
-document.getElementById("signupForm").addEventListener("submit", function(e) {
+document.getElementById("signinForm").addEventListener("submit", function(e) {
 	e.preventDefault();
 	if (passwordCheck && emailcheck) {
-		let form = document.getElementById("signupForm");
+		let form = document.getElementById("signinForm");
 		let formData = new FormData(form);
-		fetch("../signUp", {
+		fetch("/zohophotos/signIn", {
 			method: "post",
 			body: formData
-		}).then(handleResponse).then(handledata).catch(error);
+		}).then(handleResponse).then(data).catch(error);
 		function handleResponse(response) {
 			return response.text();
 		}
-		function handledata(data) {
-			data = data.trim();
-			if (data=== "success") {
-				window.location.href = 'dashboard.html';
-				console.log("if" + data);
+		function data(data) {
+			data=data.trim();
+			if (data === "success") {
+				window.location.href = '/zohophotos/html/dashboard/dashboard.html';
 			}
 			else {
-				document.getElementById("information").textContent = "Email already exists";
-				console.log("else" + data);
+				document.getElementById("information").textContent = "Enter valid email and password";
 			}
 		}
 		function error(err) {
@@ -67,8 +66,6 @@ document.getElementById("signupForm").addEventListener("submit", function(e) {
 		else {
 			document.getElementById("information").textContent = "Enter valid email and password";
 		}
-
 	}
 })
-
 

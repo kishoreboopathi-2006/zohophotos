@@ -131,7 +131,6 @@ async function deleteImages() {
     return data;
 }
 
-
 // --- CALENDAR LOGIC (Improved Visuals, Original Data Logic) ---
 const dateInput = document.getElementById("dateInput");
 const calendar = document.getElementById("calendar");

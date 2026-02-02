@@ -9,9 +9,9 @@ import org.json.JSONObject;
 
 public class AccessTokenForWorkdrive {
 
-	private static final String REFRESH_TOKEN = "1000.f4e553f95beb0de20c58df1454fa1737.d947d4e8004d66fc70bbd941a6f36c46";
-	private static final String CLIENT_ID = "1000.6B8XKBZGYFR5LAVY48H1VVT0P8RFJL";
-	private static final String CLIENT_SECRET = "07add9400d104b3bb197f368d0b0c4fe19269bc9a2";
+	private static final String REFRESH_TOKEN = "1000.ebd670fd5060a4efe057141debffc9c3.5c2f82b951070447de9b2c4b28db3100";
+	private static final String CLIENT_ID = "1000.P9FZ2WG1DMT31GW6MO6ITRFYYH6JRU";
+	private static final String CLIENT_SECRET = "1257f34da7ada1d587b7fe85953368a711dfb2de4c";
 
 	private static final OkHttpClient client = new OkHttpClient();
 
@@ -34,7 +34,7 @@ public class AccessTokenForWorkdrive {
 
 			String responseBody = response.body().string();
 			JSONObject json = new JSONObject(responseBody);
-
+			
 			if (!json.has("access_token")) {
 				throw new Exception("Zoho error: " + responseBody);
 			}

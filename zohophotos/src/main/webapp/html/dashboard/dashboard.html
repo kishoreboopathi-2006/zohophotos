@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | ZOHO Photos</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="dashboard.css" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script src="dashboard.js" defer></script>
+</head>
+<body>
+	<div class="ai-modal-overlay" id="ai-modal-overlay">
+		<div class="ai-modal">
+			<div
+				style="display: flex; justify-content: space-between; align-items: center; color: #7c3aed; margin-bottom: 10px;">
+				<h3 id="ai-modal-title">
+					<i class="ph-fill ph-sparkle"></i> AI Magic
+				</h3>
+				<button onclick="closeAiModal()"
+					style="background: none; font-size: 1.2rem; color: #94a3b8;">
+					<i class="ph ph-x"></i>
+				</button>
+			</div>
+			<div class="ai-content" id="ai-modal-content"></div>
+			<div style="text-align: right;">
+				<button class="btn-primary" onclick="closeAiModal()"
+					style="background: #e2e8f0; color: #475569;">Close</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="app-layout">
+		<aside class="sidebar">
+			<div class="sidebar-logo">
+				<img src="icons.png" width="45px" height="55px"> ZOHO Photos
+			</div>
+			<nav>
+				<div class="menu-item">
+					<i class="ph ph-squares-four"></i> Dashboard
+				</div>
+				<div class="menu-item">
+					<i class="ph ph-folder-notch"></i> Albums
+				</div>
+				<!--   <form id="Favorites"
+               		 action="/WorkdriveUploadZoho/favorites"
+               		 method="get"
+               		 enctype="multipart/form-data"
+               		 style="display:none;">
+               		 <input type="file"
+               		 		id="favoritePhotos"
+               		 		name="favPhoto"
+               		 		accept="image/*"
+               		 		multiple
+               		 		onchange="document.getElementById('favoritePhotos').submit();">
+               		 		</form>-->
+
+				<div class="menu-item">
+					<i class="ph ph-heart"></i> Favorites
+				</div>
+
+				<div class="menu-item" onclick="diaryPage()">
+					<i class="ph ph-notebook" ></i>Diary
+				</div>
+				<div class="menu-item">
+					<i class="ph ph-hourglass-medium"></i>Reminder
+				</div>
+				<div class="menu-item">
+					<i class="ph ph-trash"></i> Trash
+				</div>
+			</nav>
+
+			<a href="signin.html" class="menu-item"
+				style="margin-top: 10px; color: var(--danger); text-decoration: none;"><i
+				class="ph ph-sign-out"></i> Sign Out</a>
+		</aside>
+
+		<main class="main-content">
+			<header class="top-bar">
+				<div class="search-box">
+					<i class="ph ph-magnifying-glass"></i> <input type="text"
+						placeholder="Search photos...">
+				</div>
+				<div style="display: flex; align-items: center; gap: 15px;">
+					<button class="btn-ai" onclick="generateAlbumStory()">
+						<i class="ph-fill ph-sparkle"></i> AI Story
+					</button>
+					<!-- Hidden Upload Form -->
+					<form id="uploadForm" action="/zohophotos/upload" method="post"
+						enctype="multipart/form-data" style="display: none;">
+
+						<input type="file" id="photoInput" name="photo" accept="image/*"
+							multiple
+							onchange="document.getElementById('uploadForm').submit();">
+
+					</form>
+
+					<!-- Upload Button -->
+					<button class="btn-primary"
+						onclick="document.getElementById('photoInput').click();">
+						<i class="ph ph-upload-simple"></i> Upload
+					</button>
+
+
+					<div class="user-profile">
+						<div style="text-align: right; font-size: 0.9rem;">
+							<strong>John</strong>
+							<div style="font-size: 0.75rem; color: var(--text-light);">User</div>
+						</div>
+						<div class="avatar">JD</div>
+					</div>
+				</div>
+			</header>
+
+			<div class="content-scroll">
+				<!-- TOP PHOTO SLIDER -->
+				<div class="top-slider glass-panel">
+					<div class="slider-track" id="sliderTrack"></div>
+				</div>
+
+				<h2 style="margin-top: 450px;" class="secAlreadytion-title">Recent
+					Uploads</h2>
+				<div id="galleryGrid" class="gallery-grid"></div>
+
+			</div>
+		</main>
+	</div>
+
+
+
+</body>
+</html>

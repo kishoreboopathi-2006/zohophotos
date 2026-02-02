@@ -81,6 +81,7 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
 import com.zs.zohophotos.model.GetPreviewInformation;
+import com.zs.zohophotos.model.GetWorkdrivePhotoDetails;
 import com.zs.zohophotos.model.AccessToken.AccessTokenForWorkdrive;
 
 @WebServlet("/retrievePhotos")
@@ -96,7 +97,6 @@ public class RetrievePhotosServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		ArrayList<String> arr = new ArrayList<>();
-		System.out.println("enter.............");
 		HttpSession session = req.getSession(false);
 		if (session == null || session.getAttribute("userId") == null) {
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -105,51 +105,10 @@ public class RetrievePhotosServlet extends HttpServlet {
 
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
-		System.out.println(userId);
-		String folderId = WorkDrivePhotosAndFoldersDetailsManagement.getWorkdriveFolderId(userId);
-
-		System.out.println("RETRIEVE FOLDER ID = " + folderId);
-
-		String accessToken;
-		try {
-			accessToken = AccessTokenForWorkdrive.getToken();
-		} catch (Exception e) {
-			e.printStackTrace();
-			res.setStatus(500);
-			return;
-		}
-
-		OkHttpClient client = new OkHttpClient();
-
-		String url = "https://www.zohoapis.in/workdrive/api/v1/files/" + folderId + "/files";
-
-		System.out.println("FINAL URL = " + url);
-
-		Request request = new Request.Builder().url(url).get()
-				.addHeader("Authorization", "Zoho-oauthtoken " + accessToken)
-				.addHeader("Accept", "application/vnd.api+json").build();
-
-		try (Response response = client.newCall(request).execute()) {
-			String body = response.body().string();
-			System.out.println("ZOHO STATUS = " + response.code());
-			System.out.println("RETRIEVE RESPONSE = " + body);
-			JSONObject json = new JSONObject(body);
-			JSONArray dataArray = json.getJSONArray("data");
-			for (int i = 0; i < dataArray.length(); i++) {
-				JSONObject fileObj = dataArray.getJSONObject(i);
-				String resourceId = fileObj.getString("id");
-				String name = fileObj.getJSONObject("attributes").getString("name");
-				System.out.println("Resource ID: " + resourceId+"name:"+name);
-				arr.add(resourceId);
-			}
-			Gson gson=new Gson();
-			ArrayList<String> previewUrls=GetPreviewInformation.getPreviewUrl(arr);
-			
-			String preview=gson.toJson(previewUrls);
-			System.out.println(previewUrls);
-			res.setContentType("application/json");
+		GetWorkdrivePhotoDetails obj = new GetWorkdrivePhotoDetails(userId);
+		String photoDetails=obj.getPhotoDetails();
+		res.setContentType("application/json");
 			res.setCharacterEncoding("UTF-8");
-			res.getWriter().write(preview);
+			res.getWriter().write(photoDetails);
 		}
 	}
-}
