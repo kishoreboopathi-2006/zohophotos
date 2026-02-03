@@ -1,4 +1,4 @@
-package com.zs.zohophotos.zohologin;
+package com.zs.loginpage.zohologin;
 
 import java.io.IOException;
 import java.net.*;

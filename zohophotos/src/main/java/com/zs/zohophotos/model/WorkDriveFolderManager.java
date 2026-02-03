@@ -60,7 +60,6 @@ import java.io.IOException;
 
 import com.zs.loginpage.records.UserDetails;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
-import com.zs.zohophotos.records.FolderCreater;
 
 public class WorkDriveFolderManager {
 	public boolean createFolder(UserDetails ud) throws Exception {

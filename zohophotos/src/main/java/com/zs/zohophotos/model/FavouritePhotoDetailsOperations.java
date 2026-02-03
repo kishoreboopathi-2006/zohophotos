@@ -10,7 +10,6 @@ public class FavouritePhotoDetailsOperations {
 
 	public FavouritePhotoDetailsOperations(FavouritePhotoDetails photoDetails) {
 		this.photoDetails = photoDetails;
-		insertFavouritePhoto();
 	}
 
 	public FavouritePhotoDetailsOperations() {

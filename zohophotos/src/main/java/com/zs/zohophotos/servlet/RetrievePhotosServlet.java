@@ -82,17 +82,10 @@ import com.google.gson.Gson;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
 import com.zs.zohophotos.model.GetPreviewInformation;
 import com.zs.zohophotos.model.GetWorkdrivePhotoDetails;
-import com.zs.zohophotos.model.AccessToken.AccessTokenForWorkdrive;
 
 @WebServlet("/retrievePhotos")
 public class RetrievePhotosServlet extends HttpServlet {
 
-	static {
-		System.setProperty("http.proxyHost", "127.0.0.1");
-		System.setProperty("http.proxyPort", "3128");
-		System.setProperty("https.proxyHost", "127.0.0.1");
-		System.setProperty("https.proxyPort", "3128");
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -107,6 +100,7 @@ public class RetrievePhotosServlet extends HttpServlet {
 		int userId = (int) session.getAttribute("userId");
 		GetWorkdrivePhotoDetails obj = new GetWorkdrivePhotoDetails(userId);
 		String photoDetails=obj.getPhotoDetails();
+		System.out.println(photoDetails);
 		res.setContentType("application/json");
 			res.setCharacterEncoding("UTF-8");
 			res.getWriter().write(photoDetails);

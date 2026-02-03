@@ -1,4 +1,4 @@
-package com.zs.zohophotos;
+package com.zs.zohodiary.records;
 
 public class DeletePhotoIds {
 	private int[] photoId;

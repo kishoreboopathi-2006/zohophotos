@@ -232,14 +232,13 @@ button {
 	border-radius: 10px;
 }
 
-@keyframes slide {from { transform:translateX(0);
-	
+@keyframes slide {
+from {
+	transform:translateX(0);
 }
-
 to {
 	transform: translateX(-50%);
-}
-
+	}
 }
 
 /* Gallery */

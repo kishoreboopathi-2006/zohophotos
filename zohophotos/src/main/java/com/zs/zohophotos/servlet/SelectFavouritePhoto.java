@@ -26,7 +26,7 @@ public class SelectFavouritePhoto extends HttpServlet {
 		String favourite=req.getParameter("add");
 		String previewUrl = req.getParameter("previewUrl");
 		String photoName = req.getParameter("photoName");
-//		System.out.println("previewUrl = " + previewUrl);
+		System.out.println("previewUrl = " + favourite);
 //		System.out.println("userId:"+userId);
 		boolean execute=false;
 		if(favourite.equals("true")) {

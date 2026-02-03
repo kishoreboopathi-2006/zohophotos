@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.zs.zohodiary.DAO.DiaryDetailsManagement;
-import com.zs.zohophotos.DeletePhotoIds;
+import com.zs.zohodiary.records.DeletePhotoIds;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

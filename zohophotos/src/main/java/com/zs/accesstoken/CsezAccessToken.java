@@ -1,52 +1,5 @@
 
-package com.zs.zohophotos;
-
-//import java.io.IOException;
-//
-//import org.json.JSONObject;
-//
-//import okhttp3.MultipartBody;
-//import okhttp3.OkHttpClient;
-//import okhttp3.Request;
-//import okhttp3.RequestBody;
-//import okhttp3.Response;
-//
-//public class CsezAccessToken {
-//	public static void main(String[] args) throws IOException {
-//		getCsezToken();
-//	}
-//
-//    public static String getCsezToken() throws IOException {
-//
-//        String refreshToken = "1000.9c5a6212c91d5e101abdf0f243d67e20.90f0cf4e6f39c136208724fb687ff681";
-//        String clientId = "1000.5YXKWPOYRPJ2744RQLLUCB8J0R3DOV";
-//        String clientSecret = "acbc5753ad2f1eb82ac9d6bf2e62354de4d22ae1cb";
-//
-//        OkHttpClient client = new OkHttpClient();
-//
-//        RequestBody body = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("refresh_token", refreshToken)
-//                .addFormDataPart("client_id", clientId)
-//                .addFormDataPart("client_secret", clientSecret)
-//                .addFormDataPart("grant_type", "refresh_token")
-//                .build();
-//
-//        Request request = new Request.Builder()
-//                .url("Accounts.csez.zohocorpin.com/oauth/v2/token")
-//                .post(body)
-//                .build();
-//
-//        Response response = client.newCall(request).execute();
-//
-//        String responseBody = response.body().string();
-//        JSONObject json = new JSONObject(responseBody);
-//
-//        return json.getString("access_token");
-//    }
-//}
-
-//$Id$
+package com.zs.accesstoken;
 
 
 import java.net.URI;
@@ -67,6 +20,12 @@ import org.json.JSONObject;
 * 
 */
 public class CsezAccessToken {
+	static {
+		System.setProperty("http.proxyHost", "127.0.0.1");
+		System.setProperty("http.proxyPort", "3128");
+		System.setProperty("https.proxyHost", "127.0.0.1");
+		System.setProperty("https.proxyPort", "3128");
+	}
 	
 	private static final Logger LOGGER = Logger.getLogger(CsezAccessToken.class.getName());
 	
@@ -78,9 +37,9 @@ public class CsezAccessToken {
 	
 	// TODO: Move these to configuration/environment variables
 	// Hardcoded credentials (temporary - for development/testing only)
-	private static final String REFRESH_TOKEN = "1000.9c5a6212c91d5e101abdf0f243d67e20.90f0cf4e6f39c136208724fb687ff681";
-	private static final String CLIENT_ID = "1000.5YXKWPOYRPJ2744RQLLUCB8J0R3DOV";
-	private static final String CLIENT_SECRET = "acbc5753ad2f1eb82ac9d6bf2e62354de4d22ae1cb";
+	private static final String REFRESH_TOKEN = "1000.61a33cf5023d207d288f520be95df807.c8cc4cd926a77b0bfa7273ea881e4f1d";
+	private static final String CLIENT_ID = "1000.WXKOMJMYE6Y2BPJAXU2XA3VA5JTUKZ";
+	private static final String CLIENT_SECRET = "f2e54f0f4b645cda3a630c649db89dc37c85e7bb2f";
 	
 	// HTTP client (reusable)
 	private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
@@ -90,16 +49,7 @@ public class CsezAccessToken {
 	 * 
 	 * @param args Command line arguments (not used)
 	 */
-	public static void main(String[] args) {
-		String accessToken = generateAccessToken();
-		LOGGER.log(Level.INFO, "Generated Access Token: {0}", accessToken);
-		if (accessToken != null) {
-			LOGGER.log(Level.INFO, "Successfully generated access token for CSEZ");
-		} else {
-			LOGGER.log(Level.WARNING, "Failed to generate access token for CSEZ");
-		}
-	}
-	
+
 	/**
 	 * Generates an OAuth access token for CSEZ environment using refresh token flow.
 	 * 

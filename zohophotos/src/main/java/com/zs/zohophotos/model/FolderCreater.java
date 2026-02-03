@@ -1,11 +1,12 @@
-package com.zs.zohophotos.records;
+package com.zs.zohophotos.model;
 
 import okhttp3.*;
-import com.zs.zohophotos.model.AccessToken.*;
 import java.time.LocalTime;
 
 import org.json.JSONObject;
-import com.zs.zohophotos.model.AccessToken.*;
+
+import com.zs.accesstoken.AccessTokenForWorkdrive;
+
 public class FolderCreater {
 
     private static final String PARENT_ID = "zxv1ybd376c316bff40b0a9dab654d7578259";

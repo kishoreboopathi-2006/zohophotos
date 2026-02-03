@@ -1,4 +1,4 @@
-package com.zs.zohophotos.model.AccessToken;
+package com.zs.accesstoken;
 
 import java.io.*;
 import java.net.*;

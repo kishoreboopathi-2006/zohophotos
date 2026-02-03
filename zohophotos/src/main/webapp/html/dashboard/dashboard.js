@@ -1,9 +1,9 @@
 /**
  * 
  */
+let favourite = [];
 let favIcons = document.getElementsByClassName("fav-icon");
 const grid = document.getElementById("galleryGrid");
-let favourite = [];
 let entry = true;
 window.addEventListener("load", () => {
 	if (entry) {
@@ -12,9 +12,9 @@ window.addEventListener("load", () => {
 			return response.json()
 		}
 		function handleData(data) {
+			console.log(data);
 			favourite = data;
 			entry=false;
-			console.log(favourite);
 		}
 		function showError(error) {
 			console.log(error);
@@ -25,7 +25,6 @@ window.addEventListener("load", () => {
 	let images = [];
 	const modalOverlay = document.getElementById("ai-modal-overlay");
 	const sliderTrack = document.getElementById("sliderTrack");
-
 	window.closeAiModal = function() {
 		modalOverlay.classList.remove("active");
 	};
@@ -36,9 +35,7 @@ window.addEventListener("load", () => {
 		.then(res => res.json())
 		.then(result => {
 			console.log(result);
-			previewUrls = result;
 			images = result;
-
 			[...images].forEach(file => {
 				const img = document.createElement("img");
 				img.src = file.previewUrl;
@@ -59,6 +56,7 @@ window.addEventListener("load", () => {
 				const img = document.createElement("img");
 				img.src = file.previewUrl;
 				img.alt = file.imageName || "Photo";
+				img.dataset.fileId=file.resourceId;
 				const aiIcon = document.createElement("div");
 				aiIcon.className = "ai-icon";
 				aiIcon.innerHTML = "✨";
@@ -69,6 +67,12 @@ window.addEventListener("load", () => {
 				const favIcon = document.createElement("div");
 				favIcon.className = "fav-icon";
 				favIcon.innerHTML = "❤️";
+				console.log(file.previewUrl);
+				const fav=favourite.some(data=>data.previewUrl===file.previewUrl);
+				console.log("fav:"+fav);
+				if(fav){
+				favIcon.classList.toggle("is-favourite");
+				}
 				card.appendChild(img);
 				card.appendChild(aiIcon);
 				card.appendChild(favIcon);
@@ -105,7 +109,7 @@ grid.addEventListener("click", function(e) {
 				return response.text();
 			}
 			function showData(data) {
-				if (data === "OK") {
+				if (data != "fail") {
 					e.target.classList.toggle("is-favourite");
 				}
 			}
@@ -129,7 +133,9 @@ grid.addEventListener("click", function(e) {
 				return response.text();
 			}
 			function showData(data) {
-				if (data = "OK") {
+				if (data != "fail") {
+					favourite.push(data);
+					console.log("favoutire:"+favourite);
 					e.target.classList.toggle("is-favourite");
 				}
 			}
@@ -140,8 +146,50 @@ grid.addEventListener("click", function(e) {
 	}
 });
 
+function favouritePage(){
+	window.location.href="/zohophotos/html/favourite/favourite.html";
+}
 
-
+function describeFromIcon(iconEl) {
+    const card = iconEl.closest(".photo-card");
+    const img = card.querySelector("img");
+    const fileId = img.dataset.fileId;
+    if (!fileId) {
+        alert("File ID missing");
+        return;
+    }
+    iconEl.innerHTML = "⏳";
+    document.getElementById("ai-modal-title").innerHTML = "✨ AI Photo Description";
+    document.getElementById("ai-modal-content").innerHTML =
+        `<div class="loading-spinner"></div>`;
+    document.getElementById("ai-modal-overlay").classList.add("active");
+    fetch("/zohophotos/describePhoto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ file_id: fileId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.content) {
+        	
+            document.getElementById("ai-modal-content").innerHTML =
+                "<p style='color:red'>No AI response received</p>";
+            iconEl.innerHTML = "✨";
+            return;
+        }
+        console.log(data);
+        document.getElementById("ai-modal-content").innerHTML = `
+            <div style="line-height:1.8; font-size:16px; color:#334155;">
+                ${data.content.replace(/\n/g, "<br>")}</div>`;
+        iconEl.innerHTML = "✨";
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("ai-modal-content").innerHTML =
+            "<p style='color:red'>Unable to describe photo</p>";
+        iconEl.innerHTML = "✨";
+    });
+}
 /*
 for (let icon of favIcons) {
 	icon.addEventListener("click", function() {

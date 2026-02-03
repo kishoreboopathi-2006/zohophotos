@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
-import com.zs.zohophotos.model.AccessToken.AccessTokenForWorkdrive;
+import com.zs.accesstoken.AccessTokenForWorkdrive;
 import com.zs.zohophotos.records.WorkdrivePhotoDetails;
 
 import okhttp3.*;

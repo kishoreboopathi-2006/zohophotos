@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/zohophotos/getFavouritePhotos")
+@WebServlet("/getFavouritePhotos")
 public class GetFavouritePhotos extends HttpServlet{
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		HttpSession session =req.getSession();
@@ -23,6 +23,7 @@ public class GetFavouritePhotos extends HttpServlet{
 		photoDetails=operations.getFavouritePhotoDetails(userId);
 		Gson gson=new Gson();
 		String photoDetailsJson=gson.toJson(photoDetails);
+		System.out.println(photoDetailsJson);
 		res.setContentType("application/json");
 		res.getWriter().write(photoDetailsJson);
 	}

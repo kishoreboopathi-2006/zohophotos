@@ -167,7 +167,7 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 		ArrayList<FavouritePhotoDetails> arr=new ArrayList<>();
 		String sql="select * from favourite_photo_details where user_id=?";
 		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setInt(2,userId);
+			ps.setInt(1,userId);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				arr.add(new FavouritePhotoDetails(rs.getString("photo_name"), rs.getString("preview_url"), rs.getInt("user_id")));
