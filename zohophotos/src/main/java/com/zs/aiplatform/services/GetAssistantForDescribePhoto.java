@@ -6,7 +6,7 @@ import com.zs.accesstoken.CsezAccessToken;
 
 import okhttp3.*;
 
-public class GetAssistant {
+public class GetAssistantForDescribePhoto{
 
     public static String getAssistantId() throws Exception {
 

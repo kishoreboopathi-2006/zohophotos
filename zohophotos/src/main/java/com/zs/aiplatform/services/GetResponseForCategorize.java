@@ -7,18 +7,13 @@ import org.json.JSONObject;
 
 import com.zs.accesstoken.CsezAccessToken;
 
-public class GetResponse {
+
+public class GetResponseForCategorize {
 
 	public static String getResponse(String conversationId) throws Exception {
 
 	    String accessToken = CsezAccessToken.generateAccessToken();
-	    OkHttpClient client = new OkHttpClient.Builder()
-	            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
-	            .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
-	            .writeTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
-	            .callTimeout(180, java.util.concurrent.TimeUnit.SECONDS)
-	            .retryOnConnectionFailure(true)
-	            .build();
+	    OkHttpClient client = new OkHttpClient();
 
 	    String url =
 	        "https://platformai.csez.zohocorpin.com/internalapi/v2/ai/assistant/chat?conversation_id="
@@ -50,29 +45,19 @@ public class GetResponse {
 	            continue;
 	        }
 
-//	        
-//	        JSONArray messages = data.getJSONArray("messages");
-//
-//	        for (int i = 0; i < messages.length(); i++) {
-//	            JSONArray content = messages.getJSONObject(i).getJSONArray("content");
-//
-//	            for (int j = 0; j < content.length(); j++) {
-//	                JSONObject c = content.getJSONObject(j);
-//	                if ("output_text".equals(c.getString("type"))) {
-//	                    return c.getString("text");
-//	                }
-//	            }
-//	        }
+	        
 	        JSONArray messages = data.getJSONArray("messages");
 
 	        for (int i = 0; i < messages.length(); i++) {
-	            JSONObject message = messages.getJSONObject(i);
+	            JSONArray content = messages.getJSONObject(i).getJSONArray("content");
 
-	            if (message.has("content")) {
-	                return message.getString("content"); 
+	            for (int j = 0; j < content.length(); j++) {
+	                JSONObject c = content.getJSONObject(j);
+	                if ("output_text".equals(c.getString("type"))) {
+	                    return c.getString("text");
+	                }
 	            }
 	        }
-
 	    }
 
 	    throw new RuntimeException("AI response not ready after waiting");

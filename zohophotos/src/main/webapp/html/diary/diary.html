@@ -13,65 +13,69 @@
 
 
 </head>
+<div class="top-actions">
+	<button class="back-btn" onclick="history.back()">← Back</button>
+</div>
+<div style="position: relative;">
+	<button class="nav-btn prev-btn" onclick="goToDate(-1)">❮</button>
+	<button class="nav-btn next-btn" onclick="goToDate(1)">❯</button>
 
-    <div style="position: relative;">
-        <button class="nav-btn prev-btn" onclick="goToDate(-1)">❮</button>
-        <button class="nav-btn next-btn" onclick="goToDate(1)">❯</button>
-        
-        <div class="date-input" id="dateInput" onclick="showCalender()">Select Date</div>
+	<div class="date-input" id="dateInput" onclick="showCalender()">Select
+		Date</div>
 
-        <div class="calendar" id="calendar">
-            <div class="calendar-header">
-                <button onclick="changeMonth(-1)">‹</button>
-                <span id="monthYear"></span>
-                <button onclick="changeMonth(1)">›</button>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
+	<div class="calendar" id="calendar">
+		<div class="calendar-header">
+			<button onclick="changeMonth(-1)">‹</button>
+			<span id="monthYear"></span>
+			<button onclick="changeMonth(1)">›</button>
+		</div>
+		<div class="calendar-grid" id="calendarGrid"></div>
+	</div>
 
-        <div class="diary">
-            
-            <!-- THE FLIPPING ELEMENT (Realistic Two-Sided) -->
-            <div id="turning-page">
-                <div class="page-face front"></div>
-                <div class="page-face back"></div>
-            </div>
+	<div class="diary">
 
-            <form id="diaryForm">
-                <!-- Left Page: Photos & Memories -->
-                <div class="left page">
-                    <h2>Memories</h2>
-                    <div class="photo-upload-box">
-                        <p style="margin: 0 0 10px 0; color: #666;">Pin your photos here</p>
-                        <label for="file-upload" class="custom-file-upload"> Choose Photos </label> 
-                        <input id="file-upload" type="file" accept="image/*" name="photos" multiple onchange="previewimage(event)"> 
-                        <br>
-                        <button onclick="clearImage()" type="button" style="margin-top: 15px;">Clear Photos</button>
-                    </div>
+		<!-- THE FLIPPING ELEMENT (Realistic Two-Sided) -->
+		<div id="turning-page">
+			<div class="page-face front"></div>
+			<div class="page-face back"></div>
+		</div>
 
-                    <div id="preview"></div>
-                </div>
+		<form id="diaryForm">
+			<!-- Left Page: Photos & Memories -->
+			<div class="left page">
+				<h2>Memories</h2>
+				<div class="photo-upload-box">
+					<p style="margin: 0 0 10px 0; color: #666;">Pin your photos
+						here</p>
+					<label for="file-upload" class="custom-file-upload"> Choose
+						Photos </label> <input id="file-upload" type="file" accept="image/*"
+						name="photos" multiple onchange="previewimage(event)"> <br>
+					<button onclick="clearImage()" type="button"
+						style="margin-top: 15px;">Clear Photos</button>
+				</div>
 
-                <!-- Right Page: Writing -->
-                <div class="diary-container page">
-                    <h2>Dear Diary...</h2>
+				<div id="preview"></div>
+			</div>
 
-                    <label>Date</label> 
-                    <input type="date" id="date" name="date" onchange="getDate()" required> 
-                    
-                    <label>Title</label> 
-                    <input type="text" id="title" name="title" placeholder="A day to remember..." required>
+			<!-- Right Page: Writing -->
+			<div class="diary-container page">
+				<h2>Dear Diary...</h2>
 
-                    <label>Entry</label>
-                    <textarea id="content" name="content" placeholder="Start writing here..." required></textarea>
+				<label>Date</label> <input type="date" id="date" name="date"
+					onchange="getDate()" required> <label>Title</label> <input
+					type="text" id="title" name="title"
+					placeholder="A day to remember..." required> <label>Entry</label>
+				<textarea id="content" name="content"
+					placeholder="Start writing here..." required></textarea>
 
-                    <div style="text-align: right;">
-                        <button type="submit">Save Entry</button>
-                    </div>
-                    <p id="message"></p>
-                </div>
-            </form>
-        </div>
-    </div>	<script src="diary1.js"></script>
+				<div style="text-align: right;">
+					<button type="submit">Save Entry</button>
+				</div>
+				<p id="message"></p>
+			</div>
+		</form>
+	</div>
+</div>
+<script src="diary1.js"></script>
 </body>
 </html>

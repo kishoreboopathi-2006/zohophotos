@@ -98,6 +98,7 @@ public class RetrievePhotosServlet extends HttpServlet {
 
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
+		System.out.println(userId);
 		GetWorkdrivePhotoDetails obj = new GetWorkdrivePhotoDetails(userId);
 		String photoDetails=obj.getPhotoDetails();
 		System.out.println(photoDetails);

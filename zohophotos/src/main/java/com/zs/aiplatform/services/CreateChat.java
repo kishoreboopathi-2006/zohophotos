@@ -8,10 +8,17 @@ import com.zs.accesstoken.CsezAccessToken;
 import org.json.JSONArray;
 
 public class CreateChat {
-
+	
     public static String createChat(String assistantId, String fileId) throws Exception {
 
-        OkHttpClient client = new OkHttpClient();
+         OkHttpClient client =
+                new OkHttpClient.Builder()
+                        .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+                        .readTimeout(180, java.util.concurrent.TimeUnit.SECONDS)
+                        .writeTimeout(180, java.util.concurrent.TimeUnit.SECONDS)
+                        .callTimeout(240, java.util.concurrent.TimeUnit.SECONDS)
+                        .retryOnConnectionFailure(true)
+                        .build();
 
        
         JSONObject textObj = new JSONObject();
@@ -19,7 +26,6 @@ public class CreateChat {
         textObj.put("text",
             "\"Capture the feeling and facial expression and short.\"\n"
         );
-
         JSONObject imageInner = new JSONObject();
         imageInner.put("type", "file_id");
         imageInner.put("file_id", fileId);

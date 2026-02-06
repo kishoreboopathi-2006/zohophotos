@@ -32,9 +32,11 @@ public class SignIn extends HttpServlet {
 //					System.out.println(ud.getEmail());
 					HttpSession session = req.getSession();
 					session.setAttribute("userId", userId);
+					
 //					System.out.println(session.getAttribute("userId"));
 					session.setAttribute("userEmail", ud.getEmail());
 					session.setAttribute("userName", ud.getName());
+					System.out.println(session.getMaxInactiveInterval());
 					res.getWriter().println("success");
 				}
 			} else {

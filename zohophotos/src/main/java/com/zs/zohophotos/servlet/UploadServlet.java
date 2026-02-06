@@ -208,9 +208,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.zs.accesstoken.AccessTokenForWorkdrive;
+import com.zs.aiplatform.records.FolderAndFileId;
+import com.zs.aiplatform.services.AiResponseOperations;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
 import com.zs.zohophotos.records.WorkdrivePhotoDetails;
 
+import jakarta.servlet.AsyncContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -226,7 +229,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@WebServlet("/upload")
+@WebServlet(value = "/upload", asyncSupported = true)
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
 
@@ -242,7 +245,7 @@ public class UploadServlet extends HttpServlet {
 
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
-//		System.out.println(userId);
+		System.out.println(userId);
 		String workdriveFolderId = com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement
 				.getWorkdriveFolderId(userId);
 		if (workdriveFolderId == null) {
@@ -282,7 +285,6 @@ public class UploadServlet extends HttpServlet {
 				.addHeader("Authorization", "Zoho-oauthtoken " + accessToken)
 				// .addHeader("Accept", "application/vnd.api+json")
 				.addHeader("Content-Type", "application/vnd.api+json").build();
-
 		try (Response zohoResponse = client.newCall(request).execute()) {
 			String responseBody = zohoResponse.body().string();
 			System.out.println("UPLOAD RESPONSE = " + responseBody);
@@ -300,8 +302,22 @@ public class UploadServlet extends HttpServlet {
 				return;
 			}
 			if (flag) {
+				new Thread(() -> {
+					try {
+						AiResponseOperations ai = new AiResponseOperations(new FolderAndFileId(folderId,resourceId));
+						boolean execute = ai.insertAiresponse();
+						if (execute) {
+							System.out.println("success");
+						} else {
+							System.out.println("fail");
+						}
+					} finally {
+						System.out.println("complete");
+					}
+				}).start();
+			}
+				System.out.println("redirect");
 				res.sendRedirect("/zohophotos/html/dashboard/dashboard.html");
 			}
-		}
 	}
 }

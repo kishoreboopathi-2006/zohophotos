@@ -13,22 +13,25 @@ import okhttp3.Response;
 
 public class PlatformAiFileUtil {
 	
-	
-	
-
 	public static String createAIFile(byte[] imageBytes) throws Exception {
 
 	    String accessToken = CsezAccessToken.generateAccessToken();
-	    OkHttpClient client = new OkHttpClient();
+
+	    OkHttpClient client = new OkHttpClient.Builder()
+	            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
+	            .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+	            .writeTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+	            .callTimeout(180, java.util.concurrent.TimeUnit.SECONDS)
+	            .retryOnConnectionFailure(true)
+	            .build();
 
 	    RequestBody fileBody = RequestBody.create(
-	           
 	            MediaType.parse("image/jpeg"), imageBytes
 	    );
 
 	    MultipartBody requestBody = new MultipartBody.Builder()
 	            .setType(MultipartBody.FORM)
-	            .addFormDataPart("vision", "Zoho6.jpg", fileBody) 
+	            .addFormDataPart("vision", "kaviya.jpg", fileBody)
 	            .build();
 
 	    Request request = new Request.Builder()
@@ -37,30 +40,31 @@ public class PlatformAiFileUtil {
 	            .addHeader("zuid", "60042586463")
 	            .addHeader("portal_id", "ZS")
 	            .addHeader("Authorization", "Zoho-oauthtoken " + accessToken)
-	           // .addHeader("Accept", "application/octet-stream")
 	            .addHeader("Accept", "application/json")
-
-	          //  .addHeader("Content-Type", "application/octet-stream")
 	            .build();
 
-	    Response response = client.newCall(request).execute();
-	    String responseBody = response.body().string();
+	    try (Response response = client.newCall(request).execute()) {
 
-	    JSONObject json = new JSONObject(responseBody);
+	        String responseBody = response.body().string();
+	        JSONObject json = new JSONObject(responseBody);
 
-	    if (json.has("error")) {
-	        throw new RuntimeException("File upload failed: " + json.getJSONObject("error").getString("message"));
+	        if (json.has("error")) {
+	            throw new RuntimeException(
+	                "File upload failed: " +
+	                json.getJSONObject("error").getString("message")
+	            );
+	        }
+
+	        if (!json.has("data")) {
+	            throw new RuntimeException("API response missing 'data': " + responseBody);
+	        }
+
+	        return json.getJSONObject("data")
+	                   .getJSONArray("files")
+	                   .getJSONObject(0)
+	                   .getString("file_id");
 	    }
-
-	    if (!json.has("data")) {
-	        throw new RuntimeException("API response missing 'data': " + responseBody);
-	    }
-
-	    return json.getJSONObject("data")
-	               .getJSONArray("files")
-	               .getJSONObject(0)
-	               .getString("file_id");
-
 	}
+
 }
 

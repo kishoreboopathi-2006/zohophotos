@@ -11,14 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 @WebServlet("/describePhoto")
 public class DescribePhotoServlet extends HttpServlet {
-
+	private final String ASSISTANT_ID="928000000234307";
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
@@ -37,13 +35,11 @@ public class DescribePhotoServlet extends HttpServlet {
             String fileId = json.getString("file_id");
 
             byte[] imageBytes = WorkDriveUtil.downloadFile(fileId);
-
-            String assistantId = GetAssistant.getAssistantId();
+            
+//            String assistantId = GetAssistantForDescribePhoto.getAssistantId();
             String aiFileId = PlatformAiFileUtil.createAIFile(imageBytes);
-            String conversationId = CreateChat.createChat(assistantId, aiFileId);
-
+            String conversationId = CreateChat.createChat(ASSISTANT_ID, aiFileId);
             String description = GetResponse.getResponse(conversationId);
-
             JSONObject response = new JSONObject();
             response.put("content", description == null ? "" : description);
             response.put("status", description == null ? "processing" : "completed");

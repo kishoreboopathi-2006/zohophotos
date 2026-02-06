@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/getFavouritePhotos")
 public class GetFavouritePhotos extends HttpServlet{
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		HttpSession session =req.getSession();
+		HttpSession session =req.getSession(false);
 		int userId=(int) session.getAttribute("userId");
 		ArrayList<FavouritePhotoDetails> photoDetails=new ArrayList<>();
 		FavouritePhotoDetailsOperations operations=new FavouritePhotoDetailsOperations();

@@ -526,3 +526,8 @@ button:hover {
     /* Disable 3D flip on mobile - it doesn't make sense for column layout */
     #turning-page { display: none !important; }
 }
+.back-btn {
+  position: absolute;
+  top: 2px;
+  left: 35px;
+}
