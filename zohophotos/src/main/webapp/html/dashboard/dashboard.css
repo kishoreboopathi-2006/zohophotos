@@ -368,8 +368,7 @@ to {
 	margin: 0 auto;
 }
 
-@
-keyframes spin { 100% {
+@keyframes spin { 100% {
 	transform: rotate(360deg);
 }
 
