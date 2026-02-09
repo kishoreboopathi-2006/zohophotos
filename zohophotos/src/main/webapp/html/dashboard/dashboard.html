@@ -10,6 +10,7 @@
 <link href="dashboard.css" rel="stylesheet">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="dashboard.js" defer></script>
+<link href="card.css" rel="stylesheet">
 </head>
 <body>
 	<div class="ai-modal-overlay" id="ai-modal-overlay">
@@ -35,7 +36,8 @@
 	<div class="app-layout">
 		<aside class="sidebar">
 			<div class="sidebar-logo">
-				<img src="preview.png" width="45px" height="55px" class="logo"> ZOHO Photos
+				<img src="preview.png" width="45px" height="55px" class="logo">
+				ZOHO Photos
 			</div>
 			<nav>
 				<div class="menu-item">
@@ -44,18 +46,6 @@
 				<div class="menu-item" onclick="albumPage()">
 					<i class="ph ph-folder-notch"></i> Albums
 				</div>
-				<!--   <form id="Favorites"
-               		 action="/WorkdriveUploadZoho/favorites"
-               		 method="get"
-               		 enctype="multipart/form-data"
-               		 style="display:none;">
-               		 <input type="file"
-               		 		id="favoritePhotos"
-               		 		name="favPhoto"
-               		 		accept="image/*"
-               		 		multiple
-               		 		onchange="document.getElementById('favoritePhotos').submit();">
-               		 		</form>-->
 
 				<div class="menu-item" onclick="favouritePage()">
 					<i class="ph ph-heart"></i> Favorites
@@ -64,7 +54,7 @@
 				<div class="menu-item" onclick="diaryPage()">
 					<i class="ph ph-notebook"></i>Diary
 				</div>
-				<div class="menu-item">
+				<div class="menu-item" onclick="reminderPage()">
 					<i class="ph ph-hourglass-medium"></i>Reminder
 				</div>
 				<div class="menu-item">
@@ -85,9 +75,10 @@
 						class="fa-solid fa-xmark" id="close-btn"></i>
 				</div>
 				<div style="display: flex; align-items: center; gap: 15px;">
-					<button class="btn-ai" onclick="generateAlbumStory()">
+					<button id="aiStoryBtn" class="btn-ai">
 						<i class="ph-fill ph-sparkle"></i> AI Story
 					</button>
+
 					<!-- Hidden Upload Form -->
 					<form id="uploadForm" action="/zohophotos/upload" method="post"
 						enctype="multipart/form-data" style="display: none;">
@@ -106,10 +97,9 @@
 
 					<div class="user-profile">
 						<div style="text-align: right; font-size: 0.9rem;">
-							<strong>John</strong>
-							<div style="font-size: 0.75rem; color: var(--text-light);">User</div>
+							<strong>Kaviya</strong>
 						</div>
-						<div class="avatar">JD</div>
+						<div class="avatar">K</div>
 					</div>
 				</div>
 			</header>
@@ -120,16 +110,31 @@
 					<div class="slider-track" id="sliderTrack"></div>
 				</div>
 
-				<h2 style="margin-top: 450px;" class="secAlreadytion-title">Recent
+				<!-- photo cards -->
+
+				<div class="wrapper">
+					<div class="card">
+						<div class="card-hero">
+							<div class="frame">
+								<div class="avatar-wrap">
+									<img class="photo" id="photo">
+								</div>
+							</div>
+						</div>
+						<div class="body">
+							<div class="date" id="date"></div>
+							<h2 class="title" id="title"></h2>
+							<p class="message" id="message">...</p>
+						</div>
+					</div>
+				</div>
+				<h2 style="margin-top: 15px;" class="secAlreadytion-title">Recent
 					Uploads</h2>
 				<div id="galleryGrid" class="gallery-grid"></div>
 			</div>
 		</main>
 	</div>
-	<div id="viewBox">
-	</div>
-
-
+	<div id="viewBox"></div>
 
 </body>
 </html>

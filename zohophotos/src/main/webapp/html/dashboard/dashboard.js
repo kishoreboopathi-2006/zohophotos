@@ -1,6 +1,3 @@
-/**
- * 
- */
 let favourite = [];
 let favIcons = document.getElementsByClassName("fav-icon");
 const grid = document.getElementById("galleryGrid");
@@ -9,6 +6,7 @@ let images = [];
 let urls = [];
 let currentIndex = 0;
 let aiResponsePhotoDetails = [];
+let reminderDetails = [];
 window.addEventListener("load", () => {
 	if (entry) {
 		fetch("/zohophotos/getFavouritePhotos").then(handleResponse).then(handleData).then(showError);
@@ -86,6 +84,32 @@ window.addEventListener("load", () => {
 		});
 });
 
+
+window.addEventListener("load", function() {
+	fetch("/zohophotos/getReminderDetails").then(handleResponse).then(handleData).catch(showError);
+	function handleResponse(response) {
+		return response.json();
+	}
+	function handleData(data) {
+		reminderDetails = data;
+		const birthday=reminderDetails.find(upcomingBirtday=>{
+			return upcomingBirtday.category==="birthday";
+		});
+		const date=new Date(birthday.Date).toLocaleDateString("en-GB", {
+		  day: "2-digit",
+		  month: "short",
+		  year: "numeric"
+		});
+		document.getElementById("photo").src=birthday.previewUrl;
+		document.getElementById("date").textContent=date;
+		document.getElementById("title").textContent=birthday.title;
+		document.getElementById("message").textContent=birthday.message;
+		console.log("birthday"+JSON.stringify(birthday));
+	}
+	function showError(error) {
+		console.log(error);
+	}
+});
 function diaryPage() {
 	window.location.href = "/zohophotos/html/diary/diary.html";
 }
@@ -320,8 +344,9 @@ function openFullView() {
 	img.src = urls[currentIndex];
 	img.className = "view-photo";
 	const closeBtn = document.createElement("span");
+	closeBtn.id = "exit";
 	closeBtn.className = "close-view";
-	closeBtn.innerHTML = "&#10006;";
+	closeBtn.innerHTML = "x";
 	viewBox.appendChild(img);
 	viewContainer.appendChild(viewBox);
 	viewContainer.appendChild(right);
@@ -335,126 +360,173 @@ function openFullView() {
 		currentIndex = (currentIndex - 1 + urls.length) % urls.length;
 		img.src = urls[currentIndex];
 	});
-
+	document.getElementById("exit").addEventListener("click", function() {
+		viewContainer.style.display = "none";
+		viewContainer.innerHTML = "";
+	});
 
 };
 
 
-/*
-for (let icon of favIcons) {
-	icon.addEventListener("click", function() {
-		console.log(this.src);
-		let formData = new FormData();
-		formData.append("previewUrl", this.src);zz
+/* ================= AI STORY STATE ================= */
 
-		fetch("../insertFavouriteImage", {
-			method: "POST",
-			body: formData
-		})
-		.then(handleResponse)
-		.then(handleData)
-		.catch(showError);
+let storyMode = false;
+let selectedStoryImages = [];
 
-		function handleResponse(response) {
-			return response.text();
-		}
+/* ================= AI STORY BUTTON ================= */
 
-		function handleData(data) {
-			console.log(data);
-		}
+document.getElementById("aiStoryBtn").addEventListener("click", () => {
 
-		function showError(err) {
-			console.log(err);
-		}
-	});
-}
+	const cards = document.querySelectorAll(".photo-card");
+	if (!storyMode) {
+		storyMode = true;
+		selectedStoryImages = [];
 
-function describeFromIcon(iconEl) {
+		cards.forEach(card => {
+			card.classList.add("story-mode");
 
-	const card = iconEl.closest(".photo-card");
-	const img = card.querySelector("img");
-	const fileId = img.dataset.fileId;
 
-	if (!fileId) {
-		alert("File ID missing");
+			if (!card.querySelector(".select-check")) {
+				const tick = document.createElement("div");
+				tick.className = "select-check";
+				tick.innerHTML = "✔";
+				card.appendChild(tick);
+
+				tick.onclick = (e) => {
+					e.stopPropagation();
+					const img = card.querySelector("img");
+					toggleStorySelection(card, img.dataset.fileId);
+				};
+			}
+		});
+
+		document.getElementById("aiStoryBtn").innerHTML =
+			"<i class='ph-fill ph-sparkle'></i> Generate Story";
+
 		return;
 	}
 
-	iconEl.innerHTML = "⏳";
 
-	fetch("../describePhoto", {
+	if (selectedStoryImages.length === 0) {
+		alert("Please select at least one photo");
+		return;
+	}
+
+	openStoryModal("⏳ Generating story...");
+
+	fetch("/zohophotos/aiStory", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ file_id: fileId })
+		body: JSON.stringify({
+			imageIds: selectedStoryImages,
+			lang: "tanglish"
+		})
 	})
-	.then(res => res.json())
-	.then(data => {
-
-		if (data.error) {
-			alert(data.error);
-			iconEl.innerHTML = "✨";
-			return;
-		}
-	    
-		function openAiModal(title, content) {
-			document.getElementById("ai-modal-title").innerHTML = title;
-			document.getElementById("ai-modal-content").innerHTML = content;
-			document.getElementById("ai-modal-overlay").classList.add("active");
-		}
-	   
-
-		iconEl.innerHTML = "✨";
-	})
-	.catch(err => {
-		console.error("Describe error:", err);
-		alert("Unable to describe photo");
-		iconEl.innerHTML = "✨";
-	});
-}
-
-function loadFavorites() {
-
-	Promise.all([
-		fetch("../retrievePhotos").then(r => r.json()),
-		fetch("../favorites").then(r => r.json())
-	])
-	.then(([photosRes, favRes]) => {
-
-		const images = photosRes.data || [];
-		const favSet = new Set(favRes.favorites || []);
-
-		const grid = document.getElementById("galleryGrid");
-		grid.innerHTML = "";
-
-		images.forEach(file => {
-			if (!favSet.has(file.id)) return; 
-
-			const card = document.createElement("div");
-			card.className = "photo-card glass-panel";
-
-			const img = document.createElement("img");
-			img.src = `../preview/${file.id}`;
-			img.dataset.fileId = file.id;
-
-			const aiIcon = document.createElement("div");
-			aiIcon.className = "ai-icon";
-			aiIcon.innerHTML = "✨";
-			aiIcon.onclick = () => describeFromIcon(aiIcon);
-
-			const favIcon = document.createElement("div");
-			favIcon.className = "fav-icon active"; 
-			favIcon.innerHTML = "❤️";
-			favIcon.onclick = (e) => {
-				e.stopPropagation();
-				toggleFavorite(favIcon);
-			};
-
-			card.appendChild(img);
-			card.appendChild(aiIcon);
-			card.appendChild(favIcon);
-			grid.appendChild(card);
+		.then(res => res.json())
+		.then(data => {
+			if (!data.story) {
+				openStoryModal(" Unable to generate story");
+				resetStoryMode();
+				return;
+			}
+			showStoryWithTranslate(data.story);
+			resetStoryMode();
+		})
+		.catch(() => {
+			openStoryModal(" Error generating story");
+			resetStoryMode();
 		});
+});
+
+/* ================= STORY SELECTION ================= */
+
+function toggleStorySelection(card, fileId) {
+
+	const tick = card.querySelector(".select-check");
+
+	if (card.classList.contains("story-selected")) {
+		card.classList.remove("story-selected");
+		tick.classList.remove("selected");
+		selectedStoryImages =
+			selectedStoryImages.filter(id => id !== fileId);
+	} else {
+		card.classList.add("story-selected");
+		tick.classList.add("selected");
+		selectedStoryImages.push(fileId);
+	}
+}
+
+/* ================= STORY MODAL ================= */
+
+function openStoryModal(text) {
+	document.getElementById("ai-modal-title").innerHTML =
+		"✨ AI Photo Story";
+	document.getElementById("ai-modal-content").innerHTML =
+		`<div style="line-height:1.8;font-size:16px">${text}</div>`;
+	document.getElementById("ai-modal-overlay").classList.add("active");
+}
+
+/* ================= TRANSLATE UI ================= */
+
+function showStoryWithTranslate(storyText) {
+	document.getElementById("ai-modal-content").innerHTML = `
+        <div id="storyText"
+             style="line-height:1.8;font-size:16px;margin-bottom:15px">
+            ${storyText.replace(/\n/g, "<br>")}
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button class="btn-primary" onclick="translateStory('english')">
+                English
+            </button>
+            <button class="btn-primary" onclick="translateStory('tanglish')">
+                Tamil
+            </button>
+        </div>
+    `;
+}
+
+/* ================= TRANSLATE API ================= */
+
+function translateStory(lang) {
+
+	const text = document.getElementById("storyText").innerText;
+	document.getElementById("storyText").innerHTML = "⏳ Translating...";
+
+	fetch("/zohophotos/translateStory", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ text, lang })
+	})
+		.then(res => res.json())
+		.then(data => {
+			document.getElementById("storyText").innerHTML =
+				data.story.replace(/\n/g, "<br>");
+		})
+		.catch(() => {
+			document.getElementById("storyText").innerHTML =
+				" Translation failed";
+		});
+}
+/* ================= RESET ================= */
+
+function resetStoryMode() {
+
+	storyMode = false;
+	selectedStoryImages = [];
+
+	document.getElementById("aiStoryBtn").innerHTML =
+		"<i class='ph-fill ph-sparkle'></i> AI Story";
+
+	document.querySelectorAll(".photo-card").forEach(card => {
+		card.classList.remove("story-mode", "story-selected");
+		const tick = card.querySelector(".select-check");
+		if (tick) tick.remove();
 	});
 }
 
-*/
+
+function reminderPage() {
+	console.log("reminer");
+	window.location.href = "/zohophotos/html/reminder/reminder.html";
+}

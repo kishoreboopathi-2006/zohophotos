@@ -34,7 +34,7 @@ public class GetPreviewInformation {
 				String jsonResponse = response.body().string();
 				JSONObject json = new JSONObject(jsonResponse);
 				String image = json.getJSONObject("data").getJSONObject("attributes").getString("preview_data_url");
-//				System.out.println(image);
+				System.out.println(image);
 				photoDetails.get(i).setPreviewUrl(image);
 			} catch (Exception e) {
 

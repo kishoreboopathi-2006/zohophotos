@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 :root {
 	--primary: #1e3a8a;
 	--secondary: #7c3aed;
@@ -59,6 +60,7 @@ body {
 .photo-card:hover img {
 	transform: scale(1.05);
 }
+
 #photos-overlay {
 	position: fixed;
 	top: 0;
@@ -85,12 +87,15 @@ body {
 	width: 100%;
 	padding: 12px;
 	background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-	color: #fff;
-	font-size: 70px;
+	color: #f4efef;
+	font-size: 30px;
 	opacity: 0;
-	word-wrap: break-word; 
+	word-wrap: break-word;
 	white-space: normal;
 	transition: opacity 0.3s ease;
+	-webkit-text-stroke: 1px;
+	-webkit-text-stroke-color: currentcolor;
+	-webkit-text-stroke-color: #b812e6;
 }
 
 .photo-card:hover .photo-overlay {
@@ -102,7 +107,6 @@ body {
 	align-items: center;
 	padding: 20px;
 	background: var(--bg-gradient);
-	
 }
 
 /* ===== Back Button ===== */
@@ -128,12 +132,14 @@ body {
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 	transform: translateY(-1px);
 }
-.size{
-	height:200px;
+
+.size {
+	height: 200px;
 }
-.exit{
-	position:fixed;
-	z-index:100;
+
+.exit {
+	position: fixed;
+	z-index: 100;
 	background: var(--glass-bg);
 	backdrop-filter: blur(10px);
 	border: 1px solid var(--glass-border);
@@ -145,19 +151,20 @@ body {
 	cursor: pointer;
 	transition: all 0.25s ease;
 }
-.view{
+
+.view {
 	margin-top: 54px;
-  display: flex;
+	display: flex;
 	background: var(--bg-gradient);
-  backdrop-filter: blur(90px);
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 1000;
-  gap: 10px;
-  width: 100vw;
-  height: 100vh;
+	backdrop-filter: blur(90px);
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
+	padding: 20px;
+	overflow-y: auto;
+	z-index: 1000;
+	gap: 10px;
+	width: 100vw;
+	height: 100vh;
 }

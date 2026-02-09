@@ -234,11 +234,14 @@ button {
 	border-radius: 10px;
 }
 
-@keyframes slide {from { transform:translateX(0);	
+@keyframes slide {from { transform:translateX(0);
+	
 }
+
 to {
 	transform: translateX(-50%);
 }
+
 }
 
 /* Gallery */
@@ -582,5 +585,51 @@ to {
 }
 
 .close-view {
+	display: block;
+	cursor: pointer;
 	position: fixed;
+	top: 15px;
+	right: 36px;
+	color: #fefefe;
+	font-size: 32px;
+}
+
+.close-view:hover {
+	color: #cf0000;
+	transform: scale(1.1);
+	transition: opacity 0.3s ease, transform 0.3s ease, color 0.25s ease,
+		background 0.25s ease;
+}
+/* ===== STORY SELECT MODE ===== */
+.photo-card.story-mode {
+	cursor: pointer;
+	outline: 2px dashed #7c3aed;
+}
+
+.select-check {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.95);
+	color: #7c3aed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	font-weight: bold;
+	opacity: 0.9;
+	z-index: 10;
+}
+
+/* selected state */
+.select-check.selected {
+	background: #7c3aed;
+	color: white;
+}
+
+.photo-card.story-selected {
+	outline: 3px solid #7c3aed;
 }
