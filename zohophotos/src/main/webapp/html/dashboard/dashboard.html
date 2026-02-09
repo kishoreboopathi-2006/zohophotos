@@ -8,6 +8,7 @@
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet">
 <link href="dashboard.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="dashboard.js" defer></script>
 </head>
@@ -67,7 +68,7 @@
 				<div class="menu-item">
 					<i class="ph ph-hourglass-medium"></i>Reminder
 				</div>
-				<div class="menu-item">
+				<div class="menu-item" onclick="deleteImage()">
 					<i class="ph ph-trash"></i> Trash
 				</div>
 			</nav>
@@ -84,6 +85,9 @@
 						id="search-input" placeholder="Search photos..."> <i
 						class="fa-solid fa-xmark" id="close-btn"></i>
 				</div>
+			<button id="themetoggle" title="Toggle Light/Dark Mode">
+                        <i class="fa-regular fa-moon" id="theme-icon"></i>
+                    </button>
 				<div style="display: flex; align-items: center; gap: 15px;">
 					<button class="btn-ai" onclick="generateAlbumStory()">
 						<i class="ph-fill ph-sparkle"></i> AI Story
@@ -106,7 +110,7 @@
 
 					<div class="user-profile">
 						<div style="text-align: right; font-size: 0.9rem;">
-							<strong>John</strong>
+							<strong id="username">User</strong>
 							<div style="font-size: 0.75rem; color: var(--text-light);">User</div>
 						</div>
 						<div class="avatar">JD</div>
@@ -128,8 +132,5 @@
 	</div>
 	<div id="viewBox">
 	</div>
-
-
-
 </body>
 </html>

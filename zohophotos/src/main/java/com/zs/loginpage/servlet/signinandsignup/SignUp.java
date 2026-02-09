@@ -23,6 +23,7 @@ public class SignUp extends HttpServlet {
 		String email = req.getParameter("email");
 		String password = req.getParameter("password");
 		String name = req.getParameter("name");
+		
 		UserDetails ud = new UserDetails(name, email, password);
 		UserDetailsManagement udm;
 		try {

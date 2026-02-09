@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 let favourite = [];
 let favIcons = document.getElementsByClassName("fav-icon");
 const grid = document.getElementById("galleryGrid");
@@ -189,46 +187,7 @@ function describeFromIcon(iconEl) {
 			iconEl.innerHTML = "✨";
 		});
 }
-function describeFromIcon(iconEl) {
-	const card = iconEl.closest(".photo-card");
-	const img = card.querySelector("img");
-	const fileId = img.dataset.fileId;
-	if (!fileId) {
-		alert("File ID missing");
-		return;
-	}
-	iconEl.innerHTML = "⏳";
-	document.getElementById("ai-modal-title").innerHTML = "✨ AI Photo Description";
-	document.getElementById("ai-modal-content").innerHTML =
-		`<div class="loading-spinner"></div>`;
-	document.getElementById("ai-modal-overlay").classList.add("active");
-	fetch("/zohophotos/describePhoto", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ file_id: fileId })
-	})
-		.then(res => res.json())
-		.then(data => {
-			if (!data.content) {
 
-				document.getElementById("ai-modal-content").innerHTML =
-					"<p style='color:red'>No AI response received</p>";
-				iconEl.innerHTML = "✨";
-				return;
-			}
-			console.log(data);
-			document.getElementById("ai-modal-content").innerHTML = `
-            <div style="line-height:1.8; font-size:16px; color:#334155;">
-                ${data.content.replace(/\n/g, "<br>")}</div>`;
-			iconEl.innerHTML = "✨";
-		})
-		.catch(err => {
-			console.error(err);
-			document.getElementById("ai-modal-content").innerHTML =
-				"<p style='color:red'>Unable to describe photo</p>";
-			iconEl.innerHTML = "✨";
-		});
-}
 document.getElementById("search").addEventListener("click", function() {
 	fetch("/zohophotos/getAiResponse")
 		.then(handleResponse)
@@ -335,126 +294,29 @@ function openFullView() {
 		currentIndex = (currentIndex - 1 + urls.length) % urls.length;
 		img.src = urls[currentIndex];
 	});
-
-
 };
+const themeBtn = document.getElementById("themetoggle");
+        const themeIcon = document.getElementById("theme-icon");
 
+        function updateTheme(isDark) {
+            if (isDark) {
+                document.body.classList.add("dark");
+                themeIcon.className = "ph ph-sun";
+            } else {
+                document.body.classList.remove("dark");
+                themeIcon.className = "fa-regular fa-moon";
+            }
+        }
 
-/*
-for (let icon of favIcons) {
-	icon.addEventListener("click", function() {
-		console.log(this.src);
-		let formData = new FormData();
-		formData.append("previewUrl", this.src);zz
+        themeBtn.addEventListener("click", () => {
+            const isDark = !document.body.classList.contains("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            updateTheme(isDark);
+        });
 
-		fetch("../insertFavouriteImage", {
-			method: "POST",
-			body: formData
-		})
-		.then(handleResponse)
-		.then(handleData)
-		.catch(showError);
-
-		function handleResponse(response) {
-			return response.text();
-		}
-
-		function handleData(data) {
-			console.log(data);
-		}
-
-		function showError(err) {
-			console.log(err);
-		}
-	});
+        
+        if (localStorage.getItem("theme") === "dark") updateTheme(true);
+function trashImage(){
+	window.location.href=""
 }
-
-function describeFromIcon(iconEl) {
-
-	const card = iconEl.closest(".photo-card");
-	const img = card.querySelector("img");
-	const fileId = img.dataset.fileId;
-
-	if (!fileId) {
-		alert("File ID missing");
-		return;
-	}
-
-	iconEl.innerHTML = "⏳";
-
-	fetch("../describePhoto", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ file_id: fileId })
-	})
-	.then(res => res.json())
-	.then(data => {
-
-		if (data.error) {
-			alert(data.error);
-			iconEl.innerHTML = "✨";
-			return;
-		}
-	    
-		function openAiModal(title, content) {
-			document.getElementById("ai-modal-title").innerHTML = title;
-			document.getElementById("ai-modal-content").innerHTML = content;
-			document.getElementById("ai-modal-overlay").classList.add("active");
-		}
-	   
-
-		iconEl.innerHTML = "✨";
-	})
-	.catch(err => {
-		console.error("Describe error:", err);
-		alert("Unable to describe photo");
-		iconEl.innerHTML = "✨";
-	});
-}
-
-function loadFavorites() {
-
-	Promise.all([
-		fetch("../retrievePhotos").then(r => r.json()),
-		fetch("../favorites").then(r => r.json())
-	])
-	.then(([photosRes, favRes]) => {
-
-		const images = photosRes.data || [];
-		const favSet = new Set(favRes.favorites || []);
-
-		const grid = document.getElementById("galleryGrid");
-		grid.innerHTML = "";
-
-		images.forEach(file => {
-			if (!favSet.has(file.id)) return; 
-
-			const card = document.createElement("div");
-			card.className = "photo-card glass-panel";
-
-			const img = document.createElement("img");
-			img.src = `../preview/${file.id}`;
-			img.dataset.fileId = file.id;
-
-			const aiIcon = document.createElement("div");
-			aiIcon.className = "ai-icon";
-			aiIcon.innerHTML = "✨";
-			aiIcon.onclick = () => describeFromIcon(aiIcon);
-
-			const favIcon = document.createElement("div");
-			favIcon.className = "fav-icon active"; 
-			favIcon.innerHTML = "❤️";
-			favIcon.onclick = (e) => {
-				e.stopPropagation();
-				toggleFavorite(favIcon);
-			};
-
-			card.appendChild(img);
-			card.appendChild(aiIcon);
-			card.appendChild(favIcon);
-			grid.appendChild(card);
-		});
-	});
-}
-
-*/
+        

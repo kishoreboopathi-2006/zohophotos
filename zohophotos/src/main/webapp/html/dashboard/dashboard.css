@@ -14,8 +14,24 @@
 	--radius: 16px;
 	--sidebar-width: 260px;
 	--nav-height: 70px;
+	 --glass-bg: rgba(255, 255, 255, 0.75);
+    --text-main: #1e293b;
 }
 
+ body.dark {
+            --text-main: #f1f5f9;
+            --text-light: #94a3b8;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --sidebar-bg: rgba(15, 23, 42, 0.9);
+            --white: #1e293b;
+            --card-bg: #1e293b;
+ }
+.sidebar { background: var(--glass-bg);
+ 		   color: var(--text-main);
+ 		   transition: 0.3s;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -53,13 +69,14 @@ button {
 /* Sidebar */
 .sidebar {
 	width: var(--sidebar-width);
-	background: rgba(255, 255, 255, 0.8);
+	background:white;
 	backdrop-filter: blur(20px);
 	border-right: 1px solid var(--glass-border);
 	display: flex;
 	flex-direction: column;
 	padding: 20px;
 	height: 100%;
+
 }
 
 .sidebar-logo {
@@ -82,6 +99,7 @@ button {
 	margin-bottom: 5px;
 	cursor: pointer;
 	transition: 0.2s;
+	color:black;
 }
 
 .menu-item:hover, .menu-item.active {
@@ -162,7 +180,7 @@ button {
 	border-radius: 8px;
 	font-weight: 600;
 	background: linear-gradient(135deg, var(--primary), var(--secondary));
-	color: var(--white);
+	color: white;
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
@@ -453,7 +471,8 @@ to {
 
 #close-btn {
 	margin-left: 260px;
-	color: #d21d1d;
+	color:rgb(138, 0, 0);
+	font-size:13px;
 }
 
 #search-overlay {
@@ -584,3 +603,29 @@ to {
 .close-view {
 	position: fixed;
 }
+#themetoggle{
+	width:50px;
+	height:35px;
+	border-radius:50px;
+	margin-left:800px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

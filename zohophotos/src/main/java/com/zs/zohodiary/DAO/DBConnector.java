@@ -16,8 +16,8 @@ public class DBConnector {
         }
         return DriverManager.getConnection(
             "jdbc:mysql://localhost:3306/zoho_photos",
-            "kishore",
-            "kishore@2006"
+            "Kaviya",
+            "Kaviyaa@2007"
         );
     }
 }
