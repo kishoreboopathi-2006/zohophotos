@@ -10,6 +10,11 @@ body {
         , 0, 0, 0.05) 40px, rgba(0, 0, 0, 0.05) 41px),
         linear-gradient(to bottom, #8d6e63, #5d4037);
     font-family: 'Patrick Hand', cursive; /* You might need to import this font if not locally installed */
+    background-color: #F2F3FF;
+    /* Wood texture background */
+   
+    font-family: 'Quicksand', sans-serif;
+    font-size:1rem; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,9 +26,10 @@ body {
 
 .diary {
     position: relative;
-    width: 1000px;
+    width: 1200px;
+    height:850px;
     max-width: 100%;
-    background-color: #3e2723;
+    background-color: #021b55ff;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px
@@ -114,16 +120,16 @@ body {
 /* Typography & Inputs */
 h2 {
     text-align: center;
-    font-family: 'Caveat', cursive;
-    font-size: 3rem;
-    color: #5d4037;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 2rem;
+    color: #041f5fff;
     margin: 0 0 20px 0;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 label {
     font-weight: bold;
-    color: #795548;
+    color: #021b55ff;
     display: block;
     margin-top: 15px;
     font-size: 1.2rem;
@@ -134,15 +140,15 @@ input[type="text"], input[type="date"] {
     border: none;
     background: transparent;
     border-bottom: 2px dashed #bcaaa4;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.3rem;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
     color: #333;
     padding: 5px 0;
     outline: none;
 }
 
 input[type="text"]:focus, input[type="date"]:focus {
-    border-bottom: 2px solid #795548;
+    border-bottom: 2px solid #021b55ff;
 }
 
 textarea {
@@ -150,8 +156,8 @@ textarea {
     height: 350px;
     border: none;
     background: transparent;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.4rem;
+	font-family: 'Quicksand', sans-serif;    
+	font-size: 1rem;
     line-height: 2rem;
     color: #2c2c2c;
     outline: none;
@@ -175,7 +181,7 @@ textarea {
 
 .photo-upload-box:hover {
     background-color: rgba(255, 255, 255, 0.6);
-    border-color: #795548;
+    border-color: #021b55ff;
 }
 
 input[type="file"] {
@@ -186,51 +192,45 @@ input[type="file"] {
     display: inline-block;
     padding: 8px 20px;
     cursor: pointer;
-    background: #8d6e63;
+    background: #021b55ff;
     color: white;
-    border-radius: 20px;
+    border-radius: 50px;
     font-size: 1.1rem;
     transition: transform 0.2s;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
 }
+    
+
 
 .custom-file-upload:active {
     transform: scale(0.95);
 }
 
-#preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 20px;
-}
 
-.preview-img-container {
-    background: white;
-    padding: 10px 10px 30px 10px;
-    box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.2);
-    transform: rotate(-2deg);
-    transition: transform 0.3s;
-    width: 120px;
-}
 
 button {
-    background: #5d4037;
-    color: #fff;
+    
     border: none;
-    padding: 10px 25px;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.3rem;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 15px;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s;
+   
 }
 
 button:hover {
-    background: #4e342e;
+   
+}
+.fa-trash{
+	color:rgb(243, 74, 74);
+	
+}
+.fa-trash:hover{
+	color:red;
 }
 
 #message {
@@ -254,8 +254,8 @@ button:hover {
     top: -60px; /* Moved for better layout */
     left: 20px;
     z-index: 50;
-    font-family: 'Patrick Hand', cursive;
-    font-size: 1.2rem;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
@@ -270,7 +270,7 @@ button:hover {
     top: -10px;
     left: 20px;
     width: 280px;
-    border: 1px solid #795548;
+    border: 1px solid #021b55ff;
     border-radius: 8px;
     display: none;
     background: #fff;
@@ -284,7 +284,7 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background: #8d6e63;
+    background: #021b55ff;
     color: white;
     border-radius: 6px 6px 0 0;
 }
@@ -306,7 +306,7 @@ button:hover {
 .day-name {
     font-weight: bold;
     padding: 6px 0;
-    color: #5d4037;
+    color: #041f5fff;
     font-size: 0.9rem;
 }
 
@@ -344,10 +344,8 @@ button:hover {
     height: 100%;
     backface-visibility: hidden;
     background-color: #fffef0;
-    
     /* Paper Texture shared by all pages */
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' opacity='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
-    
     border: 1px solid #d7d7d7;
 }
 
@@ -456,7 +454,7 @@ button:hover {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(93, 64, 55, 0.8);
+    background: #021b55ff;
     color: white;
     border: none;
     width: 50px;
@@ -473,7 +471,7 @@ button:hover {
 }
 
 .nav-btn:hover {
-    background: #5d4037;
+    background: #021b55ff;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -483,7 +481,7 @@ button:hover {
 /* Mobile Response */
 @media ( max-width : 1150px) {
     .nav-btn {
-        display: none; /* Hide arrows on small screens */
+        display: none; 
     }
 }
 
@@ -527,4 +525,98 @@ button:hover {
   position: absolute;
   top: 2px;
   left: 35px;
+  background: #041f5fff;
+  width:80px;
+  height:50px;
+  color:white;
+  border-radius:12px;
 }
+
+.memories-container {
+    border: 3px dashed #021b55ff;
+    border-radius: 20px;
+    background: #fffef0;
+    height: 600px;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    overflow: hidden; /* box-ku veliya pogaadhu */
+}
+
+/* Preview area */
+#preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 15px;
+
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+
+.preview-img-container {
+    position: relative;  
+    width: 120px;
+    height: 140px;
+    background: white;
+    padding: 6px;
+    border-radius: 6px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+    transform: rotate(-2deg);
+}
+
+
+.preview-img-container:nth-child(even) {
+    transform: rotate(2deg);
+}
+.preview-img-container:nth-child(3n) {
+    transform: rotate(-3deg);
+}
+
+
+.preview-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+
+   
+    transform: perspective(600px) rotateX(2deg);
+}
+.preview-img-container::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 20%;
+    width: 60%;
+    height: 20px;
+
+    background: rgba(245, 222, 179, 0.9); 
+    border-radius: 4px;
+
+    transform: rotate(-4deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+    z-index: 2;
+}
+
+.preview-img-container:nth-child(even)::before {
+    transform: rotate(4deg);
+    background: rgba(255, 228, 196, 0.9);
+}
+
+.preview-img-container:nth-child(3n)::before {
+    left: 10%;
+    width: 70%;
+}
+.seal-btn{
+	background:#021b55ff;
+	color:white;
+	border-radius:12px;
+	width:90px;
+	height:50px;
+}
+

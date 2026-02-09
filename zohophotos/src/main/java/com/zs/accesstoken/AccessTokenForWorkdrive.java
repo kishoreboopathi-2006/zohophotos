@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class AccessTokenForWorkdrive {
 
-	private static final String REFRESH_TOKEN = "1000.ebd670fd5060a4efe057141debffc9c3.5c2f82b951070447de9b2c4b28db3100";
+	private static final String REFRESH_TOKEN = "1000.02603e0668a8b3004d828d6805942ad5.c230a8cfc528a67f6df51629f6d7b390";
 	private static final String CLIENT_ID = "1000.P9FZ2WG1DMT31GW6MO6ITRFYYH6JRU";
 	private static final String CLIENT_SECRET = "1257f34da7ada1d587b7fe85953368a711dfb2de4c";
 
@@ -34,7 +34,7 @@ public class AccessTokenForWorkdrive {
 
 			String responseBody = response.body().string();
 			JSONObject json = new JSONObject(responseBody);
-			
+
 			if (!json.has("access_token")) {
 				throw new Exception("Zoho error: " + responseBody);
 			}

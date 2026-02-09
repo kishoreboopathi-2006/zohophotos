@@ -1,3 +1,4 @@
+
 let favourite = [];
 let favIcons = document.getElementsByClassName("fav-icon");
 const grid = document.getElementById("galleryGrid");
@@ -213,46 +214,7 @@ function describeFromIcon(iconEl) {
 			iconEl.innerHTML = "✨";
 		});
 }
-function describeFromIcon(iconEl) {
-	const card = iconEl.closest(".photo-card");
-	const img = card.querySelector("img");
-	const fileId = img.dataset.fileId;
-	if (!fileId) {
-		alert("File ID missing");
-		return;
-	}
-	iconEl.innerHTML = "⏳";
-	document.getElementById("ai-modal-title").innerHTML = "✨ AI Photo Description";
-	document.getElementById("ai-modal-content").innerHTML =
-		`<div class="loading-spinner"></div>`;
-	document.getElementById("ai-modal-overlay").classList.add("active");
-	fetch("/zohophotos/describePhoto", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ file_id: fileId })
-	})
-		.then(res => res.json())
-		.then(data => {
-			if (!data.content) {
 
-				document.getElementById("ai-modal-content").innerHTML =
-					"<p style='color:red'>No AI response received</p>";
-				iconEl.innerHTML = "✨";
-				return;
-			}
-			console.log(data);
-			document.getElementById("ai-modal-content").innerHTML = `
-            <div style="line-height:1.8; font-size:16px; color:#334155;">
-                ${data.content.replace(/\n/g, "<br>")}</div>`;
-			iconEl.innerHTML = "✨";
-		})
-		.catch(err => {
-			console.error(err);
-			document.getElementById("ai-modal-content").innerHTML =
-				"<p style='color:red'>Unable to describe photo</p>";
-			iconEl.innerHTML = "✨";
-		});
-}
 document.getElementById("search").addEventListener("click", function() {
 	fetch("/zohophotos/getAiResponse")
 		.then(handleResponse)
@@ -366,9 +328,25 @@ function openFullView() {
 	});
 
 };
+const themeBtn = document.getElementById("themetoggle");
+        const themeIcon = document.getElementById("theme-icon");
+
+        function updateTheme(isDark) {
+            if (isDark) {
+                document.body.classList.add("dark");
+                themeIcon.className = "ph ph-sun";
+            } else {
+                document.body.classList.remove("dark");
+                themeIcon.className = "fa-regular fa-moon";
+            }
+        }
 
 
-/* ================= AI STORY STATE ================= */
+        themeBtn.addEventListener("click", () => {
+            const isDark = !document.body.classList.contains("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            updateTheme(isDark);
+        });
 
 let storyMode = false;
 let selectedStoryImages = [];
@@ -530,3 +508,9 @@ function reminderPage() {
 	console.log("reminer");
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
 }
+        
+        if (localStorage.getItem("theme") === "dark") updateTheme(true);
+function trashImage(){
+	window.location.href=""
+}
+        

@@ -22,7 +22,7 @@ function submitDiary(e) {
     formData.append("entry", entry);
     console.log(form);
     console.log(formData);
-    fetch("../getDiaryData", {
+    fetch("/zohophotos/getDiaryData", {
         method: "post",
         body: formData
     }).then(handleResponse).then(showMessage).catch(showError);
@@ -45,28 +45,52 @@ function showError() {
 
 let overlay = null;
 
-function previewimage(e) {
-    const files = e.target.files;
+//function previewimage(e) {
+//    const files = e.target.files;
+//    const preview = document.getElementById("preview");
+
+//    Array.from(files).forEach(file => {
+//        const img = document.createElement("img");
+ //       img.className = "images";
+   //     img.src = URL.createObjectURL(file);
+     //   img.style.width = "100px";
+ //       img.style.height = "100px";
+//        img.style.margin = "3px";
+//        img.style.cursor = "pointer";
+ //       img.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.3)";
+   //     img.style.border = "3px solid white";
+
+//        img.addEventListener("click", function() {
+  //          toggleBigImage(img.src);
+  //      });
+
+//        preview.appendChild(img);
+ //   });
+//}
+function previewimage(event) {
     const preview = document.getElementById("preview");
 
-    Array.from(files).forEach(file => {
-        const img = document.createElement("img");
-        img.className = "images";
-        img.src = URL.createObjectURL(file);
-        img.style.width = "100px";
-        img.style.height = "100px";
-        img.style.margin = "3px";
-        img.style.cursor = "pointer";
-        img.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.3)";
-        img.style.border = "3px solid white";
+    Array.from(event.target.files).forEach(file => {
+        const reader = new FileReader();
 
-        img.addEventListener("click", function() {
-            toggleBigImage(img.src);
-        });
+        reader.onload = function () {
+            const div = document.createElement("div");
+            div.className = "preview-img-container";
 
-        preview.appendChild(img);
+            const img = document.createElement("img");
+            img.src = reader.result;
+
+            div.appendChild(img);
+            preview.appendChild(div); 
+        };
+
+        reader.readAsDataURL(file);
     });
+
+    
+    event.target.value = "";
 }
+
 
 function toggleBigImage(src) {
     if (overlay) {
@@ -117,7 +141,7 @@ async function clearImage() {
 async function deleteImages() {
     // --- YOUR ORIGINAL BACKEND LOGIC ---
     console.log(photos);
-    const response = await fetch("../deletePhotos", {
+    const response = await fetch("/zohophotos/deletePhotos", {
         method: "post",
         headers: {
             'Content-Type': 'application/json'
@@ -147,7 +171,7 @@ async function showCalender() {
 async function fetchDiaryDetails() {
     // --- YOUR ORIGINAL BACKEND LOGIC ---
     try {
-        const response = await fetch("../diaryDetails");
+        const response = await fetch("/zohophotos/diaryDetails");
         if (!response.ok) {
             throw new Error("HTTP error " + response.status);
         }
