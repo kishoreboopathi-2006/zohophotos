@@ -93,19 +93,19 @@ window.addEventListener("load", function() {
 	}
 	function handleData(data) {
 		reminderDetails = data;
-		const birthday=reminderDetails.find(upcomingBirtday=>{
-			return upcomingBirtday.category==="birthday";
+		const birthday = reminderDetails.find(upcomingBirtday => {
+			return upcomingBirtday.category === "birthday";
 		});
-		const date=new Date(birthday.Date).toLocaleDateString("en-GB", {
-		  day: "2-digit",
-		  month: "short",
-		  year: "numeric"
+		const date = new Date(birthday.Date).toLocaleDateString("en-GB", {
+			day: "2-digit",
+			month: "short",
+			year: "numeric"
 		});
-		document.getElementById("photo").src=birthday.previewUrl;
-		document.getElementById("date").textContent=date;
-		document.getElementById("title").textContent=birthday.title;
-		document.getElementById("message").textContent=birthday.message;
-		console.log("birthday"+JSON.stringify(birthday));
+		document.getElementById("photo").src = birthday.previewUrl;
+		document.getElementById("date").textContent = date;
+		document.getElementById("title").textContent = birthday.title;
+		document.getElementById("message").textContent = birthday.message;
+		console.log("birthday" + JSON.stringify(birthday));
 	}
 	function showError(error) {
 		console.log(error);
@@ -178,6 +178,7 @@ function describeFromIcon(iconEl) {
 	const card = iconEl.closest(".photo-card");
 	const img = card.querySelector("img");
 	const fileId = img.dataset.fileId;
+	console.log(fileId);
 	if (!fileId) {
 		alert("File ID missing");
 		return;
@@ -187,31 +188,31 @@ function describeFromIcon(iconEl) {
 	document.getElementById("ai-modal-content").innerHTML =
 		`<div class="loading-spinner"></div>`;
 	document.getElementById("ai-modal-overlay").classList.add("active");
-	fetch("/zohophotos/describePhoto", {
+	fetch("/zohophotos/getDescriptionForPhoto", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({ file_id: fileId })
 	})
-		.then(res => res.json())
+		.then(res => res.text())
 		.then(data => {
-			if (!data.content) {
-
+			console.log(data);
+			if (!data) {
 				document.getElementById("ai-modal-content").innerHTML =
 					"<p style='color:red'>No AI response received</p>";
 				iconEl.innerHTML = "✨";
 				return;
 			}
 			console.log(data);
-			document.getElementById("ai-modal-content").innerHTML = `
-            <div style="line-height:1.8; font-size:16px; color:#334155;">
-                ${data.content.replace(/\n/g, "<br>")}</div>`;
-			iconEl.innerHTML = "✨";
+			setTimeout(() => {
+				document.getElementById("ai-modal-content").innerHTML = `
+						<div class="fade-in" style="line-height:1.8; font-size:16px; color:#334155;">
+							${data.replace(/\n/g, "<br>")}
+						</div>`;
+				iconEl.innerHTML = "✨";
+			}, 1000);
 		})
 		.catch(err => {
 			console.error(err);
-			document.getElementById("ai-modal-content").innerHTML =
-				"<p style='color:red'>Unable to describe photo</p>";
-			iconEl.innerHTML = "✨";
 		});
 }
 
@@ -278,15 +279,17 @@ function albumPage() {
 }
 document.getElementById("galleryGrid").addEventListener("click", function(e) {
 	const img = e.target.closest("img");
-	urls = images.map(img => {
-		return img.previewUrl;
-	});
-	currentIndex = urls.findIndex(url => {
-		return url === img.src;
-	});
-	console.log(urls);
-	console.log(img.src);
-	openFullView();
+	if (img) {
+		urls = images.map(img => {
+			return img.previewUrl;
+		});
+		currentIndex = urls.findIndex(url => {
+			return url === img.src;
+		});
+		console.log(urls);
+		console.log(img.src);
+		openFullView();
+	}
 });
 function openFullView() {
 	const viewContainer = document.getElementById("viewBox");
@@ -329,24 +332,24 @@ function openFullView() {
 
 };
 const themeBtn = document.getElementById("themetoggle");
-        const themeIcon = document.getElementById("theme-icon");
+const themeIcon = document.getElementById("theme-icon");
 
-        function updateTheme(isDark) {
-            if (isDark) {
-                document.body.classList.add("dark");
-                themeIcon.className = "ph ph-sun";
-            } else {
-                document.body.classList.remove("dark");
-                themeIcon.className = "fa-regular fa-moon";
-            }
-        }
+function updateTheme(isDark) {
+	if (isDark) {
+		document.body.classList.add("dark");
+		themeIcon.className = "ph ph-sun";
+	} else {
+		document.body.classList.remove("dark");
+		themeIcon.className = "fa-regular fa-moon";
+	}
+}
 
 
-        themeBtn.addEventListener("click", () => {
-            const isDark = !document.body.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-            updateTheme(isDark);
-        });
+themeBtn.addEventListener("click", () => {
+	const isDark = !document.body.classList.contains("dark");
+	localStorage.setItem("theme", isDark ? "dark" : "light");
+	updateTheme(isDark);
+});
 
 let storyMode = false;
 let selectedStoryImages = [];
@@ -508,9 +511,14 @@ function reminderPage() {
 	console.log("reminer");
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
 }
-        
-        if (localStorage.getItem("theme") === "dark") updateTheme(true);
-function trashImage(){
-	window.location.href=""
+
+if (localStorage.getItem("theme") === "dark") updateTheme(true);
+function trashImage() {
+	window.location.href = ""
 }
-        
+function dashboardPage() {
+	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
+}
+
+
+

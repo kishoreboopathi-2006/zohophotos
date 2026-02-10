@@ -1,5 +1,5 @@
 let state = {
-	reminders: [],          // comes ONLY from backend now
+	reminders: [],          
 	activeTab: 'birthday',
 	viewDate: new Date(),
 	isDark: false
@@ -14,7 +14,6 @@ window.addEventListener("load", () => {
 	fetch("/zohophotos/getReminderDetails")
 		.then(res => res.json())
 		.then(data => {
-			// normalize backend data to frontend format
 			state.reminders = data.map(r => ({
 				id: r.folderId,
 				title: r.title,

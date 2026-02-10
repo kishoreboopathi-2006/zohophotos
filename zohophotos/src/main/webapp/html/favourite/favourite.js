@@ -23,3 +23,21 @@ window.addEventListener("load", () => {
 		})
 		.catch(err => console.error(err));
 });
+function dashboardPage() {
+	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
+}
+function diaryPage() {
+	window.location.href = "/zohophotos/html/diary/diary.html";
+}
+
+function favouritePage() {
+	window.location.href = "/zohophotos/html/favourite/favourite.html";
+}
+function albumPage() {
+	window.location.href = "/zohophotos/html/album/album.html";
+}
+function reminderPage() {
+	console.log("reminer");
+	window.location.href = "/zohophotos/html/reminder/reminder.html";
+}
+       

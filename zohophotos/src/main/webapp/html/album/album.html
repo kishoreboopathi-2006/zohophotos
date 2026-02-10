@@ -1,17 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="album.css" rel="stylesheet">
+<title>Album | ZOHO Photos</title>
+
+<link rel="stylesheet" href="album.css">
 <script src="album.js" defer></script>
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+	rel="stylesheet">
+<link href="dashboard.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body>
-	<div class="top-actions">
-		<button class="back-btn" onclick="history.back()">← Back</button>
-	</div>
-	<h2 class="section-title">Album</h2>
-	<div id="galleryGrid" class="gallery-grid"></div>
+
+		<aside class="sidebar">
+			<div class="sidebar-logo">
+				<img src="zohophotologo.png" class="logo">
+				<h1>ZOHO Photos</h1>
+
+			</div>
+			<nav>
+				<div class="menu-item" onclick="dashboardPage()">
+					<i class="ph ph-squares-four"></i> Dashboard
+				</div>
+				<div class="menu-item" onclick="albumPage()">
+					<i class="ph ph-folder-notch"></i> Albums
+				</div>
+
+				<div class="menu-item" onclick="favouritePage()">
+					<i class="ph ph-heart"></i> Favorites
+				</div>
+
+				<div class="menu-item" onclick="diaryPage()">
+					<i class="ph ph-notebook"></i>Diary
+				</div>
+				<div class="menu-item" onclick="reminderPage()">
+					<i class="ph ph-hourglass-medium"></i>Reminder
+				</div>
+				<div class="menu-item" onclick="deleteImage()">
+					<i class="ph ph-trash"></i> Trash
+				</div>
+			</nav>
+
+			<a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
+				style="margin-top: 10px; color: var(--danger); text-decoration: none;"><i
+				class="ph ph-sign-out"></i> Sign Out</a>
+		</aside>
+
+	<!-- ===== MAIN CONTENT ===== -->
+	<main class="main-content">
+		<h2 class="section-title">Album</h2>
+		<div id="galleryGrid" class="gallery-grid"></div>
+	</main>
+
+	<!-- PHOTO OVERLAY -->
 	<div id="photos-overlay"></div>
+
 </body>
 </html>

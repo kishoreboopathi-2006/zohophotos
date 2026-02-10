@@ -40,7 +40,7 @@ public class getDiaryData extends HttpServlet {
 		LocalTime entry_time = LocalTime.now();
 		Collection<Part> images = req.getParts();
 		for (Part p : images) {
-			System.out.println(p.getName() + ":" + p.getSize());
+			System.out.println(p.getName() + ":::::::::::::::" + p.getSize());
 			if ("photos".equals(p.getName()) && p.getSize() > 0) {
 				PhotoDetails pd = new PhotoDetails(p.getInputStream(), p.getSize(), p.getSubmittedFileName(),
 						p.getContentType());

@@ -70,5 +70,9 @@ public class AiResponseOperations {
 		ArrayList<AiResponseDetailsForPhoto> arr=dbManager.getResponseDetails(folderId);
 		return arr;
 	}
+	public String getDescribtion(String fileId) {
+		String describtion=dbManager.getDescribtion(fileId);
+		return describtion;
+	}
 
 }

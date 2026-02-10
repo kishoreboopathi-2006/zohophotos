@@ -75,20 +75,35 @@ public class AiPlatformDBManagement {
 
 	public ArrayList<CategorizePhotoDetails> getCategorizePhotoDetails(String folderId) {
 		ArrayList<CategorizePhotoDetails> arr = new ArrayList<>();
-		String sql="select category1 category,group_concat(workdrive_file_id) photo_ids from "
+		String sql = "select category1 category,group_concat(workdrive_file_id) photo_ids from "
 				+ "airesponse_table where workdrive_folder_id=? group by category1 ";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, folderId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				String category=rs.getString(1);
-				String[] photoIds=rs.getString(2).split(",");
-				arr.add(new CategorizePhotoDetails(category,photoIds));
+				String category = rs.getString(1);
+				String[] photoIds = rs.getString(2).split(",");
+				arr.add(new CategorizePhotoDetails(category, photoIds));
 			}
 			return arr;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getDescribtion(String fileId) {
+		String sql = "select description from airesponse_table where workdrive_file_id =?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, fileId);
+			ResultSet rs = ps.executeQuery();
+			String descripe = null;
+			while (rs.next()) {
+				descripe = rs.getString(1);
+			}
+			return descripe;
+		} catch (SQLException e) {
 		}
 		return null;
 	}

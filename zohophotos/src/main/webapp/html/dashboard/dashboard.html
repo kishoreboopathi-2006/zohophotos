@@ -8,7 +8,8 @@
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet">
 <link href="dashboard.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="dashboard.js" defer></script>
 <link href="card.css" rel="stylesheet">
@@ -37,12 +38,12 @@
 	<div class="app-layout">
 		<aside class="sidebar">
 			<div class="sidebar-logo">
-				<img src="preview.png" width="45px" height="55px" class="logo">
-				ZOHO Photos
+				<img src="zohophotologo.png" class="logo">
+				<h1>ZOHO Photos</h1>
 			</div>
 			<nav>
 				<div class="menu-item">
-					<i class="ph ph-squares-four"></i> Dashboard
+					<i class="ph ph-squares-four" onclick="dashboardPage()"></i> Dashboard
 				</div>
 				<div class="menu-item" onclick="albumPage()">
 					<i class="ph ph-folder-notch"></i> Albums
@@ -75,9 +76,9 @@
 						id="search-input" placeholder="Search photos..."> <i
 						class="fa-solid fa-xmark" id="close-btn"></i>
 				</div>
-			<button id="themetoggle" title="Toggle Light/Dark Mode">
-                        <i class="fa-regular fa-moon" id="theme-icon"></i>
-                    </button>
+				<button id="themetoggle" title="Toggle Light/Dark Mode">
+					<i class="fa-regular fa-moon" id="theme-icon"></i>
+				</button>
 				<div style="display: flex; align-items: center; gap: 15px;">
 					<button id="aiStoryBtn" class="btn-ai">
 						<i class="ph-fill ph-sparkle"></i> AI Story
@@ -116,21 +117,28 @@
 				</div>
 
 				<!-- photo cards -->
-
-				<div class="wrapper">
-					<div class="card">
-						<div class="card-hero">
-							<div class="frame">
-								<div class="avatar-wrap">
-									<img class="photo" id="photo">
+				<div class="dash">
+					<div class="wrapper" onclick="reminderPage()">
+						<div class="card">
+							<div class="card-hero">
+								<div class="frame">
+									<div class="avatar-wrap">
+										<img class="photo" id="photo">
+									</div>
 								</div>
 							</div>
+							<div class="body">
+								<div class="date" id="date"></div>
+								<h2 class="title" id="title"></h2>
+								<p class="message" id="message">...</p>
+							</div>
 						</div>
-						<div class="body">
-							<div class="date" id="date"></div>
-							<h2 class="title" id="title"></h2>
-							<p class="message" id="message">...</p>
-						</div>
+					</div>
+					<div onclick="diaryPage()"class="dairy">
+						<video width="320" height="240" autoplay muted loop preload="auto"
+							playsinline>
+							<source src="Video_Ready_After_No_Zoom.mp4" type="video/mp4">
+						</video>
 					</div>
 				</div>
 				<h2 style="margin-top: 15px;" class="secAlreadytion-title">Recent
@@ -141,7 +149,6 @@
 	</div>
 	<div id="viewBox"></div>
 
-	<div id="viewBox">
-	</div>
+	<div id="viewBox"></div>
 </body>
 </html>
