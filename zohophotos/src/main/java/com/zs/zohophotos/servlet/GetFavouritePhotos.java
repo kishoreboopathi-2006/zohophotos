@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.zs.zohophotos.model.FavouritePhotoDetailsOperations;
 import com.zs.zohophotos.records.FavouritePhotoDetails;
+import com.zs.zohophotos.service.FavouritePhotoDetailsOperations;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

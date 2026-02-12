@@ -1,4 +1,4 @@
-package com.zs.zohophotos.model;
+package com.zs.zohophotos.service;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -32,12 +32,12 @@ public class GetPreviewInformation {
 				response = client.newCall(request).execute();
 				Gson gson = new Gson();
 				String jsonResponse = response.body().string();
+				System.out.println(".............................."+jsonResponse);
 				JSONObject json = new JSONObject(jsonResponse);
 				String image = json.getJSONObject("data").getJSONObject("attributes").getString("preview_data_url");
 				System.out.println(image);
 				photoDetails.get(i).setPreviewUrl(image);
 			} catch (Exception e) {
-
 				e.printStackTrace();
 			}
 		}

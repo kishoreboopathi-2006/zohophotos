@@ -5,8 +5,8 @@ import java.net.http.HttpResponse;
 
 import com.google.gson.Gson;
 import com.zs.zohodiary.model.InsertDiaryAndPhotosDetails1;
-import com.zs.zohophotos.model.FavouritePhotoDetailsOperations;
 import com.zs.zohophotos.records.FavouritePhotoDetails;
+import com.zs.zohophotos.service.FavouritePhotoDetailsOperations;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

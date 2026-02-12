@@ -1,4 +1,3 @@
-
 let favourite = [];
 let favIcons = document.getElementsByClassName("fav-icon");
 const grid = document.getElementById("galleryGrid");
@@ -8,6 +7,8 @@ let urls = [];
 let currentIndex = 0;
 let aiResponsePhotoDetails = [];
 let reminderDetails = [];
+let resourceIds = [];
+let deletedPhotos = [];
 window.addEventListener("load", () => {
 	if (entry) {
 		fetch("/zohophotos/getFavouritePhotos").then(handleResponse).then(handleData).then(showError);
@@ -24,7 +25,11 @@ window.addEventListener("load", () => {
 		}
 	}
 });
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
+	/* deleted photos*/
+	const deleteRes = await fetch("/zohophotos/getDeletedPhotos");
+	deletedPhotos = await deleteRes.json();
+	console.log(JSON.stringify(deletedPhotos, null, 2));
 	const modalOverlay = document.getElementById("ai-modal-overlay");
 	const sliderTrack = document.getElementById("sliderTrack");
 	window.closeAiModal = function() {
@@ -36,6 +41,9 @@ window.addEventListener("load", () => {
 		.then(result => {
 			console.log(result);
 			images = result;
+			images = images.filter(img => {
+				return !deletedPhotos.some(del => del.resourceId === img.resourceId)
+			});
 			[...images].forEach(file => {
 				const img = document.createElement("img");
 				img.src = file.previewUrl;
@@ -62,18 +70,11 @@ window.addEventListener("load", () => {
 				aiIcon.innerHTML = "✨";
 				aiIcon.onclick = () => describeFromIcon(aiIcon);
 				const overlay = document.createElement("div");
-				const favIcon = document.createElement("div");
-				favIcon.className = "fav-icon";
-				favIcon.innerHTML = "❤️";
 				console.log(file.previewUrl);
 				const fav = favourite.some(data => data.previewUrl === file.previewUrl);
-				console.log("fav:" + fav);
-				if (fav) {
-					favIcon.classList.toggle("is-favourite");
-				}
+				console.log("fav:" + fav)
 				card.appendChild(img);
 				card.appendChild(aiIcon);
-				card.appendChild(favIcon);
 				card.appendChild(overlay);
 				grid.appendChild(card);
 			});
@@ -159,8 +160,7 @@ grid.addEventListener("click", function(e) {
 			function showData(data) {
 				if (data != "fail") {
 					favourite.push(data);
-					console.log("favoutire:" + favourite);
-					e.target.classList.toggle("is-favourite");
+					console.log(favourite);
 				}
 			}
 			function showError(err) {
@@ -283,10 +283,14 @@ document.getElementById("galleryGrid").addEventListener("click", function(e) {
 		urls = images.map(img => {
 			return img.previewUrl;
 		});
+		resourceIds = images.map(img => {
+			return img.resourceId;
+		})
+
 		currentIndex = urls.findIndex(url => {
 			return url === img.src;
 		});
-		console.log(urls);
+		console.log("resource" + resourceIds);
 		console.log(img.src);
 		openFullView();
 	}
@@ -307,11 +311,35 @@ function openFullView() {
 	viewBox.className = "viewBox";
 	const img = document.createElement("img");
 	img.src = urls[currentIndex];
+	img.dataset.resourceId = resourceIds[currentIndex];
 	img.className = "view-photo";
 	const closeBtn = document.createElement("span");
 	closeBtn.id = "exit";
 	closeBtn.className = "close-view";
 	closeBtn.innerHTML = "x";
+	const menu = document.createElement("div");
+	menu.className = "menu";
+	const deleteIcon = document.createElement("div");
+	deleteIcon.className = "delete";
+	deleteIcon.innerHTML = `<i class="ph-bold ph-trash"></i>`
+	const aiIcon = document.createElement("div");
+	aiIcon.className = "ai";
+	aiIcon.innerHTML = `<i class="ph-bold ph-sparkle"></i>`;
+	const favIcon = document.createElement("div");
+	favIcon.className = "fav";
+	const fav = favourite.some(data => data.previewUrl === img.src);
+	if (fav) {
+		favIcon.innerHTML = `<i class="fa-solid fa-heart"></i>`
+	}
+	else {
+		favIcon.innerHTML = `<i class="fa-regular fa-heart"></i>`;
+	}
+	favIcon.onclick = () => clickFavourite(fav, favIcon, img.src, "photo");
+	deleteIcon.onclick = () => deletePhoto(img.src, img.dataset.resourceId);
+	menu.appendChild(deleteIcon);
+	menu.appendChild(aiIcon);
+	menu.appendChild(favIcon);
+	viewContainer.appendChild(menu);
 	viewBox.appendChild(img);
 	viewContainer.appendChild(viewBox);
 	viewContainer.appendChild(right);
@@ -518,6 +546,93 @@ function trashImage() {
 }
 function dashboardPage() {
 	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
+	window.location.reload();
+}
+
+/* ================= favourite ================= */
+function clickFavourite(fav, favIcon, img, alt) {
+	if (fav) {
+		let formData = new FormData();
+		formData.append("add", "false")
+		formData.append("previewUrl", img);
+		formData.append("photoName", alt);
+		fetch("/zohophotos/selectFavouritePhoto", {
+			method: "POST",
+			body: formData
+		})
+			.then(handleResponse)
+			.then(showData)
+			.catch(showError);
+		function handleResponse(response) {
+			return response.text();
+		}
+		function showData(data) {
+			favourite = favourite.filter(data =>
+				data.previewUrl != img.src
+			);
+			if (data != "fail") {
+				favIcon.innerHTML = `<i class="fa-regular fa-heart"></i>`;
+			}
+		}
+		function showError(err) {
+			console.log(err);
+		}
+	}
+	else {
+		let formData = new FormData();
+		formData.append("add", "true")
+		formData.append("previewUrl", img);
+		formData.append("photoName", alt);
+		fetch("/zohophotos/selectFavouritePhoto", {
+			method: "POST",
+			body: formData
+		})
+			.then(handleResponse)
+			.then(showData)
+			.catch(showError);
+		function handleResponse(response) {
+			return response.text();
+		}
+		function showData(data) {
+			if (data != "fail") {
+				console.log(data);
+				favourite.push(JSON.parse(data));
+				console.log("favoutire:" + favourite);
+				favIcon.innerHTML = `<i class="fa-solid fa-heart"></i>`;
+			}
+		}
+		function showError(err) {
+			console.log(err);
+		}
+	}
+}
+/* ================= delete ================= */
+
+function deletePhoto(img, resourceId) {
+	const form = new FormData();
+	form.append("url", img);
+	form.append("resourceId", resourceId);
+	console.log(img);
+	console.log(resourceId);
+	fetch("/zohophotos/deletePhoto", {
+		method: "post",
+		body: form
+	}).then(handleResponse).then(showData).catch(showError);
+	function handleResponse(response) {
+		return response.text();
+	}
+	function showData(data) {
+		console.log(data);
+	}
+	function showError(err) {
+		console.log(err);
+	}
+}
+
+
+/*===============redirect===================*/
+function trashPage(){
+	window.location.href="/zohophotos/html/trash/trash.html";
 }
 
 

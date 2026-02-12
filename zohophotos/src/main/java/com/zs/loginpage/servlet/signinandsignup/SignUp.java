@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import com.zs.loginpage.DAO.UserDetailsManagement;
 import com.zs.loginpage.records.UserDetails;
-import com.zs.zohophotos.model.WorkDriveFolderManager;
+import com.zs.zohophotos.service.WorkDriveFolderManager;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;

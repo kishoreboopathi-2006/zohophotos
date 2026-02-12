@@ -112,8 +112,8 @@ function renderPhotos(photos) {
 	});
 
 }
-function dashboardPage(){
-	window.location.href="/zohophotos/html/dashboard/dashboard.html";
+function dashboardPage() {
+	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
 }
 function diaryPage() {
 	window.location.href = "/zohophotos/html/diary/diary.html";
@@ -126,7 +126,7 @@ function reminderPage() {
 	console.log("reminer");
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
 }
-       
+
 function albumPage() {
 	window.location.href = "/zohophotos/html/album/album.html";
 }

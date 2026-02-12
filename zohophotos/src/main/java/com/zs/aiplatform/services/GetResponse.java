@@ -24,7 +24,7 @@ public class GetResponse {
 	        "https://platformai.csez.zohocorpin.com/internalapi/v2/ai/assistant/chat?conversation_id="
 	        + conversationId;
 
-	    for (int attempt = 1; attempt <= 10; attempt++) {
+	    for (int attempt = 1; attempt <= 30; attempt++) {
 
 	        Request request = new Request.Builder()
 	                .url(url)

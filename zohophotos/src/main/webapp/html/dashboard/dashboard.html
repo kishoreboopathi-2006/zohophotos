@@ -11,6 +11,9 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <script src="dashboard.js" defer></script>
 <link href="card.css" rel="stylesheet">
 </head>
@@ -42,8 +45,8 @@
 				<h1>ZOHO Photos</h1>
 			</div>
 			<nav>
-				<div class="menu-item">
-					<i class="ph ph-squares-four" onclick="dashboardPage()"></i> Dashboard
+				<div class="menu-item" onclick="dashboardPage()">
+					<i class="ph ph-squares-four"></i> Dashboard
 				</div>
 				<div class="menu-item" onclick="albumPage()">
 					<i class="ph ph-folder-notch"></i> Albums
@@ -59,7 +62,7 @@
 				<div class="menu-item" onclick="reminderPage()">
 					<i class="ph ph-hourglass-medium"></i>Reminder
 				</div>
-				<div class="menu-item" onclick="deleteImage()">
+				<div class="menu-item" onclick="trashPage()">
 					<i class="ph ph-trash"></i> Trash
 				</div>
 			</nav>
@@ -134,10 +137,11 @@
 							</div>
 						</div>
 					</div>
-					<div onclick="diaryPage()"class="dairy">
+					<div onclick="diaryPage()" class="dairy">
 						<video width="320" height="240" autoplay muted loop preload="auto"
 							playsinline>
-							<source src="Video_Ready_After_No_Zoom.mp4" type="video/mp4">
+							<source src="Video_Generation_Request_Fulfilled.mp4"
+								type="video/mp4">
 						</video>
 					</div>
 				</div>

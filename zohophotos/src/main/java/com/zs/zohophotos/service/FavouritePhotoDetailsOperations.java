@@ -1,4 +1,4 @@
-package com.zs.zohophotos.model;
+package com.zs.zohophotos.service;
 
 import java.util.ArrayList;
 

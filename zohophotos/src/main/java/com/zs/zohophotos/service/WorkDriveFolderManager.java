@@ -52,7 +52,7 @@
 //        }
 //    }
 //}
-package com.zs.zohophotos.model;
+package com.zs.zohophotos.service;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;

@@ -5,86 +5,89 @@
 <title>My Diary</title>
 
 <link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <link rel="stylesheet" href="diary.css">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
 </head>
 
 <body>
 
-<div class="top-actions">
-    <button class="back-btn" onclick="history.back()">← Back</button>
-</div>
+	<div class="top-actions">
+		<button onclick="history.back()" class="back-btn">
+			<!-- Modern Chevron Icon -->
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+				viewBox="0 0 24 24" fill="none" stroke="currentColor"
+				stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6" />
+        </svg>
+		</button>
+	</div>
 
-<div style="position: relative;">
-    <button class="nav-btn prev-btn" onclick="goToDate(-1)">❮</button>
-    <button class="nav-btn next-btn" onclick="goToDate(1)">❯</button>
+	<div style="position: relative;">
+		<button class="nav-btn prev-btn" onclick="goToDate(-1)">❮</button>
+		<button class="nav-btn next-btn" onclick="goToDate(1)">❯</button>
 
-    <div class="date-input" id="dateInput" onclick="showCalender()">Select Date</div>
+		<div class="date-input" id="dateInput" onclick="showCalender()">Select
+			Date</div>
 
-    <div class="calendar" id="calendar">
-        <div class="calendar-header">
-            <button onclick="changeMonth(-1)">‹</button>
-            <span id="monthYear"></span>
-            <button onclick="changeMonth(1)">›</button>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-    </div>
+		<div class="calendar" id="calendar">
+			<div class="calendar-header">
+				<button onclick="changeMonth(-1)">‹</button>
+				<span id="monthYear"></span>
+				<button onclick="changeMonth(1)">›</button>
+			</div>
+			<div class="calendar-grid" id="calendarGrid"></div>
+		</div>
 
-    <div class="diary">
+		<div class="diary">
 
-        <div id="turning-page">
-            <div class="page-face front"></div>
-            <div class="page-face back"></div>
-        </div>
+			<div id="turning-page">
+				<div class="page-face front"></div>
+				<div class="page-face back"></div>
+			</div>
 
-        <form id="diaryForm">
+			<form id="diaryForm">
 
-            <!-- LEFT PAGE -->
-            <div class="left page">
-                <h2>GALLERY AT TIME</h2>
+				<!-- LEFT PAGE -->
+				<div class="left page">
+					<h2>Memory Lane</h2>
 
-                <div class="memories-container">
+					<div class="memories-container">
 
-                    <label for="file-upload" class="custom-file-upload">
-                        <i class="fa-solid fa-plus"></i>
-                    </label>
+						<label for="file-upload" class="custom-file-upload"> <i
+							class="fa-solid fa-plus"></i>
+						</label> <input id="file-upload" type="file" name="photos"
+							accept="image/*" multiple onchange="previewimage(event)">
 
-                    <input id="file-upload" type="file" name="photos"
-                           accept="image/*" multiple
-                           onchange="previewimage(event)">
+						<div id="preview"></div>
+					</div>
 
-                    <div id="preview"></div>
-                </div>
-
-             <!--    <button onclick="clearImage()" type="button" class="trash-btn">
+					<!--    <button onclick="clearImage()" type="button" class="trash-btn">
                     <i class="fa-solid fa-trash"></i>
                 </button>-->
-            </div>
+				</div>
 
-            <!-- RIGHT PAGE -->
-            <div class="diary-container page">
-                <h2>Dear Diary...</h2>
+				<!-- RIGHT PAGE -->
+				<div class="diary-container page">
+					<h2>Moments Unfold</h2>
 
-                <label>Date</label>
-                <input type="date" id="date" name="date" onchange="getDate()" required>
+					<label>Date</label> <input type="date" id="date" name="date"
+						onchange="getDate()" required> <label>Title</label> <input
+						type="text" id="title" name="title" required> <label>Entry</label>
+					<textarea id="content" name="content" required></textarea>
 
-                <label>Title</label>
-                <input type="text" id="title" name="title" required>
+					<div style="text-align: right;">
+						<button type="submit" class="seal-btn">SAVE</button>
+					</div>
 
-                <label>Entry</label>
-                <textarea id="content" name="content" required></textarea>
+					<p id="message"></p>
+				</div>
 
-                <div style="text-align:right;">
-                    <button type="submit" class="seal-btn">SEAL</button>
-                </div>
+			</form>
+		</div>
+	</div>
 
-                <p id="message"></p>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<script src="diary1.js"></script>
+	<script src="diary1.js"></script>
 </body>
 </html>

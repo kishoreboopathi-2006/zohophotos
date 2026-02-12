@@ -80,8 +80,8 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
-import com.zs.zohophotos.model.GetPreviewInformation;
-import com.zs.zohophotos.model.GetWorkdrivePhotoDetails;
+import com.zs.zohophotos.service.GetWorkdrivePhotoDetails;
+
 
 @WebServlet("/retrievePhotos")
 public class RetrievePhotosServlet extends HttpServlet {

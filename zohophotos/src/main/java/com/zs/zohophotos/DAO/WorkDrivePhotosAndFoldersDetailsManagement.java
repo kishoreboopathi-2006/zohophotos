@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.zs.loginpage.records.UserDetails;
 import com.zs.zohodiary.DAO.DBConnector;
+import com.zs.zohophotos.records.DeletedPhotoDetails;
 import com.zs.zohophotos.records.FavouritePhotoDetails;
 import com.zs.zohophotos.records.WorkdrivePhotoDetails;
 
@@ -142,13 +143,13 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		
-		return false;
-	}
+
+			return false;
+		}
 	}
 
 	public static boolean deleteFavouritePhoto(FavouritePhotoDetails photoDetails) {
-		String sql="delete from favourite_photo_details where preview_url=? and user_id=?";
+		String sql = "delete from favourite_photo_details where preview_url=? and user_id=?";
 		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, photoDetails.getPreviewUrl());
 			ps.setInt(2, photoDetails.getUserId());
@@ -158,29 +159,74 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		
-		return false;
-	}
+
+			return false;
+		}
 	}
 
 	public static ArrayList<FavouritePhotoDetails> getFavouritephotoDetails(int userId) {
-		ArrayList<FavouritePhotoDetails> arr=new ArrayList<>();
-		String sql="select * from favourite_photo_details where user_id=?";
+		ArrayList<FavouritePhotoDetails> arr = new ArrayList<>();
+		String sql = "select * from favourite_photo_details where user_id=?";
 		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setInt(1,userId);
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				arr.add(new FavouritePhotoDetails(rs.getString("photo_name"), rs.getString("preview_url"), rs.getInt("user_id")));
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				arr.add(new FavouritePhotoDetails(rs.getString("photo_name"), rs.getString("preview_url"),
+						rs.getInt("user_id")));
 			}
 			return arr;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		
-	}
+
+		}
 		// TODO Auto-generated method stub
 		return null;
-	}	
+	}
+
+	public Boolean deletePhoto(String url) {
+		String sql = "delete from  workdrive_photo_details where workdrive_file_id=?";
+		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, url);
+			System.out.println(ps.executeUpdate());
+
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean insertDeletedPhoto(DeletedPhotoDetails details) {
+		String sql = "insert into deleted_photo_details values(null,?,?,?)";
+		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, details.getResourceId());
+			ps.setString(2, details.getUrl());
+			ps.setInt(3, details.getUserId());
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public ArrayList<DeletedPhotoDetails> getDeletedPhotos(int userId) {
+		ArrayList<DeletedPhotoDetails> arr=new ArrayList<>();
+		String sql="select * from deleted_photo_details where user_id=?";
+		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, userId);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()) {
+				arr.add(new DeletedPhotoDetails(rs.getInt("user_id"),rs.getString("resource_id"),rs.getString("preview_url")));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return arr;
+	}
 
 //	public static ArrayList<WorkdrivePhotoDetails> getPhotoDetails(int folderId) {
 //		String sql = "select * from workdrive_photo_details where folder_id=?";
@@ -196,7 +242,5 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 //		}
 //		return arr;
 //	}
-	
-
 
 }

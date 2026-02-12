@@ -1,30 +1,23 @@
-let favourite = [];
+let deleted = [];
 const grid = document.getElementById("galleryGrid");
-let deletedPhotos=[];
-window.addEventListener("load", async() => {
-	const deleteRes = await fetch("/zohophotos/getDeletedPhotos");
-	deletedPhotos = await deleteRes.json();
-	fetch("/zohophotos/getFavouritePhotos")
+
+window.addEventListener("load", () => {
+	fetch("/zohophotos/getDeletedPhotos")
 		.then(response => response.json())
 		.then(data => {
-			favourite = data;
-			console.log(favourite)
-			favourite=favourite.filter(img=>{
-				return !deletedPhotos.some(del=>img.previewUrl===del.url);
-					});
-			console.log("remove"+favourite);
+			deleted = data;
 			grid.innerHTML = "";
-			favourite.forEach(file => {
+			deleted.forEach(file => {
 				const card = document.createElement("div");
 				card.className = "photo-card glass-panel";
 				const img = document.createElement("img");
-				img.src = file.previewUrl;
+				img.src = file.url;
 				img.alt = file.photoName || "Photo";
-				const overlay = document.createElement("div");
-				overlay.className = "photo-overlay";
-				overlay.innerHTML = `<div class="photo-title">${file.photoName || "Photo"}</div>`;
+				const icon = document.createElement("div");
+				icon.innerHTML = `<i class="fa-solid fa-trash-can-arrow-up"></i>`
+				icon.className = "trash";
 				card.appendChild(img);
-				card.appendChild(overlay);
+				card.appendChild(icon);
 				grid.appendChild(card);
 			});
 		})
