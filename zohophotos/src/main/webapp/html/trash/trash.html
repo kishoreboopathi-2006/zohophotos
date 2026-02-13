@@ -18,51 +18,106 @@
 		<!-- ===== SIDEBAR ===== -->
 		<aside class="sidebar">
 			<div class="sidebar-logo">
-				<img src="zohophotologo.png" class="logo">
+				<div class="logo-circle">
+				</div>
 				<h1>ZOHO Photos</h1>
 			</div>
+
 			<nav>
 				<div class="menu-item" onclick="dashboardPage()">
-					<i class="ph ph-squares-four"></i> Dashboard
+					<i class="ph ph-squares-four"></i> <span>Dashboard</span>
 				</div>
+
 				<div class="menu-item" onclick="albumPage()">
-					<i class="ph ph-folder-notch"></i> Albums
+					<i class="ph ph-folder-notch"></i> <span>Albums</span>
 				</div>
 
 				<div class="menu-item" onclick="favouritePage()">
-					<i class="ph ph-heart"></i> Favorites
+					<i class="ph ph-heart"></i> <span>Favorites</span>
 				</div>
 
 				<div class="menu-item" onclick="diaryPage()">
-					<i class="ph ph-notebook"></i>Diary
+					<i class="ph ph-notebook"></i> <span>Diary</span>
 				</div>
+
 				<div class="menu-item" onclick="reminderPage()">
-					<i class="ph ph-hourglass-medium"></i>Reminder
+					<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 				</div>
-				<div class="menu-item" onclick="deleteImage()">
-					<i class="ph ph-trash"></i> Trash
+
+				<div class="menu-item active" onclick="deleteImage()"
+					style="background: #fee2e2; color: var(--danger);">
+					<i class="ph ph-trash"></i> <span>Trash</span>
 				</div>
 			</nav>
 
-			<a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
-				style="margin-top: 10px; color: var(--danger); text-decoration: none;"><i
-				class="ph ph-sign-out"></i> Sign Out</a>
+			<div class="sidebar-footer">
+				<a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
+					style="color: var(--danger); text-decoration: none; margin-bottom: 0;">
+					<i class="ph ph-sign-out"></i> <span>Sign Out</span>
+				</a>
+			</div>
 		</aside>
 
 		<!-- ===== MAIN CONTENT ===== -->
 		<main class="main-content">
 
-			<div class="top-bar">
+			<header class="top-bar">
 				<h2 class="section-title">Trash</h2>
-			</div>
+
+				<div class="user-profile">
+					<div class="user-info">
+						<span class="user-name">Kaviya</span> <span class="user-role">User</span>
+					</div>
+					<div class="avatar">K</div>
+				</div>
+			</header>
 
 			<div class="content-scroll">
-				<div id="galleryGrid" class="gallery-grid"></div>
+				<div id="galleryGrid" class="gallery-grid">
+					<!-- Photo Cards with Trash Button -->
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t1/400/300" alt="Deleted 1">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t2/400/300" alt="Deleted 2">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t3/400/300" alt="Deleted 3">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t4/400/300" alt="Deleted 4">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t5/400/300" alt="Deleted 5">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+					<div class="photo-card">
+						<img src="https://picsum.photos/seed/t6/400/300" alt="Deleted 6">
+						<div class="trash-overlay">
+							<i class="ph ph-trash"></i>
+						</div>
+					</div>
+				</div>
 			</div>
 
 		</main>
 
 	</div>
+
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 let deleted = [];
 const grid = document.getElementById("galleryGrid");
-
+/* kishore for delete */
 window.addEventListener("load", () => {
 	fetch("/zohophotos/getDeletedPhotos")
 		.then(response => response.json())
@@ -16,6 +16,7 @@ window.addEventListener("load", () => {
 				const icon = document.createElement("div");
 				icon.innerHTML = `<i class="fa-solid fa-trash-can-arrow-up"></i>`
 				icon.className = "trash";
+				icon.onclick = () => restorePhoto(file.url);
 				card.appendChild(img);
 				card.appendChild(icon);
 				grid.appendChild(card);
@@ -23,6 +24,7 @@ window.addEventListener("load", () => {
 		})
 		.catch(err => console.error(err));
 });
+/*===================================for redirect================= */
 function dashboardPage() {
 	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
 }
@@ -40,3 +42,28 @@ function reminderPage() {
 	console.log("reminer");
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
 }
+function restorePhoto(url) {
+	const form = new FormData();
+	form.append("url", url);
+	const img = document.querySelector(`img[src="${CSS.escape(url)}"]`);
+	const card=img.closest(".photo-card");
+	card.remove();
+	console.log("card"+card);
+	fetch("/zohophotos/restorePhoto", {
+		method: "post",
+		body: form
+	}).then(handleResponse).then(handleData).catch(error);
+	function handleResponse(response) {
+		return response.text();
+	}
+	function handleData(data) {
+		console.log(data);
+	}
+	function error(err) {
+		console.log(err);
+	}
+
+
+
+}
+

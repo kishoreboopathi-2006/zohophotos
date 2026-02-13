@@ -10,56 +10,68 @@
 
 <body>
 
-<div class="app-layout">
+	<div class="app-layout">
 
-	<!-- ===== SIDEBAR ===== -->
+		<!-- ===== SIDEBAR ===== -->
 		<aside class="sidebar">
 			<div class="sidebar-logo">
-				<img src="zohophotologo.png" class="logo">
+				<div class="logo-fallback"></div>
 				<h1>ZOHO Photos</h1>
 			</div>
+
 			<nav>
 				<div class="menu-item" onclick="dashboardPage()">
-					<i class="ph ph-squares-four"></i> Dashboard
-				</div>
-				<div class="menu-item" onclick="albumPage()">
-					<i class="ph ph-folder-notch"></i> Albums
+					<i class="ph ph-squares-four"></i> <span>Dashboard</span>
 				</div>
 
-				<div class="menu-item" onclick="favouritePage()">
-					<i class="ph ph-heart"></i> Favorites
+				<div class="menu-item" onclick="albumPage()">
+					<i class="ph ph-folder-notch"></i> <span>Albums</span>
+				</div>
+
+				<div class="menu-item active" onclick="favouritePage()"
+					style="background: #eff6ff; color: var(--primary);">
+					<i class="ph ph-heart"></i> <span>Favorites</span>
 				</div>
 
 				<div class="menu-item" onclick="diaryPage()">
-					<i class="ph ph-notebook"></i>Diary
+					<i class="ph ph-notebook"></i> <span>Diary</span>
 				</div>
+
 				<div class="menu-item" onclick="reminderPage()">
-					<i class="ph ph-hourglass-medium"></i>Reminder
+					<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 				</div>
-				<div class="menu-item" onclick="deleteImage()">
-					<i class="ph ph-trash"></i> Trash
+
+				<div class="menu-item" onclick="trashPage()">
+					<i class="ph ph-trash"></i> <span>Trash</span>
 				</div>
 			</nav>
 
 			<a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
-				style="margin-top: 10px; color: var(--danger); text-decoration: none;"><i
-				class="ph ph-sign-out"></i> Sign Out</a>
+				style="margin: 15px; color: var(--danger); text-decoration: none;">
+				<i class="ph ph-sign-out"></i> <span>Sign Out</span>
+			</a>
 		</aside>
 
-	<!-- ===== MAIN CONTENT ===== -->
-	<main class="main-content">
+		<!-- ===== MAIN CONTENT ===== -->
+		<main class="main-content">
 
-		<div class="top-bar">
-			<h2 class="section-title">Favourite Photos</h2>
-		</div>
+			<header class="top-bar">
+				<h2 class="section-title">Favourite Photos</h2>
 
-		<div class="content-scroll">
-			<div id="galleryGrid" class="gallery-grid"></div>
-		</div>
+				<div class="user-profile">
+					<div class="user-info">
+						<span class="user-name">Kaviya</span> <span class="user-role">User</span>
+					</div>
+					<div class="avatar">K</div>
+				</div>
+			</header>
 
-	</main>
+			<div class="content-scroll">
+				<div id="galleryGrid" class="gallery-grid">
+				</div>
 
-</div>
+		</main>
 
+	</div>
 </body>
 </html>

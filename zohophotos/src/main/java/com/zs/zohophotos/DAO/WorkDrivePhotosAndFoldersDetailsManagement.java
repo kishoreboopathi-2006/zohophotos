@@ -214,18 +214,32 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 	}
 
 	public ArrayList<DeletedPhotoDetails> getDeletedPhotos(int userId) {
-		ArrayList<DeletedPhotoDetails> arr=new ArrayList<>();
-		String sql="select * from deleted_photo_details where user_id=?";
+		ArrayList<DeletedPhotoDetails> arr = new ArrayList<>();
+		String sql = "select * from deleted_photo_details where user_id=?";
 		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setInt(1, userId);
-			ResultSet rs=ps.executeQuery();
-			while(rs.next()) {
-				arr.add(new DeletedPhotoDetails(rs.getInt("user_id"),rs.getString("resource_id"),rs.getString("preview_url")));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				arr.add(new DeletedPhotoDetails(rs.getInt("user_id"), rs.getString("resource_id"),
+						rs.getString("preview_url")));
 			}
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return arr;
+	}
+
+	public boolean restorePhoto(String url) {
+		String sql = "delete from deleted_photo_details where preview_url=?";
+		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, url);
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 //	public static ArrayList<WorkdrivePhotoDetails> getPhotoDetails(int folderId) {

@@ -28,4 +28,9 @@ public class DeletedPhotoDetailsOperations {
 		return deletedPhotos;
 	}
 
+	public boolean restorePhoto(String url) {
+		boolean flag=dbManager.restorePhoto(url);
+		return flag;
+	}
+
 }
