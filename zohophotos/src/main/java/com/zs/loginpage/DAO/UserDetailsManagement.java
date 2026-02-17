@@ -105,4 +105,20 @@ public class UserDetailsManagement {
 		}
 		return password;
 	}
+
+	public com.zs.zohophotos.records.UserDetails getUserDetails(com.zs.zohophotos.records.UserDetails user) {
+		String sql = "select preview_url from user_photo where user_id=?";
+		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, user.getUserId());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				String previewUrl = rs.getString(1);
+				user.setPreviewUrl(previewUrl);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
 }

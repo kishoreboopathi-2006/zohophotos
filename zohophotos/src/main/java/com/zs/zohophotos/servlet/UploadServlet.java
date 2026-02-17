@@ -246,6 +246,7 @@ public class UploadServlet extends HttpServlet {
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
 		System.out.println(userId);
+		
 		String workdriveFolderId = com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement
 				.getWorkdriveFolderId(userId);
 		if (workdriveFolderId == null) {
@@ -253,8 +254,11 @@ public class UploadServlet extends HttpServlet {
 			res.sendRedirect("html/error.html");
 			return;
 		}
-
-//        System.out.println("UPLOAD FOLDER ID = " + workdriveFolderId);
+		String entry=req.getParameter("entry");
+		if(entry.equals("profile")) {
+			workdriveFolderId="biz385cc35fd3e44747fe8786b3d557fc3029";
+		}
+        System.out.println("UPLOAD FOLDER ID = " + workdriveFolderId);
 
 		Part filePart = req.getPart("photo");
 		if (filePart == null || filePart.getSize() == 0) {
@@ -295,6 +299,7 @@ public class UploadServlet extends HttpServlet {
 			String photoName = object.getString("FileName");
 			String folderId = object.getString("parent_id");
 			String resourceId = object.getString("resource_id");
+			if(!entry.equals("profile")) {
 			WorkdrivePhotoDetails photoDetails = new WorkdrivePhotoDetails(folderId, resourceId, fileName);
 			boolean flag = WorkDrivePhotosAndFoldersDetailsManagement.insertBasicPhotoDetails(photoDetails);
 			if (!zohoResponse.isSuccessful()) {
@@ -319,5 +324,6 @@ public class UploadServlet extends HttpServlet {
 				System.out.println("redirect");
 				res.sendRedirect("/zohophotos/html/dashboard/dashboard.html");
 			}
+		}
 	}
 }
