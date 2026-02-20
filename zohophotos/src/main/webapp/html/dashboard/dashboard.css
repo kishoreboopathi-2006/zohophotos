@@ -968,7 +968,7 @@ nav {
 	transition: all 0.3s ease;
 }
 
-/    /* Tooltips */
+    /* Tooltips */
         .menu > div::after, .trigger-btn::after {
             content: attr(data-tooltip);
             position: absolute;
@@ -1241,4 +1241,20 @@ nav {
 	top: 63px;
 	position: absolute;
 	right: 215px;
+}
+/* ============================scrool ===================*/
+#floating-date {
+  position: fixed;
+  right: 8px;              /* close to scrollbar */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }

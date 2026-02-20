@@ -92,11 +92,13 @@ window.addEventListener("load", async () => {
 			grid.innerHTML = "<p style='color:red'>Unable to load photos</p>";
 		});
 });
-function formetDate(date){
-	const option={year:"numeric",month:"long",day:"numeric"}
-	return new Date(date).toLocaleDateString("en-Us",option);
-	
+function formetDate(date) {
+	const option = { year: "numeric", month: "long", day: "numeric" }
+	return new Date(date).toLocaleDateString("en-Us", option);
+
 }
+
+
 
 window.addEventListener("load", function() {
 	fetch("/zohophotos/getReminderDetails").then(handleResponse).then(handleData).catch(showError);
@@ -281,10 +283,7 @@ function renderPhotos(photoDetails) {
 		}
 	});
 };
-document.getElementById("close-btn").addEventListener("click", function() {
-	console.log("click");
-	document.getElementById("search-input").value = "";
-});
+
 function albumPage() {
 	window.location.href = "/zohophotos/html/album/album.html";
 }
@@ -857,7 +856,52 @@ document.getElementById("avatar").addEventListener("click", function() {
 	root.appendChild(container);
 
 });
+/*============================================floating date================================== */
+window.addEventListener("DOMContentLoaded", () => {
 
+	const scrollContainer = document.querySelector(".content-scroll");
+	const floatingDate = document.getElementById("floating-date");
+	const gallery = document.querySelector("#galleryGrid");
+
+	function initObserver() {
+
+		const images = document.querySelectorAll(".photo-card img");
+
+		if (images.length === 0) return;
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					floatingDate.textContent =
+						entry.target.dataset.date;
+				}
+			});
+		}, {
+			root: scrollContainer,
+			threshold: 0
+		});
+
+		images.forEach(img => observer.observe(img));
+
+		// Set initial date
+		floatingDate.textContent = images[0].dataset.date;
+	}
+
+	// Watch for images being added
+	const mutationObserver = new MutationObserver(() => {
+		const images = document.querySelectorAll(".photo-card img");
+		if (images.length > 0) {
+			initObserver();
+			mutationObserver.disconnect(); // stop watching
+		}
+	});
+
+	mutationObserver.observe(gallery, {
+		childList: true,
+		subtree: true
+	});
+
+});
 
 
 
