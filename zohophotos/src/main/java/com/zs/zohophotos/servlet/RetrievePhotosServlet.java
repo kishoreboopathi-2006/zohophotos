@@ -100,7 +100,7 @@ public class RetrievePhotosServlet extends HttpServlet {
 		int userId = (int) session.getAttribute("userId");
 		System.out.println(userId);
 		GetWorkdrivePhotoDetails obj = new GetWorkdrivePhotoDetails(userId);
-		String photoDetails=obj.getPhotoDetails();
+		String photoDetails=obj.getPhotoDetailsFormDB();
 		System.out.println(photoDetails);
 		res.setContentType("application/json");
 			res.setCharacterEncoding("UTF-8");

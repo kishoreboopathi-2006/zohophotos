@@ -43,6 +43,34 @@ public class GetPreviewInformation {
 		}
 		return photoDetails;
 	}
+	public String getPreviewUrl(String resourceId) {
+		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		MediaType mediaType = MediaType.parse("application/json");
+		String accessToken = "";
+		try {
+			accessToken = AccessTokenForWorkdrive.getToken();
+			RequestBody body = RequestBody.create(mediaType, "");
+			Request request = new Request.Builder()
+					.url("https://www.zohoapis.in/workdrive/api/v1/files/" + resourceId
+							+ "/previewinfo")
+					.get().addHeader("Authorization", "Zoho-oauthtoken " + accessToken)
+					.addHeader("Accept", "application/vnd.api+json").build();
+
+			Response response;
+			response = client.newCall(request).execute();
+			Gson gson = new Gson();
+			String jsonResponse = response.body().string();
+			System.out.println(".............................."+jsonResponse);
+			JSONObject json = new JSONObject(jsonResponse);
+			String image = json.getJSONObject("data").getJSONObject("attributes").getString("preview_data_url");
+			System.out.println(image);
+			return image;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 }
 //package com.zs.zohophotos;
 //import java.io.IOException;

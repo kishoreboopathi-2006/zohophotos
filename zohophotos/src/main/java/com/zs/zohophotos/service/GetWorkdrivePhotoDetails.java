@@ -55,6 +55,16 @@ public class GetWorkdrivePhotoDetails {
 
 	}
 
+	public String getPhotoDetailsFormDB() {
+		String workdriveFolderId = WorkDrivePhotosAndFoldersDetailsManagement.getWorkdriveFolderId(userId);
+		WorkDrivePhotosAndFoldersDetailsManagement dbManager = new WorkDrivePhotosAndFoldersDetailsManagement();
+		ArrayList<WorkdrivePhotoDetails> arr = dbManager.getPhotoDetails(workdriveFolderId);
+		Gson gson = new Gson();
+		String details = gson.toJson(arr);
+		System.err.println(details);
+		return details;
+	}
+
 	public String getResponse(String workdriveFolderId) {
 		OkHttpClient client = new OkHttpClient();
 		String url = "https://www.zohoapis.in/workdrive/api/v1/files/" + workdriveFolderId + "/files";

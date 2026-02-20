@@ -5,17 +5,22 @@ public class WorkdrivePhotoDetails {
 	private String resourceId;
 	private String previewUrl;
 	private String folderId;
-	private String category;
-	private String describtion;
+	private String date;
 
-	public WorkdrivePhotoDetails(int photoId,String folderId, String resourceId, String imageName, String previewUrl, String category,
-			String describtion) {
+	public WorkdrivePhotoDetails(int photoId, String folderId, String resourceId, String imageName, String previewUrl) {
 		this.imageName = imageName;
 		this.resourceId = resourceId;
 		this.folderId = folderId;
 		this.previewUrl = previewUrl;
-		this.describtion = describtion;
-		this.category = category;
+
+	}
+
+	public WorkdrivePhotoDetails(String folderId, String resourceId, String imageName, String previewUrl, String date) {
+		this.imageName = imageName;
+		this.resourceId = resourceId;
+		this.folderId = folderId;
+		this.previewUrl = previewUrl;
+		this.date = date;
 	}
 
 	public WorkdrivePhotoDetails(String folderId, String resourceId, String imageName, String previewUrl) {
@@ -24,27 +29,20 @@ public class WorkdrivePhotoDetails {
 		this.folderId = folderId;
 		this.previewUrl = previewUrl;
 	}
+
 	public WorkdrivePhotoDetails(String folderId, String resourceId, String imageName) {
 		this.imageName = imageName;
 		this.resourceId = resourceId;
 		this.folderId = folderId;
 	}
-	public String getCategory() {
-		return category;
+
+	public String getDate() {
+		return date;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setDate(String date) {
+		this.date = date;
 	}
-
-	public String getDescribtion() {
-		return describtion;
-	}
-
-	public void setDescribtion(String describtion) {
-		this.describtion = describtion;
-	}
-
 	public String getImageName() {
 		return imageName;
 	}

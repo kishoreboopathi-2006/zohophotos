@@ -211,7 +211,10 @@ import com.zs.accesstoken.AccessTokenForWorkdrive;
 import com.zs.aiplatform.records.FolderAndFileId;
 import com.zs.aiplatform.services.AiResponseOperations;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
+import com.zs.zohophotos.records.ProfilePhotoDetails;
 import com.zs.zohophotos.records.WorkdrivePhotoDetails;
+import com.zs.zohophotos.service.GetPreviewInformation;
+import com.zs.zohophotos.service.ProfilePhotoDetailsOperation;
 
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.ServletException;
@@ -246,7 +249,7 @@ public class UploadServlet extends HttpServlet {
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
 		System.out.println(userId);
-		
+
 		String workdriveFolderId = com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement
 				.getWorkdriveFolderId(userId);
 		if (workdriveFolderId == null) {
@@ -254,11 +257,13 @@ public class UploadServlet extends HttpServlet {
 			res.sendRedirect("html/error.html");
 			return;
 		}
-		String entry=req.getParameter("entry");
-		if(entry.equals("profile")) {
-			workdriveFolderId="biz385cc35fd3e44747fe8786b3d557fc3029";
+		String entry = req.getParameter("entry");
+		if (entry != null) {
+			if (entry.equals("profile")) {
+				workdriveFolderId = "biz385cc35fd3e44747fe8786b3d557fc3029";
+			}
 		}
-        System.out.println("UPLOAD FOLDER ID = " + workdriveFolderId);
+		System.out.println("UPLOAD FOLDER ID = " + workdriveFolderId);
 
 		Part filePart = req.getPart("photo");
 		if (filePart == null || filePart.getSize() == 0) {
@@ -299,31 +304,44 @@ public class UploadServlet extends HttpServlet {
 			String photoName = object.getString("FileName");
 			String folderId = object.getString("parent_id");
 			String resourceId = object.getString("resource_id");
-			if(!entry.equals("profile")) {
-			WorkdrivePhotoDetails photoDetails = new WorkdrivePhotoDetails(folderId, resourceId, fileName);
-			boolean flag = WorkDrivePhotosAndFoldersDetailsManagement.insertBasicPhotoDetails(photoDetails);
-			if (!zohoResponse.isSuccessful()) {
-				res.sendRedirect("html/error.html");
-				return;
+			GetPreviewInformation preview=new GetPreviewInformation();
+			String url=preview.getPreviewUrl(resourceId);
+			boolean flag=false;
+			if (entry==null) {
+				System.err.println("=========================ddd======================");
+				WorkdrivePhotoDetails photoDetails = new WorkdrivePhotoDetails(folderId, resourceId, fileName,url);
+				flag = WorkDrivePhotosAndFoldersDetailsManagement.insertBasicPhotoDetails(photoDetails);
+				if (!zohoResponse.isSuccessful()) {
+					res.sendRedirect("html/error.html");
+					return;
+				}
 			}
-			if (flag) {
-				new Thread(() -> {
-					try {
-						AiResponseOperations ai = new AiResponseOperations(new FolderAndFileId(folderId,resourceId));
-						boolean execute = ai.insertAiresponse();
-						if (execute) {
-							System.out.println("success");
-						} else {
-							System.out.println("fail");
+				else {
+					ProfilePhotoDetailsOperation obj=new ProfilePhotoDetailsOperation();
+					ProfilePhotoDetails photo=new ProfilePhotoDetails(userId,resourceId);
+					String previewUrl=obj.insertProfilePhoto(photo);
+					res.getWriter().println(previewUrl);
+					return;
+				}
+				if (flag) {
+					new Thread(() -> {
+						try {
+							AiResponseOperations ai = new AiResponseOperations(
+									new FolderAndFileId(folderId, resourceId));
+							boolean execute = ai.insertAiresponse();
+							if (execute) {
+								System.out.println("success");
+							} else {
+								System.out.println("fail");
+							}
+						} finally {
+							System.out.println("complete");
 						}
-					} finally {
-						System.out.println("complete");
-					}
-				}).start();
-			}
+					}).start();
+				}
 				System.out.println("redirect");
 				res.sendRedirect("/zohophotos/html/dashboard/dashboard.html");
 			}
 		}
 	}
-}
+

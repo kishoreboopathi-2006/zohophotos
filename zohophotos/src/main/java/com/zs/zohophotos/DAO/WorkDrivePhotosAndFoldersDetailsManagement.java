@@ -131,11 +131,12 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 	}
 
 	public static boolean insertBasicPhotoDetails(WorkdrivePhotoDetails photoDetails) {
-		String sql = "insert into workdrive_photo_details (workdrive_file_id,photo_name,workdrive_folder_id,uploaded_at) values (?,?,?,default)";
+		String sql = "insert into workdrive_photo_details (workdrive_file_id,photo_name,workdrive_folder_id,uploaded_at,preview_url) values (?,?,?,default,?)";
 		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, photoDetails.getResourceId());
 			ps.setString(2, photoDetails.getImageName());
 			ps.setString(3, photoDetails.getFolderId());
+			ps.setString(4, photoDetails.getPreviewUrl());
 			System.out.println(ps);
 			ps.executeUpdate();
 			return true;
@@ -242,19 +243,21 @@ public class WorkDrivePhotosAndFoldersDetailsManagement {
 		return false;
 	}
 
-//	public static ArrayList<WorkdrivePhotoDetails> getPhotoDetails(int folderId) {
-//		String sql = "select * from workdrive_photo_details where folder_id=?";
-//		ArrayList<WorkdrivePhotoDetails> arr = new ArrayList<>();
-//		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-//			ps.setInt(1, folderId);
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				arr.add(new WorkdrivePhotoDetails(rs.getInt(5), rs.getString(3),rs.getString(2), rs.getString(4),rs.getString(6),rs.getString(7)));
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return arr;
-//	}
+	public ArrayList<WorkdrivePhotoDetails> getPhotoDetails(String folderId) {
+		String sql = "select * from workdrive_photo_details where workdrive_folder_id=?";
+		ArrayList<WorkdrivePhotoDetails> arr = new ArrayList<>();
+		try (Connection con = DBConnector.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, folderId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				arr.add(new WorkdrivePhotoDetails(rs.getString("workdrive_folder_id"),
+						rs.getString("workdrive_file_id"), rs.getString("photo_name"), rs.getString("preview_url"),
+						rs.getString("uploaded_at")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
+	}
 
 }
