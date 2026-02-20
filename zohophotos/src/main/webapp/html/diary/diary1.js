@@ -1,50 +1,66 @@
 document.getElementById("diaryForm").addEventListener("submit", submitDiary);
+
 let diaryDetails = [];
 const photos = [];
 let entry = false;
 
+/* ---------------- DATE FORMATTER (DISPLAY ONLY) ---------------- */
+function formatDisplayDate(dateStr) {
+	const d = new Date(dateStr);
+	return String(d.getDate()).padStart(2, '0') + "-" +
+		String(d.getMonth() + 1).padStart(2, '0') + "-" +
+		d.getFullYear();
+}
+
+/* ---------------- PAGE LOAD ---------------- */
 window.onload = async function() {
 	let today = new Date().toISOString().split('T')[0];
-	document.getElementById("dateInput").textContent = today;
-	document.getElementById("date").value = today;
 
+	// display format
+	document.getElementById("dateInput").textContent = formatDisplayDate(today);
+
+	// keep logic format
+	document.getElementById("date").value = date;
+	document.getElementById("rightDateDisplay").textContent = formatDisplayDate(today);
 	diaryDetails = await fetchDiaryDetails();
 	if (diaryDetails) {
 		filldiaryDetails(today);
 	}
 };
 
+/* ---------------- FORM SUBMIT ---------------- */
 function submitDiary(e) {
 	e.preventDefault();
-	var form = document.getElementById("diaryForm");
+
+	let form = document.getElementById("diaryForm");
 	let formData = new FormData(form);
 	formData.append("entry", entry);
-	console.log(form);
-	console.log(formData);
-	for (let [key, value] of formData.entries()) {
-		console.log(key, value);
-	}
+
 	fetch("/zohophotos/getDiaryData", {
 		method: "post",
 		body: formData
-
-	}).then(handleResponse).then(showMessage).catch(showError);
+	})
+		.then(handleResponse)
+		.then(showMessage)
+		.catch(showError);
 }
 
 function handleResponse(response) {
-	let a = response.text();
-	return a;
+	return response.text();
 }
 
 function showMessage(data) {
 	document.getElementById("message").innerHTML = data;
-	setTimeout(() => { document.getElementById("message").innerHTML = ""; }, 3000);
+	setTimeout(() => {
+		document.getElementById("message").innerHTML = "";
+	}, 3000);
 }
 
 function showError() {
 	document.getElementById("message").innerHTML = "Error saving diary";
 }
 
+/* ---------------- IMAGE PREVIEW ---------------- */
 let overlay = null;
 
 function previewimage(e) {
@@ -55,44 +71,17 @@ function previewimage(e) {
 		const img = document.createElement("img");
 		img.className = "images";
 		img.src = URL.createObjectURL(file);
+
 		img.style.width = "100px";
 		img.style.height = "100px";
 		img.style.margin = "3px";
 		img.style.cursor = "pointer";
-		img.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.3)";
-		img.style.border = "3px solid white";
-		img.addEventListener("click", function() {
-			toggleBigImage(img.src);
-		});
+
+		img.addEventListener("click", () => toggleBigImage(img.src));
 
 		preview.appendChild(img);
 	});
 }
-/*
-function previewimage(event) {
-	const preview = document.getElementById("preview");
-
-	Array.from(event.target.files).forEach(file => {
-		const reader = new FileReader();
-
-		reader.onload = function() {
-			const div = document.createElement("div");
-			div.className = "preview-img-container";
-
-			const img = document.createElement("img");
-			img.src = reader.result;
-
-			div.appendChild(img);
-			preview.appendChild(div);
-		};
-
-		reader.readAsDataURL(file);
-	});
-
-
-	event.target.value = "";
-}
-*/
 
 function toggleBigImage(src) {
 	if (overlay) {
@@ -117,12 +106,9 @@ function toggleBigImage(src) {
 	bigImg.src = src;
 	bigImg.style.maxWidth = "80%";
 	bigImg.style.maxHeight = "80%";
-	bigImg.style.borderRadius = "8px";
-	bigImg.style.boxShadow = "0 0 20px black";
-	// Clears message after 3 seconds(added small UI improvement)
 
 	overlay.appendChild(bigImg);
-	overlay.addEventListener("click", function() {
+	overlay.addEventListener("click", () => {
 		overlay.remove();
 		overlay = null;
 	});
@@ -130,83 +116,67 @@ function toggleBigImage(src) {
 	document.body.appendChild(overlay);
 }
 
+/* ---------------- DELETE IMAGES ---------------- */
 async function clearImage() {
-	let message = await deleteImages();
-	const imgs = document.querySelectorAll("#preview .images");
-	imgs.forEach(el => {
+	await deleteImages();
+
+	document.querySelectorAll("#preview .images").forEach(el => {
 		URL.revokeObjectURL(el.src);
 		el.remove();
 	});
-	console.log(message);
+
 	document.getElementById("file-upload").value = "";
 }
 
 async function deleteImages() {
-	// --- YOUR ORIGINAL BACKEND LOGIC ---
-	console.log(photos);
 	const response = await fetch("/zohophotos/deletePhotos", {
 		method: "post",
-		headers: {
-			'Content-Type': 'application/json'
-		},
+		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ photoId: photos })
 	});
-	if (!response.ok) {
-		throw new Error("HTTP error:" + response.status)
-	}
-	const data = await response.text();
-	return data;
+
+	if (!response.ok) throw new Error("HTTP error:" + response.status);
+	return await response.text();
 }
 
+/* ---------------- CALENDAR ---------------- */
 const dateInput = document.getElementById("dateInput");
 const calendar = document.getElementById("calendar");
 const calendarGrid = document.getElementById("calendarGrid");
 const monthYear = document.getElementById("monthYear");
+
 let currentDate = new Date();
 
 async function showCalender() {
 	calendar.style.display = calendar.style.display === "block" ? "none" : "block";
-	diaryDetails = await (fetchDiaryDetails());
+	diaryDetails = await fetchDiaryDetails();
 	renderCalendar();
 }
 
 async function fetchDiaryDetails() {
 	try {
 		const response = await fetch("/zohophotos/diaryDetails");
-		if (!response.ok) {
-			throw new Error("HTTP error " + response.status);
-		}
-		console.log("ak");
-		const data = await response.json();
-		console.log("data => ", JSON.stringify(data));
-		return data;
+		if (!response.ok) throw new Error("HTTP error " + response.status);
+		return await response.json();
 	} catch (error) {
-		console.log("error:" + error);
-		return []; // Return empty array on error so UI doesn't crash
+		console.log(error);
+		return [];
 	}
 }
 
 function renderCalendar() {
 	calendarGrid.innerHTML = "";
+
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
-	console.log(year + ":" + month);
+
 	monthYear.textContent = currentDate.toLocaleString("default", {
 		month: "long",
 		year: "numeric"
 	});
 
-	const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-	days.forEach(d => {
-		const div = document.createElement("div");
-		div.textContent = d;
-		div.className = "day-name";
-		calendarGrid.appendChild(div);
-	});
-
 	const firstDay = new Date(year, month, 1).getDay();
 	const daysInMonth = new Date(year, month + 1, 0).getDate();
-	console.log(firstDay + "d:" + daysInMonth);
 
 	for (let i = 0; i < firstDay; i++) {
 		calendarGrid.appendChild(document.createElement("div"));
@@ -214,73 +184,76 @@ function renderCalendar() {
 
 	for (let day = 1; day <= daysInMonth; day++) {
 		let dateObj = new Date(year, month, day);
-		let dateStr = dateObj.getFullYear() + '-' +
-			String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + String(dateObj.getDate()).padStart(2, '0')
-			;
 
-		// Safety check for diaryDetails
-		const exists = diaryDetails && diaryDetails.some(diary => diary.date === dateStr);
+		let dateStr =
+			dateObj.getFullYear() + '-' +
+			String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+			String(dateObj.getDate()).padStart(2, '0');
+
+		const exists = diaryDetails && diaryDetails.some(d => d.date === dateStr);
 
 		const div = document.createElement("div");
 		div.textContent = day;
+		div.className = "day";
+
 		if (exists) {
-			console.log("green");
-			// Improved styling from my version
 			div.style.color = "red";
-			div.style.backgroundColor = "#e0f2f1";
 			div.style.fontWeight = "bold";
 		}
-		div.className = "day";
+
 		div.onclick = () => {
 			let currentSelected = document.getElementById("date").value;
-			// Determine direction for flip
 			let direction = (dateStr > currentSelected) ? 1 : -1;
 
-			dateInput.textContent = new Date(dateStr).toLocaleDateString("en-GB", {
-				day: "2-digit",
-				month: "short",
-				year: "numeric"
-			});;
-			calendar.style.display = "none";
-			document.getElementById("date").value = dateStr;
+			// DISPLAY FORMAT ONLY
+			dateInput.textContent = formatDisplayDate(dateStr);
 
-			// Trigger Flip
+			document.getElementById("date").value = dateStr;
+			document.getElementById("rightDateDisplay").textContent = formatDisplayDate(dateStr);
+
+			calendar.style.display = "none";
+
 			flipPage(direction, dateStr);
 		};
+
 		calendarGrid.appendChild(div);
 	}
 }
 
+/* ---------------- FILL DIARY ---------------- */
 function filldiaryDetails(date) {
-	console.log(date);
-	// Safety check
 	if (!diaryDetails) return;
 
-	let diaryData = diaryDetails.find(diary => diary.date === date);
+	let diaryData = diaryDetails.find(d => d.date === date);
 	const preview = document.getElementById("preview");
 
+	// keep logic format
 	document.getElementById("date").value = date;
-	dateInput.textContent = date;
 
+
+	// DISPLAY FORMAT
+	dateInput.textContent = formatDisplayDate(date);
+	document.getElementById("rightDateDisplay").textContent = formatDisplayDate(date);
 	if (diaryData) {
-		console.log(JSON.stringify(diaryData));
 		entry = true;
+
 		document.getElementById("title").value = diaryData.title;
 		document.getElementById("content").value = diaryData.content;
+
 		preview.innerHTML = "";
+
 		diaryData.photos.forEach(photo => {
 			const img = document.createElement("img");
 			img.src = photo.url;
 			img.className = "images";
 			img.style.width = "100px";
 			img.style.height = "100px";
+
+			img.addEventListener("click", () => toggleBigImage(img.src));
+
 			preview.appendChild(img);
 			photos.push(photo.photoId);
-			img.addEventListener("click", function() {
-				toggleBigImage(img.src);
-			});
 		});
-		console.log(photos);
 	}
 	else {
 		entry = false;
@@ -290,64 +263,62 @@ function filldiaryDetails(date) {
 	}
 }
 
-async function getDate() {
-	let date = document.getElementById("date").value;
-	console.log("success:" + date);
-	diaryDetails = await (fetchDiaryDetails());
-	filldiaryDetails(date);
-	console.log("sele");
-}
-
-function changeMonth(step) {
-	currentDate.setMonth(currentDate.getMonth() + step);
-	renderCalendar();
-}
-
-// --- NEW FUNCTION: REALISTIC PAGE FLIP ANIMATION ---
-// This is visual logic only - it calls your existing filldiaryDetails()
+/* ---------------- NAVIGATION ---------------- */
 function goToDate(direction) {
 	let currentVal = document.getElementById("date").value;
 	let currDate = new Date(currentVal);
-	// Add or subtract a day
-	currDate.setDate(currDate.getDate() + direction);
-	// Format new date YYYY-MM-DD
-	let newDateStr = currDate.getFullYear() + '-' +
-		String(currDate.getMonth() + 1).padStart(2, '0') + '-' + String(currDate.getDate()).padStart(2, '0');
 
+	currDate.setDate(currDate.getDate() + direction);
+
+	let newDateStr =
+		currDate.getFullYear() + '-' +
+		String(currDate.getMonth() + 1).padStart(2, '0') + '-' +
+		String(currDate.getDate()).padStart(2, '0');
 
 	flipPage(direction, newDateStr);
 }
 
+/* ---------------- PAGE FLIP ---------------- */
 function flipPage(direction, targetDate) {
 	const turningPage = document.getElementById("turning-page");
 	const frontFace = turningPage.querySelector('.front');
 	const backFace = turningPage.querySelector('.back');
 
-	// 1. Reset Animation
 	turningPage.className = "";
-	void turningPage.offsetWidth; // Trigger reflow
+	void turningPage.offsetWidth;
 
-	// 2. Decide Direction & Textures
 	if (direction === 1) {
-		// Next: Right page turns to Left
 		frontFace.className = "page-face front face-lined";
 		backFace.className = "page-face back face-plain";
 		turningPage.classList.add("animate-next");
 	} else {
-		// Prev: Left page turns to Right
 		frontFace.className = "page-face front face-plain";
 		backFace.className = "page-face back face-lined";
 		turningPage.classList.add("animate-prev");
 	}
 
-	// 3. MID-POINT Logic 
-	// Wait until page blocks view (700ms), then load data
-	setTimeout(() => {
-		filldiaryDetails(targetDate);
-	}, 700);
-
-	// 4. Cleanup after animation ends
-	setTimeout(() => {
-		turningPage.className = "";
-	}, 1400);
+	setTimeout(() => filldiaryDetails(targetDate), 700);
+	setTimeout(() => turningPage.className = "", 1400);
 }
+function dashboardPage() {
+	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
+}
+function diaryPage() {
+	window.location.href = "/zohophotos/html/diary/diary.html";
+}
+
+function favouritePage() {
+	window.location.href = "/zohophotos/html/favourite/favourite.html";
+}
+function reminderPage() {
+	console.log("reminer");
+	window.location.href = "/zohophotos/html/reminder/reminder.html";
+}
+
+function albumPage() {
+	window.location.href = "/zohophotos/html/album/album.html";
+}
+
+
+
+

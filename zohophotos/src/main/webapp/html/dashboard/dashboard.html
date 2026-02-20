@@ -46,7 +46,7 @@
 			</div>
 
 			<nav>
-				<div class="menu-item" onclick="dashboardPage()">
+				<div class="menu-item active" onclick="dashboardPage()">
 					<i class="ph ph-squares-four"></i> <span>Dashboard</span>
 				</div>
 
@@ -103,16 +103,16 @@
 					<!-- Upload Button -->
 					<button class="btn-primary"
 						onclick="document.getElementById('photoInput').click();">
-						<i class="ph ph-upload-simple"></i> Upload
+						<i class="fa-solid fa-plus"></i>
+
 					</button>
 
 
-					<div class="user-profile">
-						<div style="text-align: right; font-size: 0.9rem;">
-							<strong>Kaviya</strong>
-							<div style="font-size: 0.75rem; color: var(--text-light);">User</div>
+
+					<div class="user-profile" id="user-profile">
+						<div class="avatar" id="avatar">
+							<img src="images.png" id="profile-img">
 						</div>
-						<div class="avatar">K</div>
 					</div>
 				</div>
 			</header>
@@ -122,7 +122,8 @@
 				<div class="top-slider glass-panel">
 					<div class="slider-track" id="sliderTrack"></div>
 				</div>
-
+				<!-- profile -->
+				<div id="profile-root"></div>
 				<!-- photo cards -->
 				<div class="dash">
 					<div class="wrapper" onclick="reminderPage()">
@@ -155,8 +156,6 @@
 			</div>
 		</main>
 	</div>
-	<div id="viewBox"></div>
-
 	<div id="viewBox"></div>
 </body>
 </html>
