@@ -49,25 +49,7 @@ body {
 }
 
 /* --- SIDEBAR --- */
-.sidebar {
-	width: var(--sidebar-width);
-	height: 100vh;
-	background: var(--white);
-	border-right: 1px solid var(--glass-border);
-	display: flex;
-	flex-direction: column;
-	transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	overflow: hidden;
-	position: fixed;
-	left: 0;
-	top: 0;
-	z-index: 1000;
-}
 
-.sidebar:hover {
-	width: var(--sidebar-hover-width);
-	box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
-}
 
 .sidebar-logo {
 	height: 80px;
@@ -91,8 +73,9 @@ body {
 }
 
 .sidebar-logo h1 {
-	margin-left: 15px;
-	font-size: 1.2rem;
+	margin-left: 52px;
+	margin-top:15px;
+	font-size: 33px;
 	font-weight: 800;
 	color: var(--primary);
 	opacity: 0;
@@ -102,13 +85,14 @@ body {
 nav {
 	flex: 1;
 	padding: 10px 14px;
+	margin-top:24px;
 }
 
 .menu-item {
 	display: flex;
 	align-items: center;
 	padding: 12px;
-	margin-bottom: 5px;
+	margin-top: 8px;
 	border-radius: 12px;
 	color: var(--text-light);
 	cursor: pointer;
@@ -144,10 +128,9 @@ nav {
 }
 
 /* Hover Reveal */
-.sidebar:hover .sidebar-logo h1, .sidebar:hover .menu-item span {
+.sidebar-logo h1,.menu-item span {
 	opacity: 1;
 }
-
 /* --- MAIN CONTENT --- */
 .main-content {
 	margin-left: var(--sidebar-width);

@@ -20,35 +20,12 @@
 	--nav-height: 70px;
 }
 
-:root {
-	/* Selected Colors and Variables */
-	--primary: #1e3a8a;
-	--secondary: #7c3aed;
-	--accent: #14b8a6;
-	--danger: #ef4444;
-	--text-main: #1e293b;
-	--text-light: #64748b;
-	--white: #ffffff;
-	--bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #eef2ff 50%, #f5f3ff 100%);
-	--glass-bg: rgba(255, 255, 255, 0.75);
-	--glass-border: rgba(255, 255, 255, 0.6);
-	--radius: 16px;
-	--sidebar-hover-width: 260px;
-	--nav-height: 70px;
-}
-
-body {
-	margin: 0;
-	min-height: 100vh;
-	background-color: #F2F3FF;
-	/* Wood texture background */
-	font-family: 'Quicksand', sans-serif;
-	font-size: 1rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 20px;
-	overflow-x: hidden;
+body{
+	margin:0;
+	min-height:100vh;
+	background:#F2F3FF;
+	font-family: 'Poppins', sans-serif;
+	display:flex; /* keep flex */
 }
 
 /* Import Google Fonts for the style to work */
@@ -72,6 +49,8 @@ body {
 	/* 3D Context for Flipping */
 	perspective: 2500px;
 	z-index: 1;
+	margin-left:112px;
+	margin-top:103px;
 }
 
 /* Spine of the book */
@@ -431,481 +410,27 @@ button:hover {
 	animation: shadowBackNext 1.4s linear forwards;
 }
 
-@
-keyframes flipNext { 0% {
+@keyframes flipNext { 0% {
 	transform: rotateY(0deg);
 }
-
-100
-
-
-
-
-
-
-%
+100%
 {
-transform
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rotateY
-
-
-
-
-(
-
-
-
-
-
-
--180deg
-
-
-
-
-
-
-)
-
-
-
-
-;
+transform:rotateY(-180deg);
 }
 }
-@
-keyframes shadowFrontNext { 0% {
+@keyframes shadowFrontNext { 0% {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
 }
 
-50
-
-
-
-
-
-
-%
+50%
 {
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.2
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-100
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.3
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.4
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
-@
-keyframes shadowBackNext { 0% {
+background:linear-gradient(toleft,rgba(0,0,0,0.1),rgba(0,0,0,0.2));}100%{background:linear-gradient(toleft,rgba(0,0,0,0.3),rgba(0,0,0,0.4));}}
+@keyframes shadowBackNext { 0% {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0.4),
 		rgba(0, 0, 0, 0.3));
 }
 
-50
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-100
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
+50%{background:linear-gradient(toright,rgba(0,0,0,0.1),rgba(0,0,0,0));}100%{background:rgba(0,0,0,0)
 ;
 }
 }
@@ -934,484 +459,24 @@ rgba
 	animation: shadowBackPrev 1.4s linear forwards;
 }
 
-@
-keyframes flipPrev { 0% {
+@keyframes flipPrev { 0% {
 	transform: rotateY(0deg);
 }
 
-100
-
-
-
-
-
-
-%
+100%
 {
-transform
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rotateY
-
-
-
-
-(
-
-
-
-
-
-
-180deg
-
-
-
-
-
-
-)
-
-
-
-
-;
+transform:rotateY(180deg);
 }
 }
-@
-keyframes shadowFrontPrev { 0% {
+@keyframes shadowFrontPrev { 0% {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-}
-
-50
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.2
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-100
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.3
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.4
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
-@
-keyframes shadowBackPrev { 0% {
+}50%{background:linear-gradient(toright,rgba(0,0,0,0.1),rgba(0,0,0,0.2));}100%{background:linear-gradient(toright,rgba(0,0,0,0.3),rgba(0,0,0,0.4));}}
+@keyframes shadowBackPrev { 0% {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.4),
 		rgba(0, 0, 0, 0.3));
 }
-
-50
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-100
-
-
-
-
-
-
-%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
+50%{background:linear-gradient(toleft,rgba(0,0,0,0.1),rgba(0,0,0,0));}
+100%{background:rgba(0,0,0,0);}}
 
 /* Page Navigation Arrows */
 .nav-btn {
@@ -1440,7 +505,7 @@ rgba
 }
 
 .prev-btn {
-	left: -70px;
+	left: 45px;
 }
 
 .next-btn {
@@ -1632,25 +697,7 @@ rgba
 	position: relative;
 }
 /* --- SIDEBAR --- */
-.sidebar {
-	width: var(--sidebar-width);
-	height: 100vh;
-	background: var(--white);
-	border-right: 1px solid var(--glass-border);
-	display: flex;
-	flex-direction: column;
-	transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	overflow: hidden;
-	position: fixed;
-	left: 0;
-	top: 0;
-	z-index: 1000;
-}
 
-.sidebar:hover {
-	width: var(--sidebar-hover-width);
-	box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
-}
 
 .sidebar-logo {
 	height: 80px;
@@ -1674,8 +721,9 @@ rgba
 }
 
 .sidebar-logo h1 {
-	margin-left: 15px;
-	font-size: 1.2rem;
+	margin-left: 52px;
+	margin-top:15px;
+	font-size: 33px;
 	font-weight: 800;
 	color: var(--primary);
 	opacity: 0;
@@ -1685,13 +733,14 @@ rgba
 nav {
 	flex: 1;
 	padding: 10px 14px;
+	margin-top:24px;
 }
 
 .menu-item {
 	display: flex;
 	align-items: center;
 	padding: 12px;
-	margin-bottom: 5px;
+	margin-top: 8px;
 	border-radius: 12px;
 	color: var(--text-light);
 	cursor: pointer;
@@ -1727,6 +776,6 @@ nav {
 }
 
 /* Hover Reveal */
-.sidebar:hover .sidebar-logo h1, .sidebar:hover .menu-item span {
+.sidebar-logo h1,.menu-item span {
 	opacity: 1;
 }

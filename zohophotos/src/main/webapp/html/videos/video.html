@@ -5,11 +5,11 @@
 <title>Album | ZOHO Photos</title>
 
 <link rel="stylesheet" href="album.css">
-<script src="album.js" defer></script>
+<script src="video.js" defer></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
 	rel="stylesheet">
-<link href="dashboard.css" rel="stylesheet">
+<link href="video.css" rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -29,7 +29,7 @@
 				<i class="ph ph-squares-four"></i> <span>Dashboard</span>
 			</div>
 
-			<div class="menu-item  active" onclick="albumPage()">
+			<div class="menu-item" onclick="albumPage()">
 				<i class="ph ph-folder-notch"></i> <span>Albums</span>
 			</div>
 
@@ -40,10 +40,11 @@
 			<div class="menu-item" onclick="diaryPage()">
 				<i class="ph ph-notebook"></i> <span>Diary</span>
 			</div>
-			<div class="menu-item" onclick="showVideos()">
+
+			<div class="menu-item active" onclick="showVideos()">
 				<i class="ph ph-video-camera"></i><span>Videos</span>
 			</div>
-
+			<div id="sidebarVideos"></div>
 		<!--  	<div class="menu-item" onclick="reminderPage()">
 				<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 			</div>-->

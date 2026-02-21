@@ -132,6 +132,9 @@ function albumPage() {
 }
 
 
+function albumPage() {
+	window.location.href = "/zohophotos/html/videos/video.html";
+}
 
 
 

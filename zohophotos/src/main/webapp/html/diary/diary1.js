@@ -60,6 +60,7 @@ function showError() {
 	document.getElementById("message").innerHTML = "Error saving diary";
 }
 
+
 /* ---------------- IMAGE PREVIEW ---------------- */
 let overlay = null;
 
@@ -71,17 +72,41 @@ function previewimage(e) {
 		const img = document.createElement("img");
 		img.className = "images";
 		img.src = URL.createObjectURL(file);
-
-		img.style.width = "100px";
-		img.style.height = "100px";
+		img.style.width="100%";
 		img.style.margin = "3px";
 		img.style.cursor = "pointer";
-
-		img.addEventListener("click", () => toggleBigImage(img.src));
+		img.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.3)";
+		img.style.border = "3px solid white";
+		img.addEventListener("click", function() {
+			toggleBigImage(img.src);
+		});
 
 		preview.appendChild(img);
 	});
+	updateLayout();
+	
 }
+function updateLayout() {
+	const preview = document.getElementById("preview");
+	const count = preview.children.length;
+
+	
+	preview.classList.remove(
+		"layout-1",
+		"layout-2",
+		"layout-3",
+		"layout-4",
+		"layout-5"
+	);
+
+	if (count === 1) preview.classList.add("layout-1");
+	else if (count === 2) preview.classList.add("layout-2");
+	else if (count === 3) preview.classList.add("layout-3");
+	else if (count === 4) preview.classList.add("layout-4");
+	else preview.classList.add("layout-5");
+}
+
+
 
 function toggleBigImage(src) {
 	if (overlay) {
@@ -115,6 +140,7 @@ function toggleBigImage(src) {
 
 	document.body.appendChild(overlay);
 }
+
 
 /* ---------------- DELETE IMAGES ---------------- */
 async function clearImage() {

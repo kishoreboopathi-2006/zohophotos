@@ -2,7 +2,7 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	font-family: Poppins, Arial, sans-serif;
+	
 }
 
 :root {
@@ -23,24 +23,9 @@
 	--nav-height: 70px;
 }
 
-:root {
-	/* Selected Colors and Variables */
-	--primary: #1e3a8a;
-	--secondary: #7c3aed;
-	--accent: #14b8a6;
-	--danger: #ef4444;
-	--text-main: #1e293b;
-	--text-light: #64748b;
-	--white: #ffffff;
-	--bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #eef2ff 50%, #f5f3ff 100%);
-	--glass-bg: rgba(255, 255, 255, 0.75);
-	--glass-border: rgba(255, 255, 255, 0.6);
-	--radius: 16px;
-	--sidebar-hover-width: 260px;
-	--nav-height: 70px;
-}
 
 body {
+	font-family: 'Poppins', sans-serif;
 	display: flex;
 	min-height: 100vh;
 	background: #f3f6fd;
@@ -176,7 +161,7 @@ body.dark {
 }
 
 body {
-	font-family: 'Poppins', sans-serif;
+	
 	background: var(--bg-gradient);
 	color: var(--text-main);
 	height: 100vh;
@@ -186,7 +171,7 @@ body {
 button {
 	cursor: pointer;
 	border: none;
-	font-family: inherit;
+	
 }
 
 /* Layout */
@@ -203,25 +188,9 @@ button {
 	border-radius: var(--radius);
 }
 
-/* --- SIDEBAR --- */
-.sidebar {
-	width: var(--sidebar-width);
-	height: 100vh;
-	background: var(--white);
-	border-right: 1px solid var(--glass-border);
-	display: flex;
-	flex-direction: column;
-	transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-	overflow: hidden;
-	left: 0;
-	top: 0;
-	z-index: 1000;
-}
 
-.sidebar:hover {
-	width: var(--sidebar-hover-width);
-	box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
-}
+/* --- SIDEBAR --- */
+
 
 .sidebar-logo {
 	height: 80px;
@@ -245,9 +214,9 @@ button {
 }
 
 .sidebar-logo h1 {
-	margin-left: 15px;
-	font-size: 1.2rem;
-	font-weight: 800;
+	margin-left: 52px;
+	font-size: 33px;
+	font-weight: 808;
 	color: var(--primary);
 	opacity: 0;
 	transition: opacity 0.2s ease;
@@ -262,7 +231,7 @@ nav {
 	display: flex;
 	align-items: center;
 	padding: 12px;
-	margin-bottom: 5px;
+	margin-top: 8px;
 	border-radius: 12px;
 	color: var(--text-light);
 	cursor: pointer;
@@ -279,7 +248,7 @@ nav {
 .menu-item.active {
 	background-color: #eff6ff;
 	color: var(--primary);
-	font-weight: 600;
+	
 }
 
 .menu-item i {
@@ -296,8 +265,7 @@ nav {
 	opacity: 0;
 	transition: opacity 0.2s ease;
 }
-
 /* Hover Reveal */
-.sidebar:hover .sidebar-logo h1, .sidebar:hover .menu-item span {
+.sidebar-logo h1,.menu-item span {
 	opacity: 1;
 }
