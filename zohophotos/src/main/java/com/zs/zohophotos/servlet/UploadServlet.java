@@ -248,7 +248,7 @@ public class UploadServlet extends HttpServlet {
 
 		String username = (String) session.getAttribute("userName");
 		int userId = (int) session.getAttribute("userId");
-		System.out.println(userId);
+		String previewUrl = null;
 
 		String workdriveFolderId = com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement
 				.getWorkdriveFolderId(userId);
@@ -304,27 +304,28 @@ public class UploadServlet extends HttpServlet {
 			String photoName = object.getString("FileName");
 			String folderId = object.getString("parent_id");
 			String resourceId = object.getString("resource_id");
-			GetPreviewInformation preview=new GetPreviewInformation();
-			String url=preview.getPreviewUrl(resourceId);
-			boolean flag=false;
-			if (entry==null) {
-				System.err.println("=========================ddd======================");
-				WorkdrivePhotoDetails photoDetails = new WorkdrivePhotoDetails(folderId, resourceId, fileName,url);
+			GetPreviewInformation preview = new GetPreviewInformation();
+			String url = preview.getPreviewUrl(resourceId);
+			boolean flag = false;
+			if (entry == null) {
+				WorkdrivePhotoDetails photoDetails = new WorkdrivePhotoDetails(folderId, resourceId, fileName, url);
 				flag = WorkDrivePhotosAndFoldersDetailsManagement.insertBasicPhotoDetails(photoDetails);
 				if (!zohoResponse.isSuccessful()) {
 					res.sendRedirect("html/error.html");
 					return;
 				}
+			} else {
+				ProfilePhotoDetailsOperation obj = new ProfilePhotoDetailsOperation();
+				ProfilePhotoDetails photo = new ProfilePhotoDetails(userId, resourceId);
+				previewUrl = obj.insertProfilePhoto(photo);
+				res.getWriter().println(previewUrl);
+				return;
 			}
-				else {
-					ProfilePhotoDetailsOperation obj=new ProfilePhotoDetailsOperation();
-					ProfilePhotoDetails photo=new ProfilePhotoDetails(userId,resourceId);
-					String previewUrl=obj.insertProfilePhoto(photo);
-					res.getWriter().println(previewUrl);
-					return;
-				}
-				if (flag) {
-					new Thread(() -> {
+			if (flag) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
 						try {
 							AiResponseOperations ai = new AiResponseOperations(
 									new FolderAndFileId(folderId, resourceId));
@@ -337,11 +338,11 @@ public class UploadServlet extends HttpServlet {
 						} finally {
 							System.out.println("complete");
 						}
-					}).start();
-				}
-				System.out.println("redirect");
-				res.sendRedirect("/zohophotos/html/dashboard/dashboard.html");
+					}
+				}).start();
 			}
+			System.out.println("redirect");
+			res.sendRedirect("/zohophotos/html/dashboard/dashboard.html");
 		}
 	}
-
+}

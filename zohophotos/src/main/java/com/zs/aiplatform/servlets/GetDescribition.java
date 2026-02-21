@@ -31,7 +31,7 @@ public class GetDescribition extends HttpServlet {
 
 			String fileId = json.getString("file_id");
 			AiResponseOperations obj=new AiResponseOperations();
-			String describtion=obj.getDescribtion(fileId);
+			String describtion=obj.getDescription(fileId);
 			System.out.println("ggggggggggggg"+describtion);
 			res.getWriter().write(describtion);
 		} catch (Exception e) {

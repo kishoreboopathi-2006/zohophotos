@@ -166,7 +166,9 @@ public class CsezAccessToken {
 	/**
 	 * Sanitizes response body for logging (removes sensitive information).
 	 * 
-	 * @param responseBody Original response body
+	 * @param responseBody Original respoDescribePhoto(){
+		start=
+	}nse body
 	 * @return Sanitized response body
 	 */
 	private static String sanitizeResponse(String responseBody) {

@@ -50,7 +50,7 @@ window.addEventListener("load", async () => {
 			images = images.filter(img => {
 				return !deletedPhotos.some(del => del.resourceId === img.resourceId)
 			});
-			[...images].forEach(file => {
+			/*[...images].forEach(file => {
 				const img = document.createElement("img");
 				img.src = file.previewUrl;
 				img.loading = "lazy";
@@ -61,7 +61,40 @@ window.addEventListener("load", async () => {
 				sliderTrack.style.animation = "slide 30s linear infinite";
 			} else {
 				sliderTrack.style.animation = "none";
+			}*/
+			[...images].forEach(file => {
+				const img = document.createElement("img");
+				img.src = file.previewUrl;
+				img.loading = "lazy";
+				img.alt = file.imageName || "Photo";
+				sliderTrack.appendChild(img);
+			});
+
+			/* SLIDER ANIMATION ENABLE/DISABLE */
+			if (images.length > 3) {
+				sliderTrack.style.animation = "slide 30s linear infinite";
+			} else {
+				sliderTrack.style.animation = "none";
 			}
+
+			/* CENTER IMAGE HIGHLIGHT */
+			function highlightCenter() {
+				const imgs = sliderTrack.querySelectorAll("img");
+				const center = window.innerWidth / 2;
+
+				imgs.forEach(img => {
+					const rect = img.getBoundingClientRect();
+					const imgCenter = rect.left + rect.width / 2;
+
+					if (Math.abs(center - imgCenter) < rect.width / 2) {
+						img.classList.add("active");
+					} else {
+						img.classList.remove("active");
+					}
+				});
+			}
+			/* RUN CONTINUOUSLY */
+			setInterval(highlightCenter, 100);
 			grid.innerHTML = "";
 			console.log("Images:" + images);
 			images.forEach(file => {
@@ -71,7 +104,6 @@ window.addEventListener("load", async () => {
 				img.src = file.previewUrl;
 				img.alt = file.imageName || "Photo";
 				img.dataset.fileId = file.resourceId;
-				img.dataset.date = formetDate(file.date);
 				const aiIcon = document.createElement("div");
 				aiIcon.className = "ai-icon";
 				aiIcon.innerHTML = "✨";
@@ -99,7 +131,7 @@ function formetDate(date) {
 }
 
 
-
+/*
 window.addEventListener("load", function() {
 	fetch("/zohophotos/getReminderDetails").then(handleResponse).then(handleData).catch(showError);
 	function handleResponse(response) {
@@ -124,7 +156,7 @@ window.addEventListener("load", function() {
 	function showError(error) {
 		console.log(error);
 	}
-});
+});*/
 function diaryPage() {
 	window.location.href = "/zohophotos/html/diary/diary.html";
 }
@@ -447,9 +479,10 @@ function openFullView() {
 	});
 
 };
+/*
 const themeBtn = document.getElementById("themetoggle");
 const themeIcon = document.getElementById("theme-icon");
-
+*/
 function updateTheme(isDark) {
 	if (isDark) {
 		document.body.classList.add("dark");
@@ -460,13 +493,13 @@ function updateTheme(isDark) {
 	}
 }
 
-
+/*
 themeBtn.addEventListener("click", () => {
 	const isDark = !document.body.classList.contains("dark");
 	localStorage.setItem("theme", isDark ? "dark" : "light");
 	updateTheme(isDark);
 });
-
+*/
 let storyMode = false;
 let selectedStoryImages = [];
 
@@ -902,6 +935,26 @@ window.addEventListener("DOMContentLoaded", () => {
 	});
 
 });
+/*----------Dark Mode---------------*/
+const toggle = document.querySelector(".theme-switch__checkbox");
+
+
+if (localStorage.getItem("theme") === "dark") {
+	document.body.classList.add("dark");
+	toggle.checked = true;
+}
+
+toggle.addEventListener("change", () => {
+	console.log("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd")
+	if (toggle.checked) {
+		document.body.classList.add("dark");
+		localStorage.setItem("theme", "dark");
+	} else {
+		document.body.classList.remove("dark");
+		localStorage.setItem("theme", "light");
+	}
+});
+
 
 
 
