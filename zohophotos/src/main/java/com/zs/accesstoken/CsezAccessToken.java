@@ -37,9 +37,9 @@ public class CsezAccessToken {
 	
 	// TODO: Move these to configuration/environment variables
 	// Hardcoded credentials (temporary - for development/testing only)
-	private static final String REFRESH_TOKEN = "1000.61a33cf5023d207d288f520be95df807.c8cc4cd926a77b0bfa7273ea881e4f1d";
-	private static final String CLIENT_ID = "1000.WXKOMJMYE6Y2BPJAXU2XA3VA5JTUKZ";
-	private static final String CLIENT_SECRET = "f2e54f0f4b645cda3a630c649db89dc37c85e7bb2f";
+	private static final String REFRESH_TOKEN = "1000.2a54d63ead58efac5babe1b8ec268af2.2db1d5001d41087b4f05b6b8b52d5e30";
+	private static final String CLIENT_ID = "1000.5YXKWPOYRPJ2744RQLLUCB8J0R3DOV";
+	private static final String CLIENT_SECRET = "acbc5753ad2f1eb82ac9d6bf2e62354de4d22ae1cb";
 	
 	// HTTP client (reusable)
 	private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
@@ -166,7 +166,9 @@ public class CsezAccessToken {
 	/**
 	 * Sanitizes response body for logging (removes sensitive information).
 	 * 
-	 * @param responseBody Original response body
+	 * @param responseBody Original respoDescribePhoto(){
+		start=
+	}nse body
 	 * @return Sanitized response body
 	 */
 	private static String sanitizeResponse(String responseBody) {

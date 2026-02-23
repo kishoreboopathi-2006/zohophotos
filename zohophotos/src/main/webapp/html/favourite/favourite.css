@@ -36,8 +36,18 @@ body.dark {
 
 body {
 	font-family: 'Poppins', sans-serif;
-	min-height: 100vh;
-	overflow-x: hidden;
+	background: var(--bg-gradient);
+	color: var(--text-main);
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+}
+.logo {
+	height: 110px;
+	width: 138px;
+	position:fixed;
+	left:-29px;
+	margin-top:8px;
 }
 
 
@@ -126,14 +136,34 @@ nav {
 	transition: opacity 0.2s ease;
 }
 
-/* Hover Reveal */
-.sidebar-logo h1,.menu-item span {
+/* Hide text by default */
+.sidebar-logo h1,
+.menu-item span {
+	opacity: 0;
+	pointer-events: none;
+	position: absolute;
+	left: 70px;
+	background: #111;
+	color: white;
+	padding: 6px 12px;
+	border-radius: 6px;
+	white-space: nowrap;
+	font-size: 14px;
+	transform: translateY(-50%);
+	top: 50%;
+	transition: 0.2s;
+}
+.menu-item {
+	position: relative;
+}
+
+/* Show only hovered item */
+.menu-item:hover span {
 	opacity: 1;
 }
 
 /* --- MAIN CONTENT --- */
 .main-content {
-	margin-left: var(--sidebar-width);
 	flex: 1;
 	display: flex;
 	flex-direction: column;

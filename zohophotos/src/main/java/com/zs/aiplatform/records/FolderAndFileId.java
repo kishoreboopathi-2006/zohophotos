@@ -7,6 +7,7 @@ public class FolderAndFileId {
 		this.fileId=fileId;
 		this.folderId=folderId;
 	}
+	
 	public String getFolderId() {
 		return folderId;
 	}

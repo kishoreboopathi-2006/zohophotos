@@ -15,9 +15,9 @@ public class DBConnector {
             e.printStackTrace();
         }
         return DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/zoho_photos",
-            "Kaviya",
-            "Kaviyaa@2007"
+            "jdbc:mysql://10.51.240.51/zoho_photos",
+            "kaviya",
+            "kaviya@2007"
         );
     }
 }
