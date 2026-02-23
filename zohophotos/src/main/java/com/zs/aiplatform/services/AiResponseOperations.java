@@ -7,9 +7,6 @@ import java.util.HashSet;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.zs.aiplatform.DAO.AiPlatformDBManagement;
 import com.zs.aiplatform.records.AiResponseDetailsForPhoto;
 import com.zs.aiplatform.records.CategorizePhotoDetails;
@@ -35,6 +32,9 @@ public class AiResponseOperations {
 
 	public boolean insertAiresponse() {
 		flag = getAiResponseForDescripePhoto();
+		if(flag) {
+			flag=getAiResponseForDescripePhotoInTamil();
+		}
 		if (flag) {
 			flag = getAiResponseForCategorizePhoto();
 			System.out.println("category" + flag);
@@ -53,6 +53,23 @@ public class AiResponseOperations {
 
 		}
 		return flag;
+	}
+
+	private boolean getAiResponseForDescripePhotoInTamil() {
+		try {
+			String JsonResponse = describe.describeOnePhotoInTamil(photoDetails.getDescription());
+			JSONObject json = new JSONObject(JsonResponse);
+			System.out.println(json);
+			JSONArray jsonArray = json.getJSONArray("output");
+			JSONObject firstJson = jsonArray.getJSONObject(1);
+			JSONArray content = firstJson.getJSONArray("content");
+			String description = content.getJSONObject(0).getString("text");
+			photoDetails.setTamilDescribtion(description);
+			System.out.println(photoDetails.getTamilDescribtion());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	private boolean insertAlbumCategoryTable() {
@@ -112,7 +129,7 @@ public class AiResponseOperations {
 			String categorize = content.getJSONObject(0).getString("text");
 			String[] arr = categorize.split(",");
 			System.out.println("key" + Arrays.toString(arr));
-			photoDetails = new AiResponseDetailsForPhoto(folder.getFileId(), arr, photoDetails.getDescription(),
+			photoDetails = new AiResponseDetailsForPhoto(folder.getFileId(), arr, photoDetails.getDescription(),photoDetails.getTamilDescribtion(),
 					folder.getFolderId());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,7 +167,7 @@ public class AiResponseOperations {
 
 	public ArrayList<CategorizePhotoDetails> getCategorizePhotoDetails(String folderId) {
 		ArrayList<CategorizePhotoDetails> responseArray=dbManager.getCategoryForAlbum(folderId);
-		return null;
+		return responseArray;
 	}
 
 //	public ArrayList<AiResponseDetailsForPhoto> getAiResponseForPhotos(String folderId) {

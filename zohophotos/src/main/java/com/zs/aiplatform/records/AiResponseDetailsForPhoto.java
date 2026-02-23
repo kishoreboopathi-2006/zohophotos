@@ -8,25 +8,44 @@ public class AiResponseDetailsForPhoto {
 	private String albumCategory;
 	private String description;
 	private String previewUrl;
+	private String tamilDescription;
 
 	public AiResponseDetailsForPhoto() {
 
 	}
 
-	public AiResponseDetailsForPhoto(String id, String[] categories, String description, String folderId) {
+	public AiResponseDetailsForPhoto(String id, String[] categories, String description,String tamilDescription, String folderId) {
 		this.workdrive_file_id = id;
 		this.categories = categories;
 		this.description = description;
 		this.folderId = folderId;
+		this.tamilDescription=tamilDescription;
+	}
+
+	public String getPreviewUrl() {
+		return previewUrl;
+	}
+
+	public void setPreviewUrl(String previewUrl) {
+		this.previewUrl = previewUrl;
+	}
+
+	public String getTamilDescription() {
+		return tamilDescription;
+	}
+
+	public void setTamilDescription(String tamilDescribtion) {
+		this.tamilDescription = tamilDescribtion;
 	}
 
 	public AiResponseDetailsForPhoto(String previewUrl, String[] categories, String albumCategory, String description,
-			String folderId) {
+			String tamilDescribtion, String folderId) {
 		this.previewUrl = previewUrl;
 		this.categories = categories;
 		this.description = description;
 		this.albumCategory = albumCategory;
 		this.folderId = folderId;
+		this.tamilDescription = tamilDescribtion;
 
 	}
 
