@@ -44,11 +44,13 @@ public class AiPlatformDBManagement {
 	}
 
 	public boolean insertAlbumDetails(AiResponseDetailsForPhoto photo) {
-		String sql = "insert into album_details values(null,?,?,?)";
+		System.out.println(photo.getTamilDescription());
+		String sql = "insert into album_details values(null,?,?,?,?)";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, photo.getWorkdrive_file_id());
 			ps.setString(2, photo.getAlbumCategory());
 			ps.setString(3, photo.getDescription());
+			ps.setString(4, photo.getTamilDescription());
 			ps.executeUpdate();
 			return true;
 		} catch (Exception e) {
@@ -89,18 +91,19 @@ public class AiPlatformDBManagement {
 
 	public ArrayList<AiResponseDetailsForPhoto> getAiResponseForPhotos(String folderId) {
 		ArrayList<AiResponseDetailsForPhoto> arr = new ArrayList<>();
-		String sql = "select \n" + " w.preview_url ,group_concat(c.category),a.album_category,a.description\n"
+		String sql = "select \n"
+				+ " w.preview_url ,group_concat(c.category),a.album_category,a.description,a.tamil_description\n"
 				+ "from \n" + "photo_category_map p join category_details c on c.category_id =p.category_id \n"
 				+ "join workdrive_photo_details w on w.workdrive_file_id = p.workdrive_file_id \n"
 				+ "join album_details a on w.workdrive_file_id=a.workdrive_file_id\n" + "where w.workdrive_folder_id=?"
-				+ "group by w.preview_url ,a.album_category,a.description";
+				+ "group by w.preview_url ,a.album_category,a.description,a.tamil_description";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, folderId);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String[] categories = rs.getString(2).split(",");
 				arr.add(new AiResponseDetailsForPhoto(rs.getString(1), categories, rs.getString(3), rs.getString(4),
-						folderId));
+						rs.getString(5), folderId));
 			}
 			return arr;
 		} catch (SQLException e) {

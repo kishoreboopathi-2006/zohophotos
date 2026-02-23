@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.zs.aiplatform.records.AiResponseDetailsForPhoto;
-import com.zs.aiplatform.records.FolderAndFileId;
 import com.zs.aiplatform.services.AiResponseOperations;
 import com.zs.zohophotos.DAO.WorkDrivePhotosAndFoldersDetailsManagement;
 
