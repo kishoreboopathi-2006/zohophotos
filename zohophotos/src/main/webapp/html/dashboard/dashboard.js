@@ -10,7 +10,8 @@ let reminderDetails = [];
 let resourceIds = [];
 let deletedPhotos = [];
 let userDetails = [];
-
+let currentRotate = 0;
+let currentZoom = 1;
 window.addEventListener("load", () => {
 	if (entry) {
 		fetch("/zohophotos/getFavouritePhotos").then(handleResponse).then(handleData).then(showError);
@@ -29,7 +30,7 @@ window.addEventListener("load", () => {
 });
 window.addEventListener("load", async () => {
 	/* deleted photos*/
-
+	showLoader();
 	const deleteRes = await fetch("/zohophotos/getDeletedPhotos");
 	deletedPhotos = await deleteRes.json();
 	console.log(JSON.stringify(deletedPhotos, null, 2));
@@ -120,11 +121,30 @@ window.addEventListener("load", async () => {
 			});
 
 		})
+
 		.catch(err => {
 			console.error(err);
 			grid.innerHTML = "<p style='color:red'>Unable to load photos</p>";
 		});
 });
+/*loading*/
+function showLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.remove('hidden');
+	setTimeout(() => {
+		hideLoader();
+	}, 6000);
+	hideLoader();
+
+}
+function hideLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.add('hidden');
+}
+function isVideo(file) {
+	const url = file.previewUrl.toLowerCase();
+	return url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg");
+}
 function formetDate(date) {
 	const option = { year: "numeric", month: "long", day: "numeric" }
 	return new Date(date).toLocaleDateString("en-Us", option);
@@ -248,7 +268,6 @@ function describeFromIcon(iconEl) {
 				iconEl.innerHTML = "✨";
 				return;
 			}
-			console.log(data);
 			setTimeout(() => {
 				document.getElementById("ai-modal-content").innerHTML = `
 						<div class="fade-in" style="line-height:1.8; font-size:16px; color:#334155;">
@@ -256,12 +275,56 @@ function describeFromIcon(iconEl) {
 						</div>`;
 				iconEl.innerHTML = "✨";
 			}, 1000);
+			document.getElementById("tamil").onclick = function() {
+
+				translate(data, "tamil");
+			};
+			document.getElementById("english").onclick = function() {
+				translate(data, "english");
+			}
 		})
 		.catch(err => {
 			console.error(err);
 		});
 }
 
+
+function translate(description, language) {
+	fetch("/zohophotos/getAiResponse")
+		.then(handleResponse)
+		.then(handleData)
+		.catch(showError);
+	function handleResponse(response) {
+		return response.json();
+	}
+	function handleData(data) {
+		aiResponsePhotoDetails = data;
+		const tamil = aiResponsePhotoDetails.find(tamilDescribtion => {
+			return tamilDescribtion.description === description;
+		});
+		console.log(data);
+		let translateDescription = tamil.tamilDescription;
+		if (language === "english") {
+			translateDescription = description;
+		}
+		if (!data) {
+			document.getElementById("ai-modal-content").innerHTML =
+				"<p style='color:red'>No AI response received</p>";
+			return;
+		}
+		setTimeout(() => {
+			console.log(translateDescription);
+			document.getElementById("ai-modal-content").innerHTML = `
+								<div class="fade-in" style="line-height:1.8; font-size:16px; color:#334155;">
+									${translateDescription.replace(/\n/g, "<br>")}
+								</div>`;
+		}, 1000);
+	}
+
+	function showError(error) {
+		console.log(error);
+	}
+}
 document.getElementById("search").addEventListener("click", function() {
 	fetch("/zohophotos/getAiResponse")
 		.then(handleResponse)
@@ -293,27 +356,14 @@ function renderPhotos(photoDetails) {
 	const searchContainer = document.getElementById("search-overlay");
 	searchContainer.style.display = "flex";
 	searchContainer.innerHTML = "";
-	const exitButton = document.createElement("button");
-	exitButton.className = "exit";
-	exitButton.id = "exit-button";
-	exitButton.textContent = "exit";
-	searchContainer.appendChild(exitButton);
-	document.getElementById("exit-button").addEventListener("click", function() {
-		const searchContainer = document.getElementById("search-overlay");
-		searchContainer.style.display = "none";
-	});
 	photoDetails.forEach(photo => {
-		const photoUrl = images.find(image => {
-			return photo.workdrive_file_id === image.resourceId;
-		});
-		if (photoUrl) {
-			const card = document.createElement("div");
-			card.className = "photo-card glass-panel";
-			const img = document.createElement("img");
-			img.src = photoUrl.previewUrl;
-			card.appendChild(img);
-			searchContainer.appendChild(card);
-		}
+		const previewUrl = photo.previewUrl;
+		const card = document.createElement("div");
+		card.className = "photo-card glass-panel";
+		const img = document.createElement("img");
+		img.src = previewUrl;
+		card.appendChild(img);
+		searchContainer.appendChild(card);
 	});
 };
 
@@ -375,38 +425,34 @@ function openFullView() {
 	const zoomWrapper = document.createElement("div");
 	zoomWrapper.className = "trigger-wrapper";
 
-	const zoomTrigger = document.createElement("div");
-	zoomTrigger.className = "trigger-btn zoom-btn";
-	zoomTrigger.setAttribute("data-tooltip", "Zoom");
-	zoomTrigger.innerHTML = `<i class="ph-bold ph-magnifying-glass"></i>`;
+	const rotateIcon = document.createElement("div");
+	rotateIcon.className = "rotate";
+	rotateIcon.innerHTML = `<i class="ph-bold ph-arrow-clockwise"></i>`;
+	rotateIcon.onclick = () => {
+		currentRotate += 90;
+		applyTransform();
+	};
 
-	const zoomGroup = document.createElement("div");
-	zoomGroup.className = "floating-group";
-
-	const zoomIn = document.createElement("div");
-	zoomIn.className = "zoom-action";
-	zoomIn.setAttribute("data-tooltip", "Zoom In");
-	zoomIn.innerHTML = `<i class="ph-bold ph-magnifying-glass-plus"></i>`;
-	zoomIn.onclick = (e) => {
+	const zoomInBtn = document.createElement("div");
+	zoomInBtn.innerHTML = `<i class="ph ph-magnifying-glass-plus"></i>`;
+	zoomInBtn.onclick = e => {
 		e.stopPropagation();
 		currentZoom = Math.min(currentZoom + 0.2, 3);
-		viewBox.style.transform = `scale(${currentZoom})`;
+		applyTransform();
 	};
 
-	const zoomOut = document.createElement("div");
-	zoomOut.className = "zoom-action";
-	zoomOut.setAttribute("data-tooltip", "Zoom Out");
-	zoomOut.innerHTML = `<i class="ph-bold ph-magnifying-glass-minus"></i>`;
-	zoomOut.onclick = (e) => {
+	const zoomOutBtn = document.createElement("div");
+	zoomOutBtn.innerHTML = `<i class="ph ph-magnifying-glass-minus"></i>`;
+	zoomOutBtn.onclick = e => {
 		e.stopPropagation();
 		currentZoom = Math.max(currentZoom - 0.2, 0.5);
-		viewBox.style.transform = `scale(${currentZoom})`;
+		applyTransform();
 	};
 
-	zoomGroup.appendChild(zoomOut);
-	zoomGroup.appendChild(zoomIn);
-	zoomWrapper.appendChild(zoomGroup);
-	zoomWrapper.appendChild(zoomTrigger);
+	function applyTransform() {
+		img.style.transform = `rotate(${currentRotate}deg) scale(${currentZoom})`;
+	}
+
 	const favIcon = document.createElement("div");
 	favIcon.className = "fav";
 	favIcon.setAttribute("data-tooltip", "Favorite");
@@ -429,7 +475,11 @@ function openFullView() {
 	shareIcon.className = "share";
 	shareIcon.setAttribute("data-tooltip", "WhatsApp");
 	shareIcon.innerHTML = `<i class="fa-brands fa-whatsapp"></i>`;
-
+	// Zoho Cliq Icon (Using Phosphor chat-teardrop as a modern representation)
+	const cliqIcon = document.createElement("div");
+	cliqIcon.className = "cliq";
+	cliqIcon.setAttribute("data-tooltip", "Zoho Cliq");
+	cliqIcon.innerHTML = `<i class="ph-bold ph-chat-teardrop-dots"></i>`;
 	const copyIcon = document.createElement("div"); // Copy Link
 	copyIcon.className = "copy";
 	copyIcon.setAttribute("data-tooltip", "Copy Link");
@@ -437,6 +487,7 @@ function openFullView() {
 
 	floatingGroup.appendChild(shareIcon);
 	floatingGroup.appendChild(copyIcon);
+	floatingGroup.appendChild(cliqIcon);
 	triggerWrapper.appendChild(floatingGroup);
 	triggerWrapper.appendChild(triggerIcon);
 
@@ -445,6 +496,7 @@ function openFullView() {
 	deleteIcon.onclick = () => deletePhoto(img.src, img.dataset.resourceId);
 	copyIcon.onclick = () => copyPhoto(img.src);
 	shareIcon.onclick = () => shareOnWhatsApp(img.src);
+	cliqIcon.onclick = () => shareOnCliq(img.src);
 
 	// Toggle Logic
 	triggerIcon.onclick = (e) => {
@@ -454,8 +506,11 @@ function openFullView() {
 	};
 
 	// Assembly Order
-	
+
 	menu.appendChild(aiIcon);
+	menu.appendChild(rotateIcon);
+	menu.appendChild(zoomInBtn);
+	menu.appendChild(zoomOutBtn);
 	menu.appendChild(favIcon);
 	menu.appendChild(triggerWrapper);
 	menu.appendChild(deleteIcon);
@@ -469,10 +524,16 @@ function openFullView() {
 	document.getElementById("right").addEventListener("click", function() {
 		currentIndex = (currentIndex + 1) % urls.length;
 		img.src = urls[currentIndex];
+		currentRotate = 0;
+		currentZoom = 1;
+		img.style.transform = `rotate(0deg) scale(1)`;
 	});
 	document.getElementById("left").addEventListener("click", function() {
 		currentIndex = (currentIndex - 1 + urls.length) % urls.length;
 		img.src = urls[currentIndex];
+		currentRotate = 0;
+		currentZoom = 1;
+		img.style.transform = `rotate(0deg) scale(1)`;
 	});
 	document.getElementById("exit").addEventListener("click", function() {
 		viewContainer.style.display = "none";
@@ -483,7 +544,6 @@ function openFullView() {
 /*
 const themeBtn = document.getElementById("themetoggle");
 const themeIcon = document.getElementById("theme-icon");
-*/
 function updateTheme(isDark) {
 	if (isDark) {
 		document.body.classList.add("dark");
@@ -493,7 +553,7 @@ function updateTheme(isDark) {
 		themeIcon.className = "fa-regular fa-moon";
 	}
 }
-
+*/
 /*
 themeBtn.addEventListener("click", () => {
 	const isDark = !document.body.classList.contains("dark");
@@ -506,7 +566,7 @@ let selectedStoryImages = [];
 
 /* ================= AI STORY BUTTON ================= */
 
-document.getElementById("aiStoryBtn").addEventListener("click", () => {
+/*document.getElementById("aiStoryBtn").addEventListener("click", () => {
 
 	const cards = document.querySelectorAll(".photo-card");
 	if (!storyMode) {
@@ -568,7 +628,7 @@ document.getElementById("aiStoryBtn").addEventListener("click", () => {
 			resetStoryMode();
 		});
 });
-
+*/
 /* ================= STORY SELECTION ================= */
 
 function toggleStorySelection(card, fileId) {
@@ -662,10 +722,7 @@ function reminderPage() {
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
 }
 
-if (localStorage.getItem("theme") === "dark") updateTheme(true);
-function trashImage() {
-	window.location.href = ""
-}
+
 function dashboardPage() {
 	window.location.href = "/zohophotos/html/dashboard/dashboard.html";
 	window.location.reload();
@@ -731,27 +788,32 @@ function clickFavourite(fav, favIcon, img, alt) {
 /* ================= delete ================= */
 
 function deletePhoto(img, resourceId) {
-	const form = new FormData();
-	form.append("url", img);
-	form.append("resourceId", resourceId);
-	console.log(img);
-	console.log(resourceId);
-	fetch("/zohophotos/deletePhoto", {
-		method: "post",
-		body: form
-	}).then(handleResponse).then(showData).catch(showError);
-	function handleResponse(response) {
-		return response.text();
-	}
-	function showData(data) {
-		window.location.reload();
-		console.log(data);
-	}
-	function showError(err) {
-		console.log(err);
-	}
-}
 
+	const box = document.getElementById("confirmBox");
+	box.style.display = "flex";
+
+	document.getElementById("confirmYes").onclick = () => {
+
+		box.style.display = "none";
+
+		const form = new FormData();
+		form.append("url", img);
+		form.append("resourceId", resourceId);
+
+		fetch("/zohophotos/deletePhoto", {
+			method: "post",
+			body: form
+		})
+			.then(res => res.text())
+			.then(() => {
+				window.location.reload();
+			});
+	};
+
+	document.getElementById("confirmNo").onclick = () => {
+		box.style.display = "none";
+	};
+}
 
 /*===============redirect===================*/
 function trashPage() {
@@ -890,53 +952,7 @@ document.getElementById("avatar").addEventListener("click", function() {
 	root.appendChild(container);
 
 });
-/*============================================floating date================================== */
-window.addEventListener("DOMContentLoaded", () => {
-
-	const scrollContainer = document.querySelector(".content-scroll");
-	const floatingDate = document.getElementById("floating-date");
-	const gallery = document.querySelector("#galleryGrid");
-
-	function initObserver() {
-
-		const images = document.querySelectorAll(".photo-card img");
-
-		if (images.length === 0) return;
-
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					floatingDate.textContent =
-						entry.target.dataset.date;
-				}
-			});
-		}, {
-			root: scrollContainer,
-			threshold: 0
-		});
-
-		images.forEach(img => observer.observe(img));
-
-		// Set initial date
-		floatingDate.textContent = images[0].dataset.date;
-	}
-
-	// Watch for images being added
-	const mutationObserver = new MutationObserver(() => {
-		const images = document.querySelectorAll(".photo-card img");
-		if (images.length > 0) {
-			initObserver();
-			mutationObserver.disconnect(); // stop watching
-		}
-	});
-
-	mutationObserver.observe(gallery, {
-		childList: true,
-		subtree: true
-	});
-
-});
-/*----------Dark Mode---------------*/
+/*----------Dark Mode---------------
 const toggle = document.querySelector(".theme-switch__checkbox");
 
 
@@ -954,13 +970,145 @@ toggle.addEventListener("change", () => {
 		localStorage.setItem("theme", "light");
 	}
 });
-function toggleSearch(){
-    document.getElementById("searchBox").classList.toggle("show");
+*/
+/* fullview for searching image*/
+document.getElementById("search-overlay").addEventListener("click", function(e) {
+	const img = e.target.closest("img");
+	console.log(img.src);
+	let category = aiResponsePhotoDetails.find(photo => {
+		return photo.previewUrl === img.src;
+	}
+	);
+	console.log(category.categories);
+	openView(img.src, category.categories);
+});
+function openView(url, tags) {
+	const viewContainer = document.getElementById("viewBox");
+	viewContainer.style.display = "flex";
+	const right = document.createElement("span");
+	right.className = "button";
+	right.id = "right";
+	right.innerHTML = "&#10095;";
+	const left = document.createElement("span");
+	left.className = "button";
+	left.id = "left";
+	left.innerHTML = "&#10094;";
+	const viewBox = document.createElement("div");
+	viewBox.className = "viewBox";
+	const img = document.createElement("img");
+	img.src = url;
+	img.dataset.resourceId = resourceIds[currentIndex];
+	img.className = "view-photo";
+	const closeBtn = document.createElement("span");
+	closeBtn.id = "exit";
+	closeBtn.className = "close-view";
+	closeBtn.innerHTML = `<i class="ph ph-x"></i>`;
+	viewBox.appendChild(img);
+	viewContainer.appendChild(viewBox);
+	viewContainer.appendChild(closeBtn);
+	// ---------- CREATE PANEL ----------
+	const tagPanel = document.createElement("div");
+	tagPanel.className = "tag-panel";
+	const sideButton=document.createElement("div");
+	sideButton.className="sideButton"; 
+	sideButton.innerHTML=`<i class="ph ph-list"></i>`;
+	// title
+	const title = document.createElement("h1");
+	title.textContent = "Search by";
+
+	// tag list
+	const tagList = document.createElement("div");
+	tagList.id = "tagList";
+	tagList.className = "tag-list";
+
+	// add tag wrapper
+	const addTagDiv = document.createElement("div");
+	addTagDiv.className = "add-tag";
+
+	sideButton.onclick=()=>{
+		tagPanel.classList.toggle("active");
+	}
+	// ---------- RENDER TAGS ----------
+	function renderTags() {
+		tagList.innerHTML = "";
+		tags.forEach(tag => {
+			const el = document.createElement("div");
+			el.className = "tag";
+			el.textContent = tag;
+			tagList.appendChild(el);
+		});
+	}
+
+	// ---------- BUILD STRUCTURE ----------
+	tagPanel.appendChild(title);
+	tagPanel.appendChild(tagList);
+	tagPanel.appendChild(addTagDiv);
+	tagPanel.appendChild(sideButton);
+	viewContainer.appendChild(tagPanel);
+
+	// initial render
+	renderTags();
+	document.getElementById("exit").addEventListener("click", function() {
+		viewContainer.style.display = "none";
+		viewContainer.innerHTML = "";
+	});
+
+}
+function toggleSearch() {
+	document.getElementById("searchBox").classList.toggle("show");
 }
 
 
+/*cliq share*/
+function shareOnCliq(img) {
+		const viewContainer = document.getElementById("viewBox");
+		// create div
+		const shareDiv = document.createElement("div");
+		shareDiv.className = "shareDiv";
 
+		// create input
+		const input = document.createElement("input");
+		input.placeholder = "Share with";
+		input.className = "mailInput";
 
+		// create button
+		const button = document.createElement("button");
+		button.className = "btn-circle-action";
+		button.id = "sendBtn";
 
+		button.innerHTML = `
+			<svg class="send-icon" xmlns="http://www.w3.org/2000/svg" 
+			width="20" height="20" viewBox="0 0 24 24" fill="none"
+			stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<line x1="22" y1="2" x2="11" y2="13"></line>
+				<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+			</svg>
+		`;
+
+		// append elements
+		shareDiv.appendChild(input);
+		shareDiv.appendChild(button);
+		viewContainer.appendChild(shareDiv);
+
+		// click event
+		button.addEventListener("click", function () {
+			const form = new FormData();
+			form.append("email", input.value);
+			form.append("url", img);
+
+			fetch("/zohophotos/shareViaCliq", {
+				method: "post",
+				body: form
+			})
+			.then(res => res.text())
+			.then(data => {
+				if (data === "success") {
+					shareDiv.innerHTML="";
+					console.log("success");
+				}
+			})
+			.catch(err => console.log(err));
+		});
+	}
 
 

@@ -20,11 +20,13 @@
 	<!-- ===== SIDEBAR ===== -->
 	<aside class="sidebar">
 		<div class="sidebar-logo">
-				<img
-					src="Gemini_Generated_Image_ogk0tdogk0tdogk0-removebg-preview.png"
+			
+			<img
+					src="momento1.png"
 					class="logo">
 				<h1>Momento</h1>
-			</div>
+			
+		</div>
 
 		<nav>
 			<div class="menu-item" onclick="dashboardPage()">
@@ -42,18 +44,16 @@
 			<div class="menu-item" onclick="diaryPage()">
 				<i class="ph ph-notebook"></i> <span>Diary</span>
 			</div>
-			<div class="menu-item" onclick="showVideos()">
-				<i class="ph ph-video-camera"></i><span>Videos</span>
-			</div>
 
-		<!--  	<div class="menu-item" onclick="reminderPage()">
+			<!--  <div class="menu-item" onclick="reminderPage()">
 				<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 			</div>-->
 
-			<div class="menu-item" onclick="trashPage()" style="margin-top:633px;">
+			
+		</nav>
+		<div class="menu-item bottom" onclick="trashPage()" style="margin-top:682px;">
 				<i class="ph ph-trash"></i> <span>Trash</span>
 			</div>
-		</nav>
 
 		<!--  <a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
 			style="margin: 15px; color: var(--danger); text-decoration: none;">
@@ -63,12 +63,14 @@
 
 	<!-- ===== MAIN CONTENT ===== -->
 	<main class="main-content">
-		<h2 class="section-title">Album</h2>
+		<h2 class="section-title" style="font-family:'Playfair Display', serif; font-weight:400;">Album</h2>
 		<div id="galleryGrid" class="gallery-grid"></div>
 	</main>
 
 	<!-- PHOTO OVERLAY -->
 	<div id="photos-overlay"></div>
+		<div id="viewBox"></div>
+	
 
 </body>
 </html>

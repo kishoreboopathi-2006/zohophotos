@@ -1,8 +1,9 @@
-document.getElementById("diaryForm").addEventListener("submit", submitDiary);
 
 let diaryDetails = [];
 const photos = [];
 let entry = false;
+let today = new Date().toISOString().split('T')[0];
+let isDirty = false;
 
 /* ---------------- DATE FORMATTER (DISPLAY ONLY) ---------------- */
 function formatDisplayDate(dateStr) {
@@ -14,19 +15,78 @@ function formatDisplayDate(dateStr) {
 
 /* ---------------- PAGE LOAD ---------------- */
 window.onload = async function() {
-	let today = new Date().toISOString().split('T')[0];
 
-	// display format
 	document.getElementById("dateInput").textContent = formatDisplayDate(today);
-
-	// keep logic format
-	document.getElementById("date").value = date;
+	document.getElementById("date").value = today;
 	document.getElementById("rightDateDisplay").textContent = formatDisplayDate(today);
+
+	
+	document.getElementById("diaryForm").addEventListener("submit", submitDiary);
+	function markDirty(){
+		isDirty = true;
+		document.getElementById("draftBtn").style.display = "inline-block";
+	}
+
+	document.getElementById("title").addEventListener("input", markDirty);
+	document.getElementById("content").addEventListener("input", markDirty);
+	document.getElementById("file-upload").addEventListener("change", markDirty);
+
 	diaryDetails = await fetchDiaryDetails();
 	if (diaryDetails) {
 		filldiaryDetails(today);
+		loadDraft(today);
 	}
 };
+function saveDraft(){
+
+	const date = document.getElementById("date").value;
+
+	const draft = {
+		title: document.getElementById("title").value,
+		content: document.getElementById("content").value,
+		date: date
+	};
+
+	localStorage.setItem("diaryDraft_"+date, JSON.stringify(draft));
+
+	isDirty = false;
+
+	document.getElementById("draftBtn").style.display="none";
+
+	showTempMsg("Draft saved ✓");
+}
+function loadDraft(date){
+		const savedDraft = localStorage.getItem("diaryDraft_"+date);
+		if(savedDraft){
+			const draft = JSON.parse(savedDraft);
+			document.getElementById("title").value = draft.title;
+			document.getElementById("content").value = draft.content;
+			isDirty = false;
+		}
+	}
+window.addEventListener("beforeunload", function (e) {
+	if (isDirty) {
+		e.preventDefault();
+		e.returnValue = "";
+	}
+});
+setInterval(autoSaveDraft, 8000);
+function autoSaveDraft(){
+	if(!isDirty) return;
+
+	const date = document.getElementById("date").value;
+
+	const draft = {
+		title: document.getElementById("title").value,
+		content: document.getElementById("content").value,
+		date: date
+	};
+
+	localStorage.setItem("diaryDraft_"+date, JSON.stringify(draft));
+
+	isDirty=false;
+	console.log("Draft saved");
+}
 
 /* ---------------- FORM SUBMIT ---------------- */
 function submitDiary(e) {
@@ -37,29 +97,43 @@ function submitDiary(e) {
 	formData.append("entry", entry);
 
 	fetch("/zohophotos/getDiaryData", {
-		method: "post",
+		method: "POST",
 		body: formData
 	})
-		.then(handleResponse)
-		.then(showMessage)
-		.catch(showError);
+	.then(res => {
+		if (!res.ok) throw new Error("Server error " + res.status);
+		return res.text();
+	})
+	.then(showMessage)
+	.catch(err => {
+		console.error(err);
+		showError();
+	});
 }
-
 function handleResponse(response) {
 	return response.text();
 }
 
 function showMessage(data) {
 	document.getElementById("message").innerHTML = data;
+
 	setTimeout(() => {
 		document.getElementById("message").innerHTML = "";
 	}, 3000);
-}
 
-function showError() {
-	document.getElementById("message").innerHTML = "Error saving diary";
-}
+	const date = document.getElementById("date").value;
+	localStorage.removeItem("diaryDraft_"+date);
 
+	lockEditor();
+}
+function lockEditor(){
+	document.getElementById("title").disabled = true;
+	document.getElementById("content").disabled = true;
+	document.getElementById("file-upload").disabled = true;
+
+	document.getElementById("saveBtn").style.display="none";
+	document.getElementById("draftBtn").style.display="none";
+}
 
 /* ---------------- IMAGE PREVIEW ---------------- */
 let overlay = null;
@@ -239,6 +313,12 @@ function renderCalendar() {
 
 			calendar.style.display = "none";
 
+			if(isDirty){
+				if(confirm("You have unsaved changes. Save draft?")){
+					autoSaveDraft();
+				}
+				isDirty=false;
+			}
 			flipPage(direction, dateStr);
 		};
 
@@ -247,19 +327,20 @@ function renderCalendar() {
 }
 
 /* ---------------- FILL DIARY ---------------- */
+
 function filldiaryDetails(date) {
+	unlockEditor();
+	document.getElementById("draftBtn").style.display="none";
+
 	if (!diaryDetails) return;
 
 	let diaryData = diaryDetails.find(d => d.date === date);
 	const preview = document.getElementById("preview");
 
-	// keep logic format
 	document.getElementById("date").value = date;
-
-
-	// DISPLAY FORMAT
 	dateInput.textContent = formatDisplayDate(date);
 	document.getElementById("rightDateDisplay").textContent = formatDisplayDate(date);
+
 	if (diaryData) {
 		entry = true;
 
@@ -267,28 +348,39 @@ function filldiaryDetails(date) {
 		document.getElementById("content").value = diaryData.content;
 
 		preview.innerHTML = "";
+		document.getElementById("saveBtn").style.display = "none";
+	}
+	else {
+		entry = false;
 
+		document.getElementById("title").value = "";
+		document.getElementById("content").value = "";
+		preview.innerHTML = "";
+
+		
+		document.getElementById("saveBtn").style.display = "inline-block";
+	}
+
+	if(diaryData && diaryData.photos){
 		diaryData.photos.forEach(photo => {
 			const img = document.createElement("img");
 			img.src = photo.url;
 			img.className = "images";
-			img.style.width = "100px";
-			img.style.height = "100px";
+			img.style.width = "100%";
 
 			img.addEventListener("click", () => toggleBigImage(img.src));
-
 			preview.appendChild(img);
 			photos.push(photo.photoId);
 		});
 	}
-	else {
-		entry = false;
-		document.getElementById("title").value = "";
-		document.getElementById("content").value = "";
-		preview.innerHTML = "";
-	}
-}
 
+	loadDraft(date);
+}
+function showTempMsg(text){
+	const msg=document.getElementById("message");
+	msg.innerHTML=text;
+	setTimeout(()=>msg.innerHTML="",2000);
+}
 /* ---------------- NAVIGATION ---------------- */
 function goToDate(direction) {
 	let currentVal = document.getElementById("date").value;

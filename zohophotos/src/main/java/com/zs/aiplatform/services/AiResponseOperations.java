@@ -64,8 +64,8 @@ public class AiResponseOperations {
 			JSONObject firstJson = jsonArray.getJSONObject(1);
 			JSONArray content = firstJson.getJSONArray("content");
 			String description = content.getJSONObject(0).getString("text");
-			photoDetails.setTamilDescribtion(description);
-			System.out.println(photoDetails.getTamilDescribtion());
+			photoDetails.setTamilDescription(description);
+			System.out.println(photoDetails.getTamilDescription());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,6 +105,7 @@ public class AiResponseOperations {
 			String aiFileId = PlatformAiFileUtil.createAIFile(imageBytes);
 			String JsonResponse = describe.describeOnePhoto(aiFileId);
 			JSONObject json = new JSONObject(JsonResponse);
+			System.out.println(json);
 			JSONArray jsonArray = json.getJSONArray("output");
 			JSONObject firstJson = jsonArray.getJSONObject(1);
 			JSONArray content = firstJson.getJSONArray("content");
@@ -129,7 +130,7 @@ public class AiResponseOperations {
 			String categorize = content.getJSONObject(0).getString("text");
 			String[] arr = categorize.split(",");
 			System.out.println("key" + Arrays.toString(arr));
-			photoDetails = new AiResponseDetailsForPhoto(folder.getFileId(), arr, photoDetails.getDescription(),photoDetails.getTamilDescribtion(),
+			photoDetails = new AiResponseDetailsForPhoto(folder.getFileId(), arr, photoDetails.getDescription(),photoDetails.getTamilDescription(),
 					folder.getFolderId());
 		} catch (Exception e) {
 			e.printStackTrace();

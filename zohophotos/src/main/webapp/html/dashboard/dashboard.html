@@ -24,6 +24,9 @@
 <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
 <script src="dashboard.js" defer></script>
 <link href="card.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Asset&family=Betania+Patmos+In+GDL&family=Bungee+Shade&family=Changa+One:ital@0;1&family=Chango&family=Cinzel:wght@400..900&family=Creepster&family=Erica+One&family=Fascinate&family=Gravitas+One&family=Honk:MORF@15&family=Jost:ital,wght@0,100..900;1,100..900&family=Limelight&family=Luckiest+Guy&family=Nosifer&family=Notable&family=Oi&family=Rubik+Doodle+Shadow&family=Rubik+Spray+Paint&family=Ruslan+Display&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Trade+Winds&display=swap" rel="stylesheet">
 </head>
 <body>
 	<div class="ai-modal-overlay" id="ai-modal-overlay">
@@ -33,15 +36,17 @@
 				<h3 id="ai-modal-title">
 					<i class="ph-fill ph-sparkle"></i> AI Magic
 				</h3>
-				<button onclick="closeAiModal()"
-					style="background: none; font-size: 1.2rem; color: #94a3b8;">
+				  <button onclick="closeAiModal()"
+					style="background: none; font-size: 1.2rem; color: #94a3b8; border:none;">
 					<i class="ph ph-x"></i>
 				</button>
 			</div>
 			<div class="ai-content" id="ai-modal-content"></div>
 			<div style="text-align: right;">
-				<button class="btn-primary" onclick="closeAiModal()"
-					style="background: #e2e8f0; color: #475569;">Close</button>
+				<button class="ai-button" id="english"
+					>English</button>
+				<button class="ai-button" id="tamil"
+					>தமிழ்</button>
 			</div>
 		</div>
 	</div>
@@ -50,10 +55,11 @@
 		<aside class="sidebar">
 			<div class="sidebar-logo">
 				<img
-					src="Gemini_Generated_Image_ogk0tdogk0tdogk0-removebg-preview.png"
+					src="momento1.png"
 					class="logo">
-				<h1>Momento</h1>
+				
 			</div>
+			<h1>Momento</h1>
 
 			<nav>
 				<div class="menu-item active" onclick="dashboardPage()">
@@ -71,16 +77,16 @@
 				<div class="menu-item" onclick="diaryPage()">
 					<i class="ph ph-notebook"></i> <span>Diary</span>
 				</div>
-				<div class="menu-item" onclick="showVideos()">
+				<!-- <div class="menu-item" onclick="showVideos()">
 					<i class="ph ph-video-camera"></i><span>Videos</span>
-				</div>
+				</div>-->
 
 				<!--  <div class="menu-item" onclick="reminderPage()">
 					<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 				</div>-->
 
 				<div class="menu-item" onclick="trashPage()"
-					style="margin-top: 633px;">
+					style="margin-top: 683px;">
 					<i class="ph ph-trash"></i> <span>Trash</span>
 				</div>
 			</nav>
@@ -93,15 +99,21 @@
 		<main class="main-content">
 			<header class="top-bar">
 				<!-- Search Container -->
-			<div class="search-container">
-			    <i class="ph ph-magnifying-glass search-icon" onclick="toggleSearch()"></i>
-			
-			    <div class="search-box" id="searchBox">
-			        <input type="text" placeholder="Search photos...">
-			    </div>
-			</div>
+			<!--  -	<div class="search-container">
+					<i class="ph ph-magnifying-glass search-icon"
+						></i>
+
+					<div class="search-box" id="search"><input type="text" id="search-input" placeholder="Search photos...">
+				</div>
+				</div>-->
+				<!-- Search Container -->
+<div class="search-box" id="search">
+					<i class="ph ph-magnifying-glass"></i> <input type="text"
+						id="search-input" placeholder="Search photos..."> 
+						
+				</div>
 				<!-- From Uiverse.io by Galahhad -->
-			<!--  	<label class="theme-switch"> <input type="checkbox"
+				<!--  	<label class="theme-switch"> <input type="checkbox"
 					class="theme-switch__checkbox">
 					<div class="theme-switch__container">
 						<div class="theme-switch__clouds"></div>
@@ -143,9 +155,7 @@
 					<!-- Upload Button -->
 					<button class="btn-primary"
 						onclick="document.getElementById('photoInput').click();">
-						upload
-
-					</button>
+						<i class="ph ph-plus"></i></button>
 
 
 				</div>
@@ -191,20 +201,40 @@
 					</div>
 				</div>-->
 				<h2
-					style="margin-top: 52px; padding: 12px; color: var(--primary); font-family: 'Honk', system-ui;
-  font-weight: 408;
-  font-style: normal;
-  font-variation-settings:
-    'MORF' 15,
-    'SHLN' 50;"
+					style="margin-top: 52px; padding: 12px; color:black;font-family: 'Playfair Display', serif; font-weight: 400;"
 					class="secAlreadytion-title">Recent Uploads</h2>
 				<div id="galleryGrid" class="gallery-grid"></div>
 			</div>
 		</main>
 	</div>
 	<div id="viewBox"></div>
-	<div id="floating-date"></div>
+	<div id="confirmBox" class="confirm-overlay">
+  <div class="confirm-modal">
+    <p>Are you sure you want to delete?</p>
+    <div class="confirm-actions">
+      <button id="confirmYes">Yes</button>
+      <button id="confirmNo">Cancel</button>
+    </div>
+  </div>
+  </div>
+	
+ <!-- Mock Page Content -->
+  <!--    <h1 class="text-4xl font-extrabold text-gray-800">Your App Content</h1>
+    <p class="text-gray-600">Click below to test the overlay loader.</p>
+    <button class="trigger-btn" onclick="showLoader()">Trigger Loader</button>
 
+    <!-- The Loader Overlay (Hidden by default) -->
+    <div id="loader" class="loader-overlay hidden">
+        <div class="momento-word">
+            <span style="--i:1">M</span>
+            <span style="--i:2">o</span>
+            <span style="--i:3">m</span>
+            <span style="--i:4">e</span>
+            <span style="--i:5">n</span>
+            <span style="--i:6">t</span>
+            <span style="--i:7">o</span>
+        </div>
+    </div>
 </body>
 </html>
 
