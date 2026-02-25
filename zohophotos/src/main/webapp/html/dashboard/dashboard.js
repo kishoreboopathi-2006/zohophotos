@@ -13,6 +13,7 @@ let userDetails = [];
 let currentRotate = 0;
 let currentZoom = 1;
 window.addEventListener("load", () => {
+	showLoader();
 	if (entry) {
 		fetch("/zohophotos/getFavouritePhotos").then(handleResponse).then(handleData).then(showError);
 		function handleResponse(response) {
@@ -29,8 +30,6 @@ window.addEventListener("load", () => {
 	}
 });
 window.addEventListener("load", async () => {
-	/* deleted photos*/
-	showLoader();
 	const deleteRes = await fetch("/zohophotos/getDeletedPhotos");
 	deletedPhotos = await deleteRes.json();
 	console.log(JSON.stringify(deletedPhotos, null, 2));
@@ -1111,5 +1110,15 @@ function shareOnCliq(img) {
 			.catch(err => console.log(err));
 		});
 	}
-
+	function showLoader() {
+		const loader = document.getElementById('loader');
+		loader.classList.remove('hidden');
+		setTimeout(() => {
+			hideLoader();
+		}, 5000);
+	}
+	function hideLoader() {
+		const loader = document.getElementById('loader');
+		loader.classList.add('hidden');
+	}
 

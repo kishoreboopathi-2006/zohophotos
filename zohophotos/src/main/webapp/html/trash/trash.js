@@ -2,6 +2,7 @@ let deleted = [];
 const grid = document.getElementById("galleryGrid");
 /* kishore for delete */
 window.addEventListener("load", () => {
+	showLoader();
 	fetch("/zohophotos/getDeletedPhotos")
 		.then(response => response.json())
 		.then(data => {
@@ -62,8 +63,15 @@ function restorePhoto(url) {
 	function error(err) {
 		console.log(err);
 	}
-
-
-
 }
-
+function showLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.remove('hidden');
+	setTimeout(() => {
+		hideLoader();
+	}, 5000);
+}
+function hideLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.add('hidden');
+}

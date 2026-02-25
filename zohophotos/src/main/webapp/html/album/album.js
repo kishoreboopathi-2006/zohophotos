@@ -22,6 +22,7 @@ let currentIndex = 0;
 
 const grid = document.getElementById("galleryGrid");
 window.addEventListener("load", async function () {
+	showLoader();
 	try {
 
 		const [catRes, photoRes] = await Promise.all([
@@ -223,4 +224,15 @@ function reminderPage() {
 function albumPage() {
 	window.location.reload();
 	window.location.href = "/zohophotos/html/album/album.html";
+}
+function showLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.remove('hidden');
+	setTimeout(() => {
+		hideLoader();
+	}, 5000);
+}
+function hideLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.add('hidden');
 }

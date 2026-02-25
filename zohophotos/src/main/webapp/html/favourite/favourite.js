@@ -2,6 +2,7 @@ let favourite = [];
 const grid = document.getElementById("galleryGrid");
 let deletedPhotos=[];
 window.addEventListener("load", async() => {
+	showLoader();
 	const deleteRes = await fetch("/zohophotos/getDeletedPhotos");
 	deletedPhotos = await deleteRes.json();
 	fetch("/zohophotos/getFavouritePhotos")
@@ -46,4 +47,15 @@ function albumPage() {
 function reminderPage() {
 	console.log("reminer");
 	window.location.href = "/zohophotos/html/reminder/reminder.html";
+}
+function showLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.remove('hidden');
+	setTimeout(() => {
+		hideLoader();
+	}, 5000);
+}
+function hideLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.add('hidden');
 }

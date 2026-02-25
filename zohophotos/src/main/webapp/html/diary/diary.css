@@ -36,22 +36,16 @@
 	--sidebar-hover-width: 260px;
 	--nav-height: 70px;
 }
-
-body {
-	margin: 0;
-	min-height: 100vh;
-	background-color: #F2F3FF;
-	/* Wood texture background */
-	font-family: 'Quicksand', sans-serif;
-	font-size: 1rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 20px;
-	overflow-x: hidden;
+body{
+ margin:0;
+ min-height:100vh;
+ background-color:#F2F3FF;
+ font-family:'Quicksand',sans-serif;
+ font-size:1rem;
+ padding:20px;
 }
 .logo {
-		height: 48px;
+	height: 48px;
   width: 68px;
   position: fixed;
   left: 4px;
@@ -62,11 +56,23 @@ body {
 @import
 	url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Patrick+Hand&display=swap')
 	;
-.sidebar {
- width: 76px;
-  position: fixed;
-  margin-right: 1793px;
-  margin-bottom:72px;
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80px;
+    background: transparent;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.main-container{
+ margin-left:90px; /* space for sidebar */
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ min-height:100vh;
 }
 /* The Book Cover/Wrapper - NOW WITH 3D PERSPECTIVE */
 .diary {
@@ -364,979 +370,129 @@ button:hover {
 
 /* The Turning Page Container */
 #turning-page {
-	position: absolute;
-	top: 15px;
-	bottom: 15px;
-	width: calc(50% - 15px); /* Half width of diary minus padding */
-	z-index: 50;
-	transform-style: preserve-3d; /* CRITICAL for double sided */
-	display: none; /* Only show during animation */
-	pointer-events: none;
+    position: absolute;
+    top: 15px; 
+    bottom: 15px;
+    width: calc(50% - 15px); /* Half width of diary minus padding */
+    z-index: 50;
+    transform-style: preserve-3d; /* CRITICAL for double sided */
+    display: none; /* Only show during animation */
+    pointer-events: none;
 }
 
 /* Structure for the two sides of the flipping page */
 .page-face {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	backface-visibility: hidden;
-	background-color: #fffef0;
-	/* Paper Texture shared by all pages */
-	background-image:
-		url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' opacity='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
-	border: 1px solid #d7d7d7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: #fffef0;
+    
+    /* Paper Texture shared by all pages */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' opacity='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    
+    border: 1px solid #d7d7d7;
 }
 
 /* Front Face (Visible at start of turn) */
 .page-face.front {
-	z-index: 2;
+    z-index: 2;
 }
 
 /* Back Face (Visible at end of turn) */
 .page-face.back {
-	transform: rotateY(180deg);
-	z-index: 1;
+    transform: rotateY(180deg);
+    z-index: 1;
 }
 
 /* Specific Paper Types */
 .face-lined {
-	/* Lined paper styling (copy of textarea background) */
-	background-image: repeating-linear-gradient(transparent, transparent 1.9rem, #b0bec5
-		1.9rem, #b0bec5 2rem),
-		url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' opacity='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E")
-		!important;
-	background-attachment: local;
-	border-left: 1px solid #d7d7d7; /* Binding line */
+    /* Lined paper styling (copy of textarea background) */
+    background-image: 
+        repeating-linear-gradient(transparent, transparent 1.9rem, #b0bec5 1.9rem, #b0bec5 2rem),
+        url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' opacity='0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E") !important;
+    background-attachment: local;
+    border-left: 1px solid #d7d7d7; /* Binding line */
 }
 
 .face-plain {
-	/* Plain paper styling (Left side) */
-	background: linear-gradient(to right, rgba(0, 0, 0, 0.05), transparent
-		20%), #fffef0;
+    /* Plain paper styling (Left side) */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.05), transparent 20%), #fffef0;
 }
 
 /* --- ANIMATIONS WITH LIGHTING EFFECTS --- */
 
 /* Moving NEXT (Right to Left) */
 .animate-next {
-	display: block !important;
-	right: 15px;
-	transform-origin: left center;
-	animation: flipNext 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000)
-		forwards;
+    display: block !important;
+    right: 15px; 
+    transform-origin: left center;
+    animation: flipNext 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
 }
 
 /* Shadows for NEXT */
 .animate-next .front::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	animation: shadowFrontNext 1.4s linear forwards;
+    content: ''; position: absolute; inset: 0;
+    animation: shadowFrontNext 1.4s linear forwards;
 }
-
 .animate-next .back::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	animation: shadowBackNext 1.4s linear forwards;
+    content: ''; position: absolute; inset: 0;
+    animation: shadowBackNext 1.4s linear forwards;
 }
 
-@keyframes flipNext { 0% {
-	transform: rotateY(0deg);
-}100%
-{
-transform
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rotateY
-
-
-
-
-(
-
-
-
-
-
-
--180deg
-
-
-
-
-
-
-)
-
-
-
-
-;
+@keyframes flipNext {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(-180deg); }
 }
+
+@keyframes shadowFrontNext {
+    0% { background: linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0)); }
+    50% { background: linear-gradient(to left, rgba(0,0,0,0.1), rgba(0,0,0,0.2)); }
+    100% { background: linear-gradient(to left, rgba(0,0,0,0.3), rgba(0,0,0,0.4)); } 
 }
-@keyframes shadowFrontNext { 0% {
-	background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-}50%
-{
-background
 
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.2
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}100%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.3
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.4
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
+@keyframes shadowBackNext {
+    0% { background: linear-gradient(to right, rgba(0,0,0,0.4), rgba(0,0,0,0.3)); } 
+    50% { background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0)); }
+    100% { background: rgba(0,0,0,0); }
 }
-}
-@keyframes shadowBackNext { 0% {
-	background: linear-gradient(to right, rgba(0, 0, 0, 0.4),
-		rgba(0, 0, 0, 0.3));
-}50%
-{
-background
 
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}100%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
 
 /* Moving PREV (Left to Right) */
 .animate-prev {
-	display: block !important;
-	left: 15px;
-	transform-origin: right center;
-	animation: flipPrev 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000)
-		forwards;
+    display: block !important;
+    left: 15px;
+    transform-origin: right center;
+    animation: flipPrev 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
 }
 
 /* Shadows for PREV */
 .animate-prev .front::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	animation: shadowFrontPrev 1.4s linear forwards;
+    content: ''; position: absolute; inset: 0;
+    animation: shadowFrontPrev 1.4s linear forwards;
 }
-
 .animate-prev .back::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	animation: shadowBackPrev 1.4s linear forwards;
+    content: ''; position: absolute; inset: 0;
+    animation: shadowBackPrev 1.4s linear forwards;
 }
 
-@keyframes flipPrev { 0% {
-	transform: rotateY(0deg);
-}
-100%
-{
-transform
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rotateY
-
-
-
-
-(
-
-
-
-
-
-
-180deg
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
-@keyframes shadowFrontPrev { 0% {
-	background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+@keyframes flipPrev {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(180deg); }
 }
 
-50%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.2
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
+@keyframes shadowFrontPrev {
+    0% { background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0)); }
+    50% { background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.2)); }
+    100% { background: linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.4)); }
 }
-100%
-{
-background
 
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-right
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.3
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.4
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-}
-@keyframes shadowBackPrev { 0% {
-	background: linear-gradient(to left, rgba(0, 0, 0, 0.4),
-		rgba(0, 0, 0, 0.3));}
-
-50%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-linear-gradient
-
-
-
-
-(
-
-
-
-
-
-
-to
-
-
-
-
-
-
-left
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-.1
-
-
-
-
-
-
-)
-,
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
-100%
-{
-background
-
-
-
-
-
-
-:
-
-
-
-
-
-
-rgba
-
-
-
-
-(
-
-
-
-
-
-
-0
-,
-0
-,
-0
-,
-0
-
-
-
-
-
-
-)
-
-
-
-
-;
-}
+@keyframes shadowBackPrev {
+    0% { background: linear-gradient(to left, rgba(0,0,0,0.4), rgba(0,0,0,0.3)); }
+    50% { background: linear-gradient(to left, rgba(0,0,0,0.1), rgba(0,0,0,0)); }
+    100% { background: rgba(0,0,0,0); }
 }
 
 /* Page Navigation Arrows */
@@ -1626,11 +782,7 @@ nav {
 .menu-item {
   transition: all 0.25s ease;
 }
-menu-item bottom{
-	position:fixed;
-	margin-top:690px;
-		
-}
+
 .menu-item:active {
   transform: scale(0.96);
 }
@@ -1666,6 +818,7 @@ menu-item bottom{
 	transform: translateY(-50%);
 	top: 50%;
 	transition: 0.2s;
+	z-index:100000000;
 	
 }
 .menu-item {
@@ -1740,7 +893,6 @@ menu-item bottom{
     bottom: 20px;
     right: 140px;
     z-index: 9999;
-
     padding: 12px 26px;
     border-radius: 14px;
     border: none;
@@ -1765,3 +917,75 @@ menu-item bottom{
     transform:none;
     box-shadow:none;
 }
+             .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+            backdrop-filter: blur(25px); /* The blur effect */
+            -webkit-backdrop-filter: blur(12px); /* Safari support */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* Utility class to hide the loader */
+        .loader-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* The Word Container */
+        .momento-word {
+            display: flex;
+            gap: 8px; /* Space between letters */
+            font-size: 3rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* Individual Letters */
+        .momento-word span {
+            display: inline-block;
+            animation: wave-slide 2s infinite ease-in-out;
+            /* The --i variable determines the delay for the wave effect */
+            animation-delay: calc(0.15s * var(--i));
+        }
+
+        @keyframes wave-slide {
+            0%, 100% {
+                transform: translateY(10px);
+                color: rgba(0, 0, 0, 0.15); /* Faded dark color for inactive letters */
+                text-shadow: none;
+                filter: blur(2px);
+            }
+            50% {
+                transform: translateY(-15px);
+                color: var(--primary); /* Pops with primary color */
+                text-shadow: 0 10px 25px rgba(168, 85, 247, 0.5);
+                filter: blur(0px);
+            }
+        }
+
+
+        /* Button styling for testing */
+        .trigger-btn {
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(168, 85, 247, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .trigger-btn:active {
+            transform: scale(0.95);
+        }  
+

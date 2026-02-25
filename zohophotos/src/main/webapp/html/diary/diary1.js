@@ -13,6 +13,7 @@ function formatDisplayDate(dateStr) {
 
 /* ---------------- PAGE LOAD ---------------- */
 window.onload = async function() {
+	showLoader();
 	let today = new Date().toISOString().split('T')[0];
 
 	// display format
@@ -348,5 +349,15 @@ function changeMonth(step) {
 	currentDate.setMonth(currentDate.getMonth() + step);
 	renderCalendar();
 }
-
+function showLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.remove('hidden');
+	setTimeout(() => {
+		hideLoader();
+	}, 5000);
+}
+function hideLoader() {
+	const loader = document.getElementById('loader');
+	loader.classList.add('hidden');
+}
 

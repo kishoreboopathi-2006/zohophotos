@@ -166,6 +166,7 @@ nav {
 	transform: translateY(-50%);
 	top: 50%;
 	transition: 0.2s;
+	z-index:100000000;
 }
 .menu-item {
 	position: relative;
@@ -294,4 +295,74 @@ nav {
 .photo-card:hover .photo-overlay {
 	opacity: 1;
 }
+             .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.6); /* Semi-transparent white */
+            backdrop-filter: blur(25px); /* The blur effect */
+            -webkit-backdrop-filter: blur(12px); /* Safari support */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
 
+        /* Utility class to hide the loader */
+        .loader-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* The Word Container */
+        .momento-word {
+            display: flex;
+            gap: 8px; /* Space between letters */
+            font-size: 3rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        /* Individual Letters */
+        .momento-word span {
+            display: inline-block;
+            animation: wave-slide 2s infinite ease-in-out;
+            /* The --i variable determines the delay for the wave effect */
+            animation-delay: calc(0.15s * var(--i));
+        }
+
+        @keyframes wave-slide {
+            0%, 100% {
+                transform: translateY(10px);
+                color: rgba(0, 0, 0, 0.15); /* Faded dark color for inactive letters */
+                text-shadow: none;
+                filter: blur(2px);
+            }
+            50% {
+                transform: translateY(-15px);
+                color: var(--primary); /* Pops with primary color */
+                text-shadow: 0 10px 25px rgba(168, 85, 247, 0.5);
+                filter: blur(0px);
+            }
+        }
+
+
+        /* Button styling for testing */
+        .trigger-btn {
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(168, 85, 247, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .trigger-btn:active {
+            transform: scale(0.95);
+        }  

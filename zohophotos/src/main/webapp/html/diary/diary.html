@@ -13,7 +13,8 @@
 
 <body>
 
-
+<div class="main-container">
+ 
 	<!-- ===== SIDEBAR ===== -->
 	<aside class="sidebar">
 		<div class="sidebar-logo">
@@ -46,7 +47,7 @@
 
 
 		</nav>
-		<div class="menu-item bottom" onclick="trashPage()">
+		<div class="menu-item bottom" onclick="trashPage()" style="margin-top:633px; ">
 			<i class="ph ph-trash"></i> <span>Trash</span>
 		</div>
 
@@ -129,7 +130,19 @@
 			</form>
 		</div>
 	</div>
-
+    <div id="loader" class="loader-overlay hidden">
+        <div class="momento-word">
+            <span style="--i:1">M</span>
+            <span style="--i:2">o</span>
+            <span style="--i:3">m</span>
+            <span style="--i:4">e</span>
+            <span style="--i:5">n</span>
+            <span style="--i:6">t</span>
+            <span style="--i:7">o</span>
+        </div>
+    </div>
+  
+</div>
 	<script src="diary1.js"></script>
 </body>
 </html>
