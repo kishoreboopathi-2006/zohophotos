@@ -20,21 +20,39 @@
 	--nav-height: 70px;
 }
 
-body{
-	margin:0;
-	min-height:100vh;
-	background:#F2F3FF;
-	font-family: 'Poppins', sans-serif;
-	display:flex; /* keep flex */
-}
-.sidebar {
-  width: 76px;
-  
+:root {
+	/* Selected Colors and Variables */
+	--primary: #1e3a8a;
+	--secondary: #7c3aed;
+	--accent: #14b8a6;
+	--danger: #ef4444;
+	--text-main: #1e293b;
+	--text-light: #64748b;
+	--white: #ffffff;
+	--bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #eef2ff 50%, #f5f3ff 100%);
+	--glass-bg: rgba(255, 255, 255, 0.75);
+	--glass-border: rgba(255, 255, 255, 0.6);
+	--radius: 16px;
+	--sidebar-hover-width: 260px;
+	--nav-height: 70px;
 }
 
+body {
+	margin: 0;
+	min-height: 100vh;
+	background-color: #F2F3FF;
+	/* Wood texture background */
+	font-family: 'Quicksand', sans-serif;
+	font-size: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	overflow-x: hidden;
+}
 .logo {
-	height: 51px;
-  width: 74px;
+		height: 48px;
+  width: 68px;
   position: fixed;
   left: 4px;
   margin-top: 8px;
@@ -44,7 +62,12 @@ body{
 @import
 	url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Patrick+Hand&display=swap')
 	;
-
+.sidebar {
+ width: 76px;
+  position: fixed;
+  margin-right: 1793px;
+  margin-bottom:72px;
+}
 /* The Book Cover/Wrapper - NOW WITH 3D PERSPECTIVE */
 .diary {
 	position: relative;
@@ -61,9 +84,6 @@ body{
 	/* 3D Context for Flipping */
 	perspective: 2500px;
 	z-index: 1;
-	margin-left:280px;
-	margin-top:103px;
-	
 }
 
 /* Spine of the book */
@@ -152,7 +172,7 @@ h2 {
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
-label {
+label {font-size: 1rem;
 	font-weight: bold;
 	color: #021b55ff;
 	display: block;
@@ -425,25 +445,433 @@ button:hover {
 
 @keyframes flipNext { 0% {
 	transform: rotateY(0deg);
-}
-100%
+}100%
 {
-transform:rotateY(-180deg);
+transform
+
+
+
+
+
+
+:
+
+
+
+
+
+
+rotateY
+
+
+
+
+(
+
+
+
+
+
+
+-180deg
+
+
+
+
+
+
+)
+
+
+
+
+;
 }
 }
 @keyframes shadowFrontNext { 0% {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-}
-
-50%
+}50%
 {
-background:linear-gradient(toleft,rgba(0,0,0,0.1),rgba(0,0,0,0.2));}100%{background:linear-gradient(toleft,rgba(0,0,0,0.3),rgba(0,0,0,0.4));}}
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+left
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.1
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.2
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
+}100%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+left
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.3
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.4
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
+}
+}
 @keyframes shadowBackNext { 0% {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0.4),
 		rgba(0, 0, 0, 0.3));
-}
+}50%
+{
+background
 
-50%{background:linear-gradient(toright,rgba(0,0,0,0.1),rgba(0,0,0,0));}100%{background:rgba(0,0,0,0)
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+right
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.1
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
+}100%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+
+
+)
+
+
+
+
 ;
 }
 }
@@ -475,21 +903,441 @@ background:linear-gradient(toleft,rgba(0,0,0,0.1),rgba(0,0,0,0.2));}100%{backgro
 @keyframes flipPrev { 0% {
 	transform: rotateY(0deg);
 }
-
 100%
 {
-transform:rotateY(180deg);
+transform
+
+
+
+
+
+
+:
+
+
+
+
+
+
+rotateY
+
+
+
+
+(
+
+
+
+
+
+
+180deg
+
+
+
+
+
+
+)
+
+
+
+
+;
 }
 }
 @keyframes shadowFrontPrev { 0% {
 	background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
-}50%{background:linear-gradient(toright,rgba(0,0,0,0.1),rgba(0,0,0,0.2));}100%{background:linear-gradient(toright,rgba(0,0,0,0.3),rgba(0,0,0,0.4));}}
+}
+
+50%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+right
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.1
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.2
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
+}
+100%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+right
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.3
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.4
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
+}
+}
 @keyframes shadowBackPrev { 0% {
 	background: linear-gradient(to left, rgba(0, 0, 0, 0.4),
-		rgba(0, 0, 0, 0.3));
+		rgba(0, 0, 0, 0.3));}
+
+50%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+linear-gradient
+
+
+
+
+(
+
+
+
+
+
+
+to
+
+
+
+
+
+
+left
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+.1
+
+
+
+
+
+
+)
+,
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+
+
+)
+
+
+
+
+
+
+)
+
+
+
+
+;
 }
-50%{background:linear-gradient(toleft,rgba(0,0,0,0.1),rgba(0,0,0,0));}
-100%{background:rgba(0,0,0,0);}}
+100%
+{
+background
+
+
+
+
+
+
+:
+
+
+
+
+
+
+rgba
+
+
+
+
+(
+
+
+
+
+
+
+0
+,
+0
+,
+0
+,
+0
+
+
+
+
+
+
+)
+
+
+
+
+;
+}
+}
 
 /* Page Navigation Arrows */
 .nav-btn {
@@ -518,7 +1366,7 @@ transform:rotateY(180deg);
 }
 
 .prev-btn {
-	left: 200px;
+	left: -70px;
 }
 
 .next-btn {
@@ -778,7 +1626,11 @@ nav {
 .menu-item {
   transition: all 0.25s ease;
 }
-
+menu-item bottom{
+	position:fixed;
+	margin-top:690px;
+		
+}
 .menu-item:active {
   transform: scale(0.96);
 }
@@ -814,6 +1666,7 @@ nav {
 	transform: translateY(-50%);
 	top: 50%;
 	transition: 0.2s;
+	
 }
 .menu-item {
 	position: relative;

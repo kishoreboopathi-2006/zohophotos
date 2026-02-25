@@ -544,6 +544,7 @@ function openFullView() {
 /*
 const themeBtn = document.getElementById("themetoggle");
 const themeIcon = document.getElementById("theme-icon");
+
 function updateTheme(isDark) {
 	if (isDark) {
 		document.body.classList.add("dark");
@@ -553,8 +554,8 @@ function updateTheme(isDark) {
 		themeIcon.className = "fa-regular fa-moon";
 	}
 }
-*/
-/*
+
+
 themeBtn.addEventListener("click", () => {
 	const isDark = !document.body.classList.contains("dark");
 	localStorage.setItem("theme", isDark ? "dark" : "light");
@@ -943,10 +944,10 @@ document.getElementById("avatar").addEventListener("click", function() {
 		return item;
 	};
 
-	const settingsBtn = createItem("⚙️", "Account Settings", () => showMessage("Opening account preferences..."));
+	/*const settingsBtn = createItem("⚙️", "Account Settings", () => showMessage("Opening account preferences..."));*/
 	const signoutBtn = createItem("🔌", "Sign Out", () => showMessage("Securely logging out..."), true);
 
-	menu.append(settingsBtn, signoutBtn);
+	menu.append(signoutBtn);
 	content.append(name, email, menu);
 	container.append(header, avatarWrapper, content);
 	root.appendChild(container);

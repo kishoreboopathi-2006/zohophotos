@@ -41,24 +41,49 @@
 }
 
 body {
+	font-family: 'Limelight', sans-serif;
 	display: flex;
 	min-height: 100vh;
 	background: #f3f6fd;
 	color: #1e293b;
 }
 .logo {
-	height: 51px;
-	width: 72px;
-	position:fixed;
-	left:8px;
-	margin-top:8px;
+		height: 48px;
+  width: 68px;
+  position: fixed;
+  left: 4px;
+  margin-top: 8px;
+}
+.user-profile {
+    width: 48px;
+    height: 49px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #939bfb 0%,
+        #986ef1 35%,
+        #c37be2 65%,
+        #7155df 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto; /* centers it in sidebar */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    position: fixed;
+  margin-top: -65px;
+  margin-left: 1796px;
+}
+
+.user-profile i {
+    font-size: 28px;
+    color: black; /* profile icon in black */
 }
 /* ===== MAIN CONTENT ===== */
 .main-content {
 	flex: 1;
 	padding: 30px;
 	overflow-y: auto;
-	margin-left:118px;
 }
 
 .section-title {
@@ -123,7 +148,7 @@ body {
 	position: fixed;
 	top: 0;
 	left: 85px;
-	width: calc(100% - 260px);
+	width: calc(100% - 97px);
 	background: rgba(243, 246, 253, 0.96);
 	backdrop-filter: blur(18px);
 	display: none;

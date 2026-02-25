@@ -48,13 +48,12 @@ body {
 }
 
 .logo {
-	height: 51px;
-  width: 74px;
+		height: 48px;
+  width: 68px;
   position: fixed;
   left: 4px;
   margin-top: 8px;
 }
-
 
 .app-layout {
 	display: flex;

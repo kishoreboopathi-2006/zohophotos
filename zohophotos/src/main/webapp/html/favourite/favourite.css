@@ -35,7 +35,7 @@ body.dark {
 
 
 body {
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Limelight', sans-serif;
 	background: var(--bg-gradient);
 	color: var(--text-main);
 	height: 100vh;
@@ -48,13 +48,12 @@ body {
 }
 
 .logo {
-	height: 51px;
-  width: 74px;
+		height: 48px;
+  width: 68px;
   position: fixed;
-  left: 4px;
+  left: 7px;
   margin-top: 8px;
 }
-
 
 .app-layout {
 	display: flex;
@@ -220,42 +219,30 @@ nav {
 .section-title {
 	font-size: 1.4rem;
 	font-weight: 700;
-	color: var(--primary);
+	color:black;
+	font-family: 'Limelight', sans-serif;
 }
 
 .user-profile {
-	display: flex;
-	align-items: center;
-	gap: 12px;
-	cursor: pointer;
+   width: 49px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient( 135deg, #939bfb 0%, #986ef1 35%, #c37be2 65%, #7155df 100% );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+    margin-top: 20px;
+    margin-left: auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  position: fixed;
+  margin-top: 25px;
+  margin-left: 1681px;
 }
 
-.user-info {
-	text-align: right;
-}
-
-.user-name {
-	font-weight: 700;
-	font-size: 0.9rem;
-	color: var(--text-main);
-}
-
-.user-role {
-	font-size: 0.75rem;
-	color: var(--text-light);
-	display: block;
-}
-
-.avatar {
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background: var(--accent);
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-weight: 700;
+.user-profile i {
+    font-size: 32px;
+    color: black; /* profile icon in black */
 }
 
 .content-scroll {

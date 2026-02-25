@@ -9,9 +9,10 @@ import org.json.JSONObject;
 
 public class AccessTokenForWorkdrive {
 
-	private static final String REFRESH_TOKEN = "1000.422e0c6d83d15ccc6b6bad85b1525e47.d127d1652e0e57bff46095208abebc97";
-	private static final String CLIENT_ID = "1000.6B8XKBZGYFR5LAVY48H1VVT0P8RFJL";
-	private static final String CLIENT_SECRET = "07add9400d104b3bb197f368d0b0c4fe19269bc9a2";
+	private static final String REFRESH_TOKEN = "1000.02603e0668a8b3004d828d6805942ad5.c230a8cfc528a67f6df51629f6d7b390";
+	private static final String CLIENT_ID = "1000.P9FZ2WG1DMT31GW6MO6ITRFYYH6JRU";
+	private static final String CLIENT_SECRET = "1257f34da7ada1d587b7fe85953368a711dfb2de4c";
+
 
 	private static final OkHttpClient client = new OkHttpClient();
 

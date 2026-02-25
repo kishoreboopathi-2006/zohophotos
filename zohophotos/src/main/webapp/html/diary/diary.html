@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,18 +39,16 @@
 			<div class="menu-item active" onclick="diaryPage()">
 				<i class="ph ph-notebook"></i> <span>Diary</span>
 			</div>
-			
-			<!--  <div class="menu-item" onclick="showVideos()">
-				<i class="ph ph-video-camera"></i><span>Videos</span>
-			</div>
+
 			<!--  <div class="menu-item" onclick="reminderPage()">
 				<i class="ph ph-hourglass-medium"></i> <span>Reminder</span>
 			</div>-->
 
-			<div class="menu-item" onclick="trashPage()" style="margin-top:685px">
-				<i class="ph ph-trash"></i> <span>Trash</span>
-			</div>
+
 		</nav>
+		<div class="menu-item bottom" onclick="trashPage()">
+			<i class="ph ph-trash"></i> <span>Trash</span>
+		</div>
 
 		<!--  <a href="/zohophotos/html/loginpage/signin.html" class="menu-item"
 			style="margin: 15px; color: var(--danger); text-decoration: none;">
@@ -82,7 +79,7 @@
 				<div class="page-face back"></div>
 			</div>
 
-			<form id="diaryForm" enctype="multipart/form-data">
+			<form id="diaryForm">
 
 				<!-- LEFT PAGE -->
 				<div class="left page">
@@ -113,7 +110,7 @@
 
 						<span id="rightDateDisplay"
 							style="display: block; padding: 6px; border-bottom: 1px dashed #999;">
-							📅 -- </span> <input type="date" id="date" name = "date" onchange="getDate()"
+							📅 -- </span> <input type="date" id="date" onchange="getDate()"
 							style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
 
 					</div>
@@ -121,12 +118,10 @@
 					<label>Title</label> <input type="text" id="title" name="title"
 						required> <label>Entry</label>
 					<textarea id="content" name="content" required></textarea>
-					<button type="button" id="draftBtn" onclick="saveDraft()" style="display:none;">Save Draft</button>
 
-					<button type="submit" id="saveBtn" style="margin-left:432px; position:fixed; width: 90px; height: 45px;">Save</button>
-					<!-- < div style="text-align: right;">
+					<div style="text-align: right;">
 						<button type="submit" class="seal-btn">SAVE</button>
-					</div>-->
+					</div>
 
 					<p id="message"></p>
 				</div>
